@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>GlowUP Plant | Oficina de Tecnologia</title>
 
 <style>
-
-/* ==========================================
-   GLOWUP PLANT - VERSÃO 1.1
-   ========================================== */
+/* GLOWUP PLANT - PÁGINA INICIAL v1.2 */
 
 :root {
     --verde: #277857;
@@ -22,17 +17,11 @@
     --fundo: #f8faf8;
     --texto: #253b32;
     --cinza: #64756b;
-    --branco: #ffffff;
     --borda: #e2eae4;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
@@ -42,10 +31,7 @@ body {
     line-height: 1.6;
 }
 
-button {
-    font-family: inherit;
-    cursor: pointer;
-}
+button { font-family: inherit; cursor: pointer; }
 
 .container {
     width: 92%;
@@ -53,9 +39,7 @@ button {
     margin: auto;
 }
 
-/* ==========================================
-   CABEÇALHO
-   ========================================== */
+/* CABEÇALHO */
 
 header {
     background: white;
@@ -76,26 +60,17 @@ header {
     color: var(--verde);
 }
 
-.logo span {
-    color: var(--rosa);
-}
+.logo span { color: var(--rosa); }
 
 .versao {
     font-size: 12px;
     color: var(--cinza);
 }
 
-/* ==========================================
-   APRESENTAÇÃO
-   ========================================== */
+/* APRESENTAÇÃO */
 
 .hero {
-    background: linear-gradient(
-        135deg,
-        #e4f5e9 0%,
-        #fff0f5 100%
-    );
-
+    background: linear-gradient(135deg, #e4f5e9, #fff0f5);
     padding: 65px 0;
     text-align: center;
 }
@@ -125,43 +100,34 @@ header {
 .botoes-hero {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 14px;
     flex-wrap: wrap;
 }
 
-.botao-principal {
+.botao-principal,
+.botao-secundario {
     display: inline-block;
-    background: var(--verde);
-    color: white;
     padding: 13px 26px;
     text-decoration: none;
     border-radius: 25px;
     font-weight: bold;
 }
 
-.botao-principal:hover {
-    background: var(--verde-escuro);
+.botao-principal {
+    background: var(--verde);
+    color: white;
 }
 
 .botao-secundario {
-    display: inline-block;
     background: white;
     color: var(--verde-escuro);
-    padding: 13px 26px;
-    text-decoration: none;
-    border-radius: 25px;
-    font-weight: bold;
     border: 1px solid #b7d5c2;
 }
 
-.botao-secundario:hover {
-    background: var(--verde-claro);
-}
+.botao-principal:hover { background: var(--verde-escuro); }
+.botao-secundario:hover { background: var(--verde-claro); }
 
-/* ==========================================
-   ETAPA 00 - MATERIAIS
-   ========================================== */
+/* CONFERÊNCIA DOS MATERIAIS */
 
 .materiais {
     margin-top: 35px;
@@ -179,9 +145,7 @@ header {
     gap: 20px;
 }
 
-.materiais-info {
-    flex: 1;
-}
+.materiais-info { flex: 1; }
 
 .materiais h2 {
     font-size: 23px;
@@ -194,11 +158,10 @@ header {
     font-size: 15px;
 }
 
-.materiais-icone {
-    font-size: 65px;
-}
+.materiais-icone { font-size: 65px; }
 
-.etapa-zero {
+.etapa-zero,
+.numero {
     display: inline-block;
     background: var(--verde-claro);
     color: var(--verde);
@@ -235,13 +198,7 @@ header {
     font-weight: bold;
 }
 
-.acesso-materiais:hover {
-    background: var(--verde-escuro);
-}
-
-/* ==========================================
-   PROGRESSO
-   ========================================== */
+/* PROGRESSO */
 
 .progresso {
     margin-top: 35px;
@@ -265,13 +222,9 @@ header {
 }
 
 .barra-preenchida {
-    width: 0%;
+    width: 0;
     height: 100%;
-    background: linear-gradient(
-        90deg,
-        #52b788,
-        #ef8ca8
-    );
+    background: linear-gradient(90deg, #52b788, #ef8ca8);
     transition: width 0.3s;
 }
 
@@ -284,13 +237,9 @@ header {
     font-size: 14px;
 }
 
-/* ==========================================
-   ETAPAS DA OFICINA
-   ========================================== */
+/* ETAPAS */
 
-.secao {
-    padding: 45px 0;
-}
+.secao { padding: 45px 0; }
 
 .secao h2 {
     font-size: 29px;
@@ -321,16 +270,6 @@ header {
 .card-conteudo {
     padding: 24px;
     flex: 1;
-}
-
-.numero {
-    display: inline-block;
-    background: var(--verde-claro);
-    color: var(--verde);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
 }
 
 .icone {
@@ -382,13 +321,7 @@ header {
     color: #a33359;
 }
 
-.botao-nivel:hover {
-    filter: brightness(0.96);
-}
-
-/* ==========================================
-   PAINEL DE ATIVIDADES
-   ========================================== */
+/* PAINEL PARA ETAPAS FUTURAS */
 
 .painel {
     margin-top: 35px;
@@ -398,20 +331,16 @@ header {
     padding: 28px;
 }
 
-.painel[hidden] {
-    display: none;
-}
+.painel[hidden] { display: none; }
 
 .painel h3 {
     font-size: 24px;
     margin-top: 0;
 }
 
-.painel .descricao {
-    color: var(--cinza);
-}
+.painel .descricao { color: var(--cinza); }
 
-.painel .missao {
+.missao {
     background: #f6faf7;
     border-left: 4px solid var(--verde);
     padding: 16px;
@@ -430,25 +359,25 @@ header {
     flex-wrap: wrap;
 }
 
-.botao-concluir {
-    background: var(--verde);
-    color: white;
-    border: none;
+.botao-concluir,
+.botao-fechar {
     border-radius: 10px;
     padding: 13px 20px;
     font-weight: bold;
 }
 
+.botao-concluir {
+    background: var(--verde);
+    color: white;
+    border: none;
+}
+
 .botao-fechar {
     background: white;
     border: 1px solid #ccd8cf;
-    border-radius: 10px;
-    padding: 13px 20px;
 }
 
-/* ==========================================
-   INFORMAÇÕES
-   ========================================== */
+/* ORIENTAÇÕES */
 
 .informacoes {
     padding: 35px;
@@ -457,13 +386,7 @@ header {
     margin-bottom: 40px;
 }
 
-.informacoes h2 {
-    margin-top: 0;
-}
-
-.informacoes p {
-    margin-bottom: 0;
-}
+.informacoes h2 { margin-top: 0; }
 
 .resetar {
     border: none;
@@ -474,19 +397,13 @@ header {
     padding: 5px 0;
 }
 
-/* ==========================================
-   ACESSIBILIDADE
-   ========================================== */
-
 button:focus-visible,
 a:focus-visible {
     outline: 3px solid var(--verde-escuro);
     outline-offset: 3px;
 }
 
-/* ==========================================
-   RODAPÉ
-   ========================================== */
+/* RODAPÉ */
 
 footer {
     background: var(--verde-escuro);
@@ -500,57 +417,22 @@ footer p {
     font-size: 14px;
 }
 
-/* ==========================================
-   RESPONSIVIDADE
-   ========================================== */
+/* RESPONSIVIDADE */
 
-@media (max-width: 900px) {
-
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
+@media(max-width: 900px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-@media (max-width: 600px) {
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hero {
-        padding: 45px 0;
-    }
-
-    .hero p {
-        font-size: 16px;
-    }
-
-    .secao h2 {
-        font-size: 25px;
-    }
-
-    .painel {
-        padding: 20px;
-    }
-
-    .materiais {
-        padding: 22px;
-    }
-
-    .materiais-icone {
-        font-size: 45px;
-    }
-
-    .materiais-topo {
-        align-items: flex-start;
-    }
-
-    .topo {
-        flex-wrap: wrap;
-        padding: 12px 0;
-    }
-
+@media(max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero { padding: 45px 0; }
+    .hero p { font-size: 16px; }
+    .secao h2 { font-size: 25px; }
+    .painel { padding: 20px; }
+    .materiais { padding: 22px; }
+    .materiais-icone { font-size: 45px; }
+    .materiais-topo { align-items: flex-start; }
+    .topo { flex-wrap: wrap; padding: 12px 0; }
 }
 
 </style>
@@ -558,42 +440,21 @@ footer p {
 
 <body>
 
-<!-- ==========================================
-     CABEÇALHO
-     ========================================== -->
-
 <header>
-
     <div class="container topo">
-
-        <div class="logo">
-            🌱 Glow<span>UP</span> Plant
-        </div>
-
-        <div class="versao">
-            Oficina de Tecnologia • v1.1
-        </div>
-
+        <div class="logo">🌱 Glow<span>UP</span> Plant</div>
+        <div class="versao">Oficina de Tecnologia • v1.2</div>
     </div>
-
 </header>
 
-
-<!-- ==========================================
-     APRESENTAÇÃO
-     ========================================== -->
-
 <section class="hero">
-
     <div class="container">
 
         <span class="tag">
             🌸 Tecnologia, criatividade e natureza
         </span>
 
-        <h1>
-            Sua jornada começa aqui!
-        </h1>
+        <h1>Sua jornada começa aqui!</h1>
 
         <p>
             Vamos construir um sistema inteligente
@@ -604,29 +465,21 @@ footer p {
         </p>
 
         <div class="botoes-hero">
-
-            <a href="materiais.html"
-               class="botao-principal">
+            <a href="materiais.html" class="botao-principal">
                 🎒 Conferir meus materiais
             </a>
 
-            <a href="#etapas"
-               class="botao-secundario">
+            <a href="#etapas" class="botao-secundario">
                 Explorar as etapas →
             </a>
-
         </div>
 
     </div>
-
 </section>
-
 
 <main class="container">
 
-    <!-- ==========================================
-         ETAPA 00 - CONFERÊNCIA
-         ========================================== -->
+    <!-- ETAPA 00 -->
 
     <section class="materiais">
 
@@ -634,25 +487,19 @@ footer p {
 
             <div class="materiais-info">
 
-                <span class="etapa-zero">
-                    ETAPA 00
-                </span>
+                <span class="etapa-zero">ETAPA 00</span>
 
-                <h2>
-                    🎒 Preparando nosso kit!
-                </h2>
+                <h2>🎒 Preparando nosso kit!</h2>
 
                 <p>
                     Antes de começar a oficina,
                     vamos conhecer e conferir
-                    os componentes que utilizaremos
-                    para construir nosso projeto.
+                    os componentes do nosso projeto.
                 </p>
 
             </div>
 
-            <div class="materiais-icone"
-                 aria-hidden="true">
+            <div class="materiais-icone" aria-hidden="true">
                 📦
             </div>
 
@@ -661,100 +508,69 @@ footer p {
         <div class="status-materiais"
              id="statusMateriais"
              aria-live="polite">
-
             ⏳ Nenhum material conferido ainda.
-
         </div>
 
-        <a href="materiais.html"
-           class="acesso-materiais">
+        <a href="materiais.html" class="acesso-materiais">
             Abrir conferência dos materiais →
         </a>
 
     </section>
 
+    <!-- PROGRESSO GERAL -->
 
-    <!-- ==========================================
-         PROGRESSO DAS ETAPAS
-         ========================================== -->
-
-    <section class="progresso"
-             aria-label="Meu progresso">
+    <section class="progresso" aria-label="Meu progresso">
 
         <h2>🌿 Minha evolução</h2>
 
         <p>
-            Avance no seu ritmo. Cada descoberta
-            é uma conquista!
+            Avance no seu ritmo.
+            Cada descoberta é uma conquista!
         </p>
 
         <div class="barra"
+             id="barraProgresso"
              role="progressbar"
              aria-label="Etapas iniciais concluídas"
              aria-valuemin="0"
              aria-valuemax="100"
-             aria-valuenow="0"
-             id="barraProgresso">
+             aria-valuenow="0">
 
             <div class="barra-preenchida"
-                 id="barraPreenchida">
-            </div>
+                 id="barraPreenchida"></div>
 
         </div>
 
         <div class="progresso-info">
-
-            <span id="textoProgresso"
-                  aria-live="polite">
+            <span id="textoProgresso" aria-live="polite">
                 0 de 6 etapas concluídas
             </span>
-
-            <span id="porcentagem">
-                0%
-            </span>
-
+            <span id="porcentagem">0%</span>
         </div>
 
         <p id="textoAvancado"
            style="font-size:13px;color:#64756b">
-
             Desafios avançados concluídos: 0 de 6
-
         </p>
 
-        <button class="resetar"
-                id="botaoResetar">
-
+        <button class="resetar" id="botaoResetar">
             Reiniciar meu progresso
-
         </button>
 
     </section>
 
-
-    <!-- ==========================================
-         ETAPAS DA OFICINA
-         ========================================== -->
+    <!-- ETAPAS -->
 
     <section class="secao" id="etapas">
 
         <h2>🧩 Etapas da oficina</h2>
 
         <p class="subtitulo">
-
-            Escolha uma etapa e descubra
-            novos desafios.
-
+            Escolha uma etapa e descubra novos desafios.
             Todas as etapas estão disponíveis!
-
         </p>
 
-        <div class="grid" id="gridEtapas">
-            <!-- Cartões gerados pelo JavaScript -->
-        </div>
-
-
-        <!-- PAINEL DE ATIVIDADES -->
+        <div class="grid" id="gridEtapas"></div>
 
         <div class="painel"
              id="painel"
@@ -762,342 +578,176 @@ footer p {
              tabindex="-1">
 
             <h3 id="tituloPainel"></h3>
-
-            <p class="descricao"
-               id="descricaoPainel"></p>
-
-            <div class="missao"
-                 id="missaoPainel"></div>
+            <p class="descricao" id="descricaoPainel"></p>
+            <div class="missao" id="missaoPainel"></div>
 
             <div class="acoes">
-
-                <button class="botao-concluir"
-                        id="botaoConcluir">
-
+                <button class="botao-concluir" id="botaoConcluir">
                     Marcar como concluído ✓
-
                 </button>
 
-                <button class="botao-fechar"
-                        id="botaoFechar">
-
+                <button class="botao-fechar" id="botaoFechar">
                     Fechar
-
                 </button>
-
             </div>
 
         </div>
 
     </section>
 
-
-    <!-- ==========================================
-         ORIENTAÇÕES
-         ========================================== -->
+    <!-- ORIENTAÇÕES -->
 
     <section class="informacoes">
 
         <h2>💚 Como funciona a oficina?</h2>
 
         <p>
-
-            Primeiro, confira os materiais
-            disponíveis no seu kit.
-
-            Depois, escolha uma das etapas
-            da oficina.
+            Primeiro, confira os materiais disponíveis no kit.
+            Depois, escolha uma das etapas da oficina.
 
             Cada etapa possui dois níveis:
             <strong>Inicial</strong> e
             <strong>Avançado</strong>.
 
-            Comece pelo nível inicial,
-            seguindo as orientações e
-            realizando as experiências.
+            Comece pelo nível inicial e experimente
+            os desafios avançados quando quiser.
 
-            Se quiser explorar um pouco mais,
-            experimente o desafio avançado!
-
-            Você pode avançar no seu próprio ritmo.
-
+            Você pode avançar no seu próprio ritmo!
         </p>
 
     </section>
 
 </main>
 
-
-<!-- ==========================================
-     RODAPÉ
-     ========================================== -->
-
 <footer>
-
-    <p>
-        🌱 GlowUP Plant
-    </p>
-
-    <p>
-        Uma experiência de aprendizagem,
-        tecnologia e criatividade.
-    </p>
-
-    <p>
-        NuRIA • Instituto Federal de São Paulo
-    </p>
-
+    <p>🌱 GlowUP Plant</p>
+    <p>Uma experiência de aprendizagem, tecnologia e criatividade.</p>
+    <p>NuRIA • Instituto Federal de São Paulo</p>
 </footer>
-
 
 <script>
 
-/* ==========================================
-   GLOWUP PLANT - VERSÃO 1.1
-   CONTROLE DA OFICINA
-   ========================================== */
-
-
-/* ==========================================
-   ETAPAS
-   ========================================== */
+/* GLOWUP PLANT - CONTROLE DA OFICINA v1.2 */
 
 const etapas = [
-
     {
         numero: 1,
-        icone: "🌸",
-        titulo: "Conhecendo a GlowUP",
-
-        descricao:
-            "Descubra o projeto e os componentes " +
-            "que vamos utilizar.",
-
-        inicial:
-            "Conheça os componentes do projeto " +
-            "e identifique a função de cada um deles.",
-
-        avancado:
-            "Investigue como o ESP32 recebe " +
-            "informações dos sensores e controla " +
-            "os dispositivos."
+        icone: "🔌",
+        titulo: "Conhecendo o ESP32-C3",
+        descricao: "Conheça a placa, explore sua pinagem e execute o primeiro programa.",
+        inicial: "Configure o Arduino IDE e execute o Hello World.",
+        avancado: "Personalize mensagens e explore o LED integrado.",
+        pagina: "etapa01.html"
     },
-
     {
         numero: 2,
-        icone: "🔌",
+        icone: "💻",
         titulo: "Preparando o ESP32",
-
-        descricao:
-            "Vamos começar a programar nosso " +
-            "pequeno computador.",
-
-        inicial:
-            "Conheça a placa ESP32 e execute " +
-            "seu primeiro programa.",
-
-        avancado:
-            "Modifique o programa e descubra " +
-            "como as instruções alteram " +
-            "o funcionamento."
+        descricao: "Vamos explorar a programação do nosso pequeno computador.",
+        inicial: "Conheça instruções e experimente programas simples.",
+        avancado: "Modifique parâmetros e investigue os resultados."
     },
-
     {
         numero: 3,
         icone: "💧",
         titulo: "Nossa planta está com sede?",
-
-        descricao:
-            "Vamos descobrir como medir " +
-            "a umidade do solo.",
-
-        inicial:
-            "Conecte o sensor de umidade " +
-            "e observe os valores apresentados " +
-            "pelo ESP32.",
-
-        avancado:
-            "Calibre o sensor e crie condições " +
-            "para identificar solo seco, " +
-            "adequado ou úmido."
+        descricao: "Vamos descobrir como medir a umidade do solo.",
+        inicial: "Conecte o sensor e observe os valores apresentados pelo ESP32.",
+        avancado: "Calibre o sensor e identifique condições de umidade."
     },
-
     {
         numero: 4,
         icone: "🖥️",
         titulo: "A planta quer conversar!",
-
-        descricao:
-            "Vamos apresentar informações " +
-            "no display OLED.",
-
-        inicial:
-            "Conecte o display OLED e apresente " +
-            "informações sobre a umidade do solo.",
-
-        avancado:
-            "Personalize a apresentação das " +
-            "informações e crie mensagens " +
-            "para diferentes situações."
+        descricao: "Vamos apresentar informações no display OLED.",
+        inicial: "Conecte o display e mostre informações sobre a umidade.",
+        avancado: "Personalize as mensagens e indicadores."
     },
-
     {
         numero: 5,
         icone: "🔔",
         titulo: "Criando alertas",
-
-        descricao:
-            "Nossa planta poderá nos avisar " +
-            "quando precisar de cuidados.",
-
-        inicial:
-            "Conecte o buzzer e produza " +
-            "um alerta para uma condição " +
-            "de umidade.",
-
-        avancado:
-            "Crie diferentes padrões de alerta " +
-            "de acordo com as condições do solo."
+        descricao: "Nossa planta poderá avisar quando precisar de cuidados.",
+        inicial: "Conecte o buzzer e produza um alerta.",
+        avancado: "Crie diferentes padrões de alerta."
     },
-
     {
         numero: 6,
         icone: "🚀",
         titulo: "GlowUP em ação!",
-
-        descricao:
-            "Vamos integrar e testar " +
-            "nosso projeto completo.",
-
-        inicial:
-            "Integre os componentes e teste " +
-            "o funcionamento do sistema GlowUP Plant.",
-
-        avancado:
-            "Personalize o funcionamento " +
-            "do projeto e proponha uma " +
-            "nova funcionalidade."
+        descricao: "Vamos integrar e testar nosso projeto completo.",
+        inicial: "Integre os componentes e teste o sistema.",
+        avancado: "Personalize o projeto e proponha melhorias."
     }
-
 ];
 
-
-/* ==========================================
-   ARMAZENAMENTO DO PROGRESSO
-   ========================================== */
-
 const CHAVE_PROGRESSO = "glowup-oficina-progresso-v1";
-
 const CHAVE_MATERIAIS = "glowup-materiais-v1";
+const CHAVE_ETAPA01 = "glowup-etapa01-v1";
 
-let progresso = {};
+function lerJSON(chave) {
+    try {
+        const valor = localStorage.getItem(chave);
+        const dados = valor ? JSON.parse(valor) : {};
 
-try {
-
-    const salvo = localStorage.getItem(CHAVE_PROGRESSO);
-
-    if (salvo) {
-
-        const dados = JSON.parse(salvo);
-
-        if (
-            dados &&
-            typeof dados === "object" &&
-            !Array.isArray(dados)
-        ) {
-            progresso = dados;
-        }
-
+        return dados && typeof dados === "object" &&
+               !Array.isArray(dados) ? dados : {};
+    } catch (erro) {
+        console.warn("Erro ao ler dados:", erro);
+        return {};
     }
-
-} catch (erro) {
-
-    console.warn(
-        "Não foi possível carregar o progresso.",
-        erro
-    );
-
 }
 
+let progresso = lerJSON(CHAVE_PROGRESSO);
+
 function salvarProgresso() {
-
     try {
-
         localStorage.setItem(
             CHAVE_PROGRESSO,
             JSON.stringify(progresso)
         );
-
     } catch (erro) {
-
-        console.warn(
-            "Não foi possível salvar o progresso.",
-            erro
-        );
-
+        console.warn("Erro ao salvar progresso:", erro);
     }
-
 }
 
+/* SINCRONIZAÇÃO DA ETAPA 01 */
 
-/* ==========================================
-   CONFERÊNCIA DOS MATERIAIS
-   ========================================== */
+function sincronizarEtapa01() {
 
-/*
-   Utilizamos a mesma chave e os mesmos
-   identificadores de materiais.html.
+    const dados = localStorage.getItem(CHAVE_ETAPA01);
 
-   A página inicial apenas consulta os
-   materiais já conferidos.
-*/
+    // Se a participante ainda não acessou o roteiro,
+    // não alteramos seu progresso anterior.
+    if (dados === null) return;
+
+    const etapa = lerJSON(CHAVE_ETAPA01);
+
+    const total = [1, 2, 3, 4, 5].filter(
+        id => etapa[id] === true
+    ).length;
+
+    if (!progresso[1]) {
+        progresso[1] = {};
+    }
+
+    progresso[1].inicial = total === 5;
+    progresso[1].avancado = etapa.avancado === true;
+
+    salvarProgresso();
+}
+
+/* MATERIAIS */
 
 const idsMateriais = [
-
-    "esp32",
-    "sensor",
-    "oled",
-    "buzzer",
-    "pilhas",
-    "protoboard",
-    "jumpers",
-    "usb",
-    "planta"
-
+    "esp32", "sensor", "oled",
+    "buzzer", "pilhas", "protoboard",
+    "jumpers", "usb", "planta"
 ];
 
 function atualizarStatusMateriais() {
 
-    let conferidos = {};
-
-    try {
-
-        const dados = localStorage.getItem(
-            CHAVE_MATERIAIS
-        );
-
-        if (dados) {
-
-            const objeto = JSON.parse(dados);
-
-            if (
-                objeto &&
-                typeof objeto === "object" &&
-                !Array.isArray(objeto)
-            ) {
-                conferidos = objeto;
-            }
-
-        }
-
-    } catch (erro) {
-
-        console.warn(
-            "Não foi possível carregar os materiais.",
-            erro
-        );
-
-    }
+    const conferidos = lerJSON(CHAVE_MATERIAIS);
 
     const total = idsMateriais.length;
 
@@ -1105,81 +755,36 @@ function atualizarStatusMateriais() {
         id => conferidos[id] === true
     ).length;
 
-    const status = document.getElementById(
-        "statusMateriais"
+    const status = document.getElementById("statusMateriais");
+
+    status.classList.toggle(
+        "completo",
+        quantidade === total
     );
 
-    status.classList.remove("completo");
-
     if (quantidade === total) {
-
         status.textContent =
             "✅ Kit completo! Todos os 9 materiais foram conferidos.";
-
-        status.classList.add("completo");
-
     } else if (quantidade === 0) {
-
         status.textContent =
             "⏳ Nenhum material conferido ainda.";
-
     } else {
-
         status.textContent =
-            `📦 ${quantidade} de ${total} materiais conferidos. ` +
-            "Continue sua conferência!";
-
+            `📦 ${quantidade} de ${total} materiais conferidos.`;
     }
-
 }
 
-
-/* ==========================================
-   ELEMENTOS
-   ========================================== */
+/* INTERFACE */
 
 const grid = document.getElementById("gridEtapas");
-
 const painel = document.getElementById("painel");
-
-const tituloPainel = document.getElementById(
-    "tituloPainel"
-);
-
-const descricaoPainel = document.getElementById(
-    "descricaoPainel"
-);
-
-const missaoPainel = document.getElementById(
-    "missaoPainel"
-);
-
-const botaoConcluir = document.getElementById(
-    "botaoConcluir"
-);
-
-const botaoFechar = document.getElementById(
-    "botaoFechar"
-);
 
 let etapaAtual = null;
 let nivelAtual = null;
 
-
-/* ==========================================
-   VERIFICAR CONCLUSÃO
-   ========================================== */
-
 function concluida(numero, nivel) {
-
     return progresso[numero]?.[nivel] === true;
-
 }
-
-
-/* ==========================================
-   GERAR CARTÕES
-   ========================================== */
 
 function renderizarEtapas() {
 
@@ -1187,22 +792,13 @@ function renderizarEtapas() {
 
     etapas.forEach(etapa => {
 
-        const inicialOK = concluida(
-            etapa.numero,
-            "inicial"
-        );
-
-        const avancadoOK = concluida(
-            etapa.numero,
-            "avancado"
-        );
+        const inicialOK = concluida(etapa.numero, "inicial");
+        const avancadoOK = concluida(etapa.numero, "avancado");
 
         const card = document.createElement("article");
-
         card.className = "card";
 
         card.innerHTML = `
-
             <div class="card-conteudo">
 
                 <span class="numero">
@@ -1214,19 +810,12 @@ function renderizarEtapas() {
                 </div>
 
                 <h3>${etapa.titulo}</h3>
-
                 <p>${etapa.descricao}</p>
 
                 <div class="status">
-
-                    🌱 Inicial:
-                    ${inicialOK ? "Concluído ✓" : "Pendente"}
-
+                    🌱 Inicial: ${inicialOK ? "Concluído ✓" : "Pendente"}
                     <br>
-
-                    🚀 Avançado:
-                    ${avancadoOK ? "Concluído ✓" : "Opcional"}
-
+                    🚀 Avançado: ${avancadoOK ? "Concluído ✓" : "Opcional"}
                 </div>
 
             </div>
@@ -1235,36 +824,22 @@ function renderizarEtapas() {
 
                 <button class="botao-nivel inicial"
                         data-etapa="${etapa.numero}"
-                        data-nivel="inicial"
-                        aria-label="Abrir nível inicial da etapa ${etapa.numero}">
-
+                        data-nivel="inicial">
                     🌱 Inicial
-
                 </button>
 
                 <button class="botao-nivel avancado"
                         data-etapa="${etapa.numero}"
-                        data-nivel="avancado"
-                        aria-label="Abrir nível avançado da etapa ${etapa.numero}">
-
+                        data-nivel="avancado">
                     🚀 Avançado
-
                 </button>
 
             </div>
-
         `;
 
         grid.appendChild(card);
-
     });
-
 }
-
-
-/* ==========================================
-   ABRIR ATIVIDADE
-   ========================================== */
 
 function abrirAtividade(numero, nivel) {
 
@@ -1274,20 +849,28 @@ function abrirAtividade(numero, nivel) {
 
     if (!etapa) return;
 
+    // Etapas com roteiro próprio abrem outra página.
+    if (etapa.pagina) {
+
+        const destino = nivel === "avancado"
+            ? etapa.pagina + "#desafio-avancado"
+            : etapa.pagina;
+
+        window.location.href = destino;
+        return;
+    }
+
+    // Etapas ainda não desenvolvidas usam o painel.
     etapaAtual = numero;
     nivelAtual = nivel;
 
-    const nomeNivel = nivel === "inicial"
-        ? "Nível inicial"
-        : "Nível avançado";
-
-    tituloPainel.textContent =
+    document.getElementById("tituloPainel").textContent =
         `${etapa.icone} ${etapa.titulo}`;
 
-    descricaoPainel.textContent =
-        `Etapa ${numero} • ${nomeNivel}`;
+    document.getElementById("descricaoPainel").textContent =
+        `Etapa ${numero} • Nível ${nivel}`;
 
-    missaoPainel.textContent =
+    document.getElementById("missaoPainel").textContent =
         etapa[nivel];
 
     painel.classList.toggle(
@@ -1304,122 +887,65 @@ function abrirAtividade(numero, nivel) {
         block: "start"
     });
 
-    painel.focus({
-        preventScroll: true
-    });
-
+    painel.focus({ preventScroll: true });
 }
-
-
-/* ==========================================
-   ATUALIZAR BOTÃO
-   ========================================== */
 
 function atualizarBotaoConcluir() {
 
     if (etapaAtual === null) return;
 
-    const ok = concluida(
-        etapaAtual,
-        nivelAtual
-    );
+    const botao = document.getElementById("botaoConcluir");
 
-    botaoConcluir.textContent = ok
+    botao.textContent = concluida(etapaAtual, nivelAtual)
         ? "✓ Concluído — desfazer"
         : "Marcar como concluído ✓";
-
 }
-
-
-/* ==========================================
-   MARCAR OU DESMARCAR CONCLUSÃO
-   ========================================== */
-
-function alternarConclusao() {
-
-    if (etapaAtual === null) return;
-
-    if (!progresso[etapaAtual]) {
-        progresso[etapaAtual] = {};
-    }
-
-    const estadoAtual = concluida(
-        etapaAtual,
-        nivelAtual
-    );
-
-    progresso[etapaAtual][nivelAtual] = !estadoAtual;
-
-    salvarProgresso();
-
-    renderizarEtapas();
-
-    atualizarProgresso();
-
-    atualizarBotaoConcluir();
-
-}
-
-
-/* ==========================================
-   BARRA DE PROGRESSO
-   ========================================== */
 
 function atualizarProgresso() {
 
     const total = etapas.length;
 
     const iniciais = etapas.filter(
-        etapa => concluida(
-            etapa.numero,
-            "inicial"
-        )
+        etapa => concluida(etapa.numero, "inicial")
     ).length;
 
     const avancados = etapas.filter(
-        etapa => concluida(
-            etapa.numero,
-            "avancado"
-        )
+        etapa => concluida(etapa.numero, "avancado")
     ).length;
 
     const porcentagem = Math.round(
-        (iniciais / total) * 100
+        iniciais / total * 100
     );
 
-    document.getElementById(
-        "barraPreenchida"
-    ).style.width = porcentagem + "%";
+    document.getElementById("barraPreenchida").style.width =
+        porcentagem + "%";
 
-    document.getElementById(
-        "porcentagem"
-    ).textContent = porcentagem + "%";
+    document.getElementById("porcentagem").textContent =
+        porcentagem + "%";
 
-    document.getElementById(
-        "textoProgresso"
-    ).textContent =
+    document.getElementById("textoProgresso").textContent =
         `${iniciais} de ${total} etapas concluídas`;
 
-    document.getElementById(
-        "textoAvancado"
-    ).textContent =
+    document.getElementById("textoAvancado").textContent =
         `Desafios avançados concluídos: ${avancados} de ${total}`;
 
-    document.getElementById(
-        "barraProgresso"
-    ).setAttribute(
+    document.getElementById("barraProgresso").setAttribute(
         "aria-valuenow",
         porcentagem
     );
-
 }
 
+function atualizarTudo() {
+    progresso = lerJSON(CHAVE_PROGRESSO);
+    sincronizarEtapa01();
+    atualizarStatusMateriais();
+    renderizarEtapas();
+    atualizarProgresso();
+}
 
-/* ==========================================
-   EVENTOS DAS ETAPAS
-   ========================================== */
+/* EVENTOS */
 
-grid.addEventListener("click", function(evento) {
+grid.addEventListener("click", evento => {
 
     const botao = evento.target.closest(
         "button[data-etapa]"
@@ -1427,95 +953,74 @@ grid.addEventListener("click", function(evento) {
 
     if (!botao) return;
 
-    const numero = Number(
-        botao.dataset.etapa
+    abrirAtividade(
+        Number(botao.dataset.etapa),
+        botao.dataset.nivel
     );
-
-    const nivel = botao.dataset.nivel;
-
-    abrirAtividade(numero, nivel);
-
 });
 
-botaoConcluir.addEventListener(
+document.getElementById("botaoConcluir").addEventListener(
     "click",
-    alternarConclusao
+    function() {
+
+        if (etapaAtual === null) return;
+
+        if (!progresso[etapaAtual]) {
+            progresso[etapaAtual] = {};
+        }
+
+        progresso[etapaAtual][nivelAtual] =
+            !concluida(etapaAtual, nivelAtual);
+
+        salvarProgresso();
+        renderizarEtapas();
+        atualizarProgresso();
+        atualizarBotaoConcluir();
+    }
 );
 
-botaoFechar.addEventListener("click", function() {
-
-    painel.hidden = true;
-
-    etapaAtual = null;
-    nivelAtual = null;
-
-    document.getElementById(
-        "etapas"
-    ).scrollIntoView({
-        behavior: "smooth"
-    });
-
-});
-
-
-/* ==========================================
-   REINICIAR PROGRESSO
-   ========================================== */
-
-document.getElementById(
-    "botaoResetar"
-).addEventListener("click", function() {
-
-    const confirmar = confirm(
-        "Deseja realmente apagar o progresso das seis etapas da oficina?"
-    );
-
-    if (!confirmar) return;
-
-    progresso = {};
-
-    salvarProgresso();
-
-    renderizarEtapas();
-
-    atualizarProgresso();
-
-    painel.hidden = true;
-
-    etapaAtual = null;
-    nivelAtual = null;
-
-    /*
-       A conferência dos materiais
-       permanece salva.
-
-       Para reiniciá-la, utilize o botão
-       existente em materiais.html.
-    */
-
-});
-
-
-/* ==========================================
-   INICIALIZAÇÃO
-   ========================================== */
-
-renderizarEtapas();
-
-atualizarProgresso();
-
-atualizarStatusMateriais();
-
-/*
-   Atualiza o indicador caso a participante
-   retorne à página usando o botão Voltar
-   do navegador.
-*/
-
-window.addEventListener(
-    "pageshow",
-    atualizarStatusMateriais
+document.getElementById("botaoFechar").addEventListener(
+    "click",
+    function() {
+        painel.hidden = true;
+        etapaAtual = null;
+        nivelAtual = null;
+    }
 );
+
+document.getElementById("botaoResetar").addEventListener(
+    "click",
+    function() {
+
+        if (!confirm(
+            "Deseja apagar o progresso das seis etapas?"
+        )) return;
+
+        progresso = {};
+
+        try {
+            localStorage.removeItem(CHAVE_ETAPA01);
+        } catch (erro) {
+            console.warn("Erro ao limpar a Etapa 01:", erro);
+        }
+
+        salvarProgresso();
+
+        painel.hidden = true;
+        etapaAtual = null;
+        nivelAtual = null;
+
+        atualizarTudo();
+
+        // A conferência dos materiais não é apagada.
+    }
+);
+
+/* INICIALIZAÇÃO */
+
+atualizarTudo();
+
+window.addEventListener("pageshow", atualizarTudo);
 
 </script>
 
