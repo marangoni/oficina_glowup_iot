@@ -1,227 +1,391 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>GlowUP Plant | Oficina</title>
 
 <style>
+
 :root {
-    --g: #247c58;
-    --dark: #174b39;
-    --pink: #e86695;
-    --line: #dfeae3;
-    --bg: #f6faf7;
+    --verde: #247c58;
+    --verde-escuro: #174b39;
+    --verde-claro: #e6f6ec;
+    --rosa: #e86695;
+    --rosa-claro: #fff0f5;
+    --fundo: #f7faf8;
+    --texto: #29443a;
+    --borda: #dfeae3;
 }
-* { box-sizing: border-box; }
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
-    background: var(--bg);
-    color: #29443a;
-    font: 16px/1.6 Arial, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
 }
-a { color: inherit; }
-.wrap { max-width: 1120px; margin: auto; padding: 0 22px; }
-header { background: #fff; border-bottom: 1px solid var(--line); }
-.nav {
+
+.container {
+    width: 92%;
+    max-width: 1120px;
+    margin: auto;
+}
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--borda);
+}
+
+.topo {
+    min-height: 75px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 72px;
-    gap: 20px;
-}
-.brand { font-size: 23px; font-weight: 800; color: var(--g); }
-.brand span { color: var(--pink); }
-.tag { font-size: 12px; color: #658072; }
-.hero {
-    padding: 50px 0;
-    background: linear-gradient(120deg,#e3f5eb,#fff0f5);
-}
-.hero h1 {
-    font-size: clamp(30px,5vw,46px);
-    line-height: 1.18;
-    color: var(--dark);
-    margin: 12px 0;
-}
-.hero p { max-width: 690px; }
-.btn {
-    display: inline-block;
-    text-decoration: none;
-    background: var(--g);
-    color: #fff;
-    padding: 11px 19px;
-    border-radius: 10px;
-    font-weight: bold;
-    margin: 8px 9px 0 0;
-}
-.btn.alt {
-    background: white;
-    color: var(--g);
-    border: 1px solid #b9d7c6;
-}
-.eyebrow {
-    font-size: 13px;
-    color: var(--g);
-    font-weight: bold;
-    text-transform: uppercase;
-}
-.stats {
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
     gap: 15px;
-    margin: 26px 0;
+    flex-wrap: wrap;
 }
-.stat {
-    background: #fff;
-    border: 1px solid var(--line);
-    padding: 18px 22px;
-    border-radius: 15px;
-}
-.stat strong {
-    display: block;
-    color: var(--g);
-    font-size: 25px;
-}
-.bar {
-    height: 12px;
-    background: #e7eee9;
-    border-radius: 12px;
-    overflow: hidden;
-}
-.fill {
-    height: 100%;
-    width: 0;
-    background: linear-gradient(90deg,#48b788,#ea88aa);
-}
-h2 { color: var(--dark); margin: 35px 0 10px; }
-.grid {
-    display: grid;
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 22px;
-    margin: 24px 0 45px;
-}
-.card {
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-.body { padding: 24px; flex: 1; }
-.badge {
-    display: inline-block;
-    background: #e5f5eb;
-    color: var(--g);
+
+.logo {
+    color: var(--verde);
+    font-size: 23px;
     font-weight: bold;
-    padding: 6px 14px;
-    border-radius: 30px;
+}
+
+.logo span {
+    color: var(--rosa);
+}
+
+.versao {
+    color: #718579;
     font-size: 12px;
 }
-.icon { font-size: 38px; margin: 18px 0; }
-.card h3 {
-    margin: 5px 0;
-    font-size: 21px;
-    color: var(--dark);
+
+.hero {
+    background: linear-gradient(
+        135deg,
+        #e5f6eb,
+        #fff0f5
+    );
+    padding: 50px 0;
 }
-.card p { color: #617c70; font-size: 15px; }
-.status {
+
+.hero h1 {
+    color: var(--verde-escuro);
+    font-size: clamp(30px, 5vw, 46px);
+    line-height: 1.2;
+    margin: 12px 0;
+}
+
+.hero p {
+    max-width: 700px;
+}
+
+.tag {
+    color: var(--verde);
     font-size: 13px;
-    line-height: 1.8;
-    color: var(--g);
     font-weight: bold;
 }
-.actions {
+
+.botao {
+    display: inline-block;
+    background: var(--verde);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 8px 8px 0 0;
+}
+
+.botao-secundario {
+    background: white;
+    color: var(--verde);
+    border: 1px solid #b9d7c6;
+}
+
+.painel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin: 28px 0;
+}
+
+.indicador {
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 15px;
+    padding: 22px;
+}
+
+.indicador strong {
+    display: block;
+    color: var(--verde);
+    font-size: 25px;
+    margin: 5px 0;
+}
+
+.indicador a {
+    color: var(--verde);
+}
+
+.barra {
+    height: 13px;
+    background: #e4eee7;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+.preenchimento {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #47b582,
+        #ec83ab
+    );
+}
+
+h2 {
+    color: var(--verde-escuro);
+    margin-top: 35px;
+}
+
+.grade {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin: 25px 0 45px;
+}
+
+.cartao {
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.cartao-corpo {
+    padding: 24px;
+    flex: 1;
+}
+
+.etiqueta {
+    display: inline-block;
+    background: var(--verde-claro);
+    color: var(--verde);
+    padding: 6px 14px;
+    border-radius: 25px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.icone {
+    font-size: 38px;
+    margin: 18px 0;
+}
+
+.cartao h3 {
+    color: var(--verde-escuro);
+    font-size: 21px;
+    margin: 5px 0;
+}
+
+.cartao p {
+    color: #617c70;
+    font-size: 15px;
+}
+
+.estado {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--verde);
+    font-weight: bold;
+    margin-top: 18px;
+}
+
+.acoes {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     padding: 15px;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--borda);
 }
-.actions a {
+
+.acoes a {
     text-align: center;
     text-decoration: none;
-    background: #e5f5eb;
+    background: var(--verde-claro);
     color: #116843;
     border-radius: 10px;
-    padding: 9px 4px;
+    padding: 11px 5px;
     font-size: 14px;
     font-weight: bold;
 }
-.actions a:last-child {
-    background: #fff0f5;
+
+.acoes a:last-child {
+    background: var(--rosa-claro);
     color: #b92e65;
 }
-.actions a.off {
-    color: #84948c;
+
+.acoes span {
+    display: block;
+    text-align: center;
     background: #f0f3f1;
-    cursor: default;
+    color: #84948c;
+    border-radius: 10px;
+    padding: 11px 5px;
+    font-size: 14px;
 }
+
 footer {
-    background: var(--dark);
+    background: var(--verde-escuro);
     color: white;
     text-align: center;
     padding: 25px;
+    font-size: 14px;
 }
-@media(max-width:670px) {
-    .grid, .stats { grid-template-columns: 1fr; }
-    .nav { flex-wrap: wrap; padding: 12px 0; }
-    .hero { padding: 34px 0; }
+
+@media (max-width: 680px) {
+
+    .painel,
+    .grade {
+        grid-template-columns: 1fr;
+    }
+
+    .hero {
+        padding: 35px 0;
+    }
+
+    .topo {
+        padding: 15px 0;
+    }
+
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <div class="wrap nav">
-        <div class="brand">🌱 Glow<span>UP</span> Plant</div>
-        <span class="tag">NuRIA · IFSP · Oficina maker · v1.5</span>
+    <div class="container topo">
+
+        <div class="logo">
+            🌱 Glow<span>UP</span> Plant
+        </div>
+
+        <span class="versao">
+            NuRIA • IFSP • Oficina Maker • v1.6
+        </span>
+
     </div>
 </header>
 
 <section class="hero">
-    <div class="wrap">
-        <span class="eyebrow">Aprender • Experimentar • Criar</span>
-        <h1>Uma plantinha, muitas descobertas! 🌿</h1>
+
+    <div class="container">
+
+        <span class="tag">
+            APRENDER • EXPERIMENTAR • CRIAR
+        </span>
+
+        <h1>
+            Uma plantinha, muitas descobertas! 🌿
+        </h1>
+
         <p>
-            Explore componentes eletrônicos, programe o ESP32-C3
-            e construa um dispositivo inteligente para acompanhar
-            sua planta. Faça as atividades no seu ritmo e marque
-            o que concluiu.
+            Explore componentes eletrônicos,
+            programe o ESP32-C3 e construa
+            um dispositivo inteligente
+            para acompanhar sua planta.
         </p>
-        <a class="btn" href="materiais.html">🧰 Conferir materiais</a>
-        <a class="btn alt" href="#etapas">🌱 Ver etapas</a>
+
+        <p>
+            Realize as atividades no seu ritmo
+            e registre suas descobertas!
+        </p>
+
+        <a class="botao" href="materiais.html">
+            🧰 Conferir materiais
+        </a>
+
+        <a class="botao botao-secundario" href="#etapas">
+            🌱 Ver etapas
+        </a>
+
     </div>
+
 </section>
 
-<main class="wrap">
+<main class="container">
 
-    <div class="stats">
-        <div class="stat">
-            <span>Materiais conferidos</span>
-            <strong id="materialCount">0 de 9</strong>
-            <a href="materiais.html">Abrir lista de materiais →</a>
-        </div>
+<section class="painel">
 
-        <div class="stat">
-            <span>Atividades iniciais concluídas</span>
-            <strong id="stageCount">0 de 6 etapas</strong>
-            <div class="bar" role="progressbar" id="globalBar"
-                 aria-valuemin="0" aria-valuemax="100"
-                 aria-valuenow="0">
-                <div class="fill" id="globalFill"></div>
-            </div>
-        </div>
+    <div class="indicador">
+
+        <span>Materiais conferidos</span>
+
+        <strong id="contadorMateriais">
+            0 de 9
+        </strong>
+
+        <a href="materiais.html">
+            Abrir lista de materiais →
+        </a>
+
     </div>
 
-    <h2 id="etapas">🚀 Etapas da oficina</h2>
-    <p>
-        Comece pelo nível inicial. O desafio avançado
-        é opcional e pode ser feito mais tarde.
-    </p>
+    <div class="indicador">
 
-    <div class="grid" id="cards"></div>
+        <span>Etapas iniciais concluídas</span>
+
+        <strong id="contadorEtapas">
+            0 de 6 etapas
+        </strong>
+
+        <div
+            class="barra"
+            id="barraGeral"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0">
+
+            <div
+                class="preenchimento"
+                id="preenchimentoGeral">
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<h2 id="etapas">🚀 Etapas da oficina</h2>
+
+<p>
+    Comece pelas atividades iniciais.
+    Os desafios avançados são opcionais
+    e podem ser realizados posteriormente.
+</p>
+
+<div class="grade" id="gradeEtapas"></div>
 
 </main>
 
@@ -230,127 +394,292 @@ footer {
 </footer>
 
 <script>
-const GERAL = 'glowup-oficina-progresso-v1';
-const MATERIAIS = 'glowup-materiais-v1';
+
+/* ==========================================
+   GLOWUP PLANT — PÁGINA INICIAL v1.6
+   ========================================== */
+
+const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+
+const CHAVE_MATERIAIS = "glowup-materiais-v1";
+
+
+/* ETAPAS DA OFICINA */
 
 const ETAPAS = [
+
     {
-        n: 1,
-        icon: '🔌',
-        title: 'Conhecendo o ESP32-C3',
-        desc: 'Conheça a placa, explore sua pinagem, configure o Arduino IDE e execute seu primeiro programa.',
-        url: 'etapa01.html'
+        numero: 1,
+        icone: "🔌",
+        titulo: "Conhecendo o ESP32-C3",
+        descricao:
+            "Conheça a placa, explore sua pinagem, " +
+            "configure o Arduino IDE e execute seu primeiro programa.",
+        arquivo: "etapa01.html"
     },
+
     {
-        n: 2,
-        icon: '💡',
-        title: 'Experimentando o ESP32-C3',
-        desc: 'Monte a placa na protoboard e experimente programas de LEDs e alertas com o buzzer.',
-        url: 'etapa02.html'
+        numero: 2,
+        icone: "💡",
+        titulo: "Experimentando o ESP32-C3",
+        descricao:
+            "Monte o ESP32-C3 na protoboard e explore " +
+            "programas de controle de LEDs e alertas sonoros.",
+        arquivo: "etapa02.html"
     },
+
     {
-        n: 3,
-        icon: '🌡️',
-        title: 'Conectando os sensores',
-        desc: 'Descubra como o ESP32-C3 recebe informações sobre o ambiente.',
-        url: null
+        numero: 3,
+        icone: "🌱",
+        titulo: "Conectando os sensores",
+        descricao:
+            "Conecte o sensor capacitivo, observe suas " +
+            "leituras e descubra como medir a umidade do solo.",
+        arquivo: "etapa03.html"
     },
+
     {
-        n: 4,
-        icon: '🖥️',
-        title: 'Conectando os dispositivos',
-        desc: 'Explore as saídas e aprenda a apresentar informações no display OLED.',
-        url: null
+        numero: 4,
+        icone: "🖥️",
+        titulo: "Conectando os dispositivos",
+        descricao:
+            "Aprenda a apresentar informações no display OLED " +
+            "e a controlar dispositivos de saída.",
+        arquivo: null
     },
+
     {
-        n: 5,
-        icon: '🌱',
-        title: 'Construindo o GlowUP Plant',
-        desc: 'Integre os componentes para cuidar da sua planta.',
-        url: null
+        numero: 5,
+        icone: "🪴",
+        titulo: "Construindo o GlowUP Plant",
+        descricao:
+            "Integre os componentes e desenvolva " +
+            "o funcionamento principal do projeto.",
+        arquivo: null
     },
+
     {
-        n: 6,
-        icon: '✨',
-        title: 'Personalizando o GlowUP Plant',
-        desc: 'Teste, calibre e dê sua cara ao projeto.',
-        url: null
+        numero: 6,
+        icone: "✨",
+        titulo: "Personalizando o GlowUP Plant",
+        descricao:
+            "Teste, calibre e personalize " +
+            "o seu dispositivo inteligente.",
+        arquivo: null
     }
+
 ];
 
-function ler(chave) {
+
+/* LER DADOS DO NAVEGADOR */
+
+function lerJSON(chave) {
+
     try {
-        const x = JSON.parse(localStorage.getItem(chave) || '{}');
-        return x && typeof x === 'object' ? x : {};
-    } catch {
+
+        const texto = localStorage.getItem(chave);
+
+        if (!texto) {
+            return {};
+        }
+
+        const dados = JSON.parse(texto);
+
+        if (
+            dados &&
+            typeof dados === "object" &&
+            !Array.isArray(dados)
+        ) {
+            return dados;
+        }
+
         return {};
+
+    } catch (erro) {
+
+        return {};
+
     }
+
 }
 
-function montar() {
-    const geral = ler(GERAL);
-    const materiais = ler(MATERIAIS);
+
+/* ATUALIZAR PÁGINA */
+
+function atualizarPagina() {
+
+    const progresso = lerJSON(CHAVE_GERAL);
+
+    const materiais = lerJSON(CHAVE_MATERIAIS);
+
     let concluidas = 0;
 
-    document.querySelector('#cards').innerHTML = ETAPAS.map(e => {
-        const p = geral[e.n] || {};
 
-        if (p.inicial) concluidas++;
+    /* MONTAR OS CARTÕES */
 
-        const url = e.url;
-        const ini = p.inicial ? 'Concluído ✓' : 'Pendente';
-        const adv = p.avancado ? 'Concluído ✓' : 'Opcional';
+    const html = ETAPAS.map(etapa => {
+
+        const estado = progresso[etapa.numero] || {};
+
+        if (estado.inicial === true) {
+            concluidas++;
+        }
+
+        const inicial = estado.inicial
+            ? "Concluído ✓"
+            : "Pendente";
+
+        const avancado = estado.avancado
+            ? "Concluído ✓"
+            : "Opcional";
+
+
+        let botoes = "";
+
+        if (etapa.arquivo) {
+
+            botoes = `
+                <a href="${etapa.arquivo}">
+                    🌱 Inicial
+                </a>
+
+                <a href="${etapa.arquivo}#desafio-avancado">
+                    🚀 Avançado
+                </a>
+            `;
+
+        } else {
+
+            botoes = `
+                <span>Em breve</span>
+                <span>Em breve</span>
+            `;
+
+        }
+
 
         return `
-        <article class="card">
-            <div class="body">
-                <span class="badge">
-                    ETAPA ${String(e.n).padStart(2, '0')}
-                </span>
 
-                <div class="icon">${e.icon}</div>
-                <h3>${e.title}</h3>
-                <p>${e.desc}</p>
+            <article class="cartao">
 
-                <div class="status">
-                    🌱 Inicial: ${ini}<br>
-                    🚀 Avançado: ${adv}
+                <div class="cartao-corpo">
+
+                    <span class="etiqueta">
+                        ETAPA ${String(etapa.numero).padStart(2, "0")}
+                    </span>
+
+                    <div class="icone">
+                        ${etapa.icone}
+                    </div>
+
+                    <h3>${etapa.titulo}</h3>
+
+                    <p>${etapa.descricao}</p>
+
+                    <div class="estado">
+
+                        🌱 Inicial: ${inicial}
+
+                        <br>
+
+                        🚀 Avançado: ${avancado}
+
+                    </div>
+
                 </div>
-            </div>
 
-            <div class="actions">
-                ${
-                    url
-                    ? `<a href="${url}">🌱 Inicial</a>
-                       <a href="${url}#desafio-avancado">🚀 Avançado</a>`
-                    : `<a class="off" aria-disabled="true">Em breve</a>
-                       <a class="off" aria-disabled="true">Em breve</a>`
-                }
-            </div>
-        </article>`;
-    }).join('');
+                <div class="acoes">
+                    ${botoes}
+                </div>
 
-    document.querySelector('#stageCount').textContent =
-        `${concluidas} de 6 etapas`;
+            </article>
 
-    const pct = Math.round(concluidas / 6 * 100);
+        `;
 
-    document.querySelector('#globalFill').style.width = pct + '%';
-    document.querySelector('#globalBar')
-        .setAttribute('aria-valuenow', pct);
+    }).join("");
 
-    const ids = [
-        'esp32', 'sensor', 'oled', 'buzzer', 'pilhas',
-        'protoboard', 'jumpers', 'usb', 'planta'
+
+    document.getElementById(
+        "gradeEtapas"
+    ).innerHTML = html;
+
+
+    /* PROGRESSO GERAL */
+
+    document.getElementById(
+        "contadorEtapas"
+    ).textContent =
+        concluidas + " de 6 etapas";
+
+
+    const percentual = Math.round(
+        concluidas / ETAPAS.length * 100
+    );
+
+
+    document.getElementById(
+        "preenchimentoGeral"
+    ).style.width = percentual + "%";
+
+
+    document.getElementById(
+        "barraGeral"
+    ).setAttribute(
+        "aria-valuenow",
+        percentual
+    );
+
+
+    /* MATERIAIS */
+
+    const idsMateriais = [
+
+        "esp32",
+        "sensor",
+        "oled",
+        "buzzer",
+        "pilhas",
+        "protoboard",
+        "jumpers",
+        "usb",
+        "planta"
+
     ];
 
-    document.querySelector('#materialCount').textContent =
-        ids.filter(x => materiais[x] === true).length + ' de 9';
+
+    const totalMateriais = idsMateriais.filter(
+        id => materiais[id] === true
+    ).length;
+
+
+    document.getElementById(
+        "contadorMateriais"
+    ).textContent =
+        totalMateriais + " de 9";
+
 }
 
-montar();
-window.addEventListener('pageshow', montar);
-window.addEventListener('storage', montar);
+
+/* INICIALIZAÇÃO */
+
+atualizarPagina();
+
+
+/*
+   Atualiza o progresso quando a participante
+   retorna à página inicial.
+*/
+
+window.addEventListener(
+    "pageshow",
+    atualizarPagina
+);
+
+window.addEventListener(
+    "storage",
+    atualizarPagina
+);
+
 </script>
 
 </body>

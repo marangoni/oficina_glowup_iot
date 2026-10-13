@@ -1,0 +1,2946 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Etapa 03 | Conectando os sensores | GlowUP Plant</title>
+
+<style>
+
+/* ==========================================
+   GLOWUP PLANT — ETAPA 03 — V1.1
+   ========================================== */
+
+:root {
+    --verde: #247c58;
+    --verde-escuro: #174b39;
+    --verde-claro: #e6f6ec;
+    --rosa: #e86695;
+    --rosa-claro: #fff0f5;
+    --fundo: #f7faf8;
+    --texto: #2a4238;
+    --borda: #dfeae3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.container {
+    width: 92%;
+    max-width: 950px;
+    margin: auto;
+}
+
+a {
+    color: var(--verde);
+}
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--borda);
+}
+
+.topo {
+    min-height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    color: var(--verde);
+    font-size: 23px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: var(--rosa);
+}
+
+.voltar {
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.versao {
+    font-size: 12px;
+    color: #718579;
+}
+
+.hero {
+    background: linear-gradient(
+        135deg,
+        #e5f6eb,
+        #fff0f5
+    );
+
+    text-align: center;
+    padding: 45px 15px;
+}
+
+.hero h1 {
+    color: var(--verde-escuro);
+    font-size: clamp(28px, 5vw, 40px);
+    margin: 12px 0;
+}
+
+.hero p {
+    max-width: 700px;
+    margin: auto;
+}
+
+.tag {
+    display: inline-block;
+    background: white;
+    color: var(--verde);
+    padding: 6px 15px;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* BLOCOS */
+
+.bloco {
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 18px;
+    padding: 28px;
+    margin: 25px 0;
+}
+
+.bloco h2 {
+    color: var(--verde-escuro);
+    margin-top: 0;
+}
+
+.bloco h3 {
+    color: var(--verde-escuro);
+    margin-top: 25px;
+}
+
+.bloco h4 {
+    color: var(--verde-escuro);
+}
+
+/* IMAGENS */
+
+.foto {
+    display: block;
+    width: 100%;
+    max-width: 480px;
+    max-height: 350px;
+    object-fit: contain;
+    margin: 22px auto;
+}
+
+.imagem-link {
+    display: block;
+    max-width: 820px;
+    margin: 20px auto 8px;
+}
+
+.imagem-link img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--borda);
+}
+
+.imagem-link:hover img {
+    border-color: var(--verde);
+}
+
+.legenda {
+    text-align: center;
+    color: #718579;
+    font-size: 13px;
+}
+
+/* DESTAQUES */
+
+.destaque {
+    background: var(--verde-claro);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 20px 0;
+}
+
+.aviso {
+    background: #fff5e8;
+    border-left: 5px solid #e9a23b;
+    border-radius: 9px;
+    padding: 18px;
+    margin: 20px 0;
+}
+
+/* PROGRESSO */
+
+.barra {
+    height: 14px;
+    background: #e4eee7;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.preenchimento {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #47b582,
+        #ec83ab
+    );
+    transition: width 0.3s;
+}
+
+#contador {
+    color: var(--verde);
+    font-weight: bold;
+}
+
+/* TABELAS */
+
+.tabela-container {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+    margin: 20px 0;
+}
+
+th,
+td {
+    padding: 12px;
+    border: 1px solid var(--borda);
+    text-align: left;
+}
+
+th {
+    background: var(--verde);
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f5faf6;
+}
+
+/* CÓDIGOS */
+
+.codigo {
+    position: relative;
+    background: #1e293b;
+    color: #f1f5f9;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+    overflow-x: auto;
+}
+
+.codigo pre {
+    margin: 35px 0 0;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+    line-height: 1.65;
+    white-space: pre;
+    tab-size: 2;
+}
+
+.copiar {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: #dff4e6;
+    color: var(--verde-escuro);
+    padding: 7px 13px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* CHECKBOXES */
+
+.check {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--verde-claro);
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.check input {
+    width: 23px;
+    height: 23px;
+    accent-color: var(--verde);
+    flex-shrink: 0;
+}
+
+/* REGISTRO DAS MEDIÇÕES */
+
+.registro {
+    background: #f9fcfa;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 22px 0;
+}
+
+.registro h3 {
+    margin-top: 0;
+}
+
+.campo-medicao {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    align-items: center;
+    gap: 15px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--borda);
+}
+
+.campo-medicao:last-child {
+    border-bottom: none;
+}
+
+.campo-medicao label {
+    font-weight: bold;
+}
+
+.campo-medicao input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #b8d3c2;
+    border-radius: 8px;
+    background: white;
+    font-size: 16px;
+}
+
+.campo-medicao input:focus {
+    outline: 2px solid var(--verde);
+    outline-offset: 2px;
+}
+
+.ajuda {
+    color: #607a6c;
+    font-size: 13px;
+}
+
+.resumo-medicoes {
+    padding: 16px;
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.resumo-medicoes strong {
+    color: var(--verde);
+}
+
+/* ALTERNATIVAS DE OBSERVAÇÃO */
+
+.opcao-radio {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.opcao-radio input {
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+    accent-color: var(--verde);
+    margin-top: 4px;
+}
+
+/* DESAFIOS AVANÇADOS */
+
+.avancado {
+    border: 2px solid #f0aac4;
+    scroll-margin-top: 20px;
+}
+
+.avancado > h2 {
+    color: #ac3663;
+}
+
+.desafio {
+    padding: 8px 0 25px;
+    border-bottom: 2px dashed #e8c0cf;
+    margin-bottom: 25px;
+}
+
+.desafio h3 {
+    color: #ac3663;
+    font-size: 21px;
+}
+
+.desafio .check {
+    background: var(--rosa-claro);
+}
+
+.solucao {
+    border: 2px solid #57b785;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* BOTÕES */
+
+.botao {
+    display: inline-block;
+    background: var(--verde);
+    color: white;
+    padding: 11px 19px;
+    border-radius: 10px;
+    border: none;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 6px 6px 6px 0;
+}
+
+.botao:hover {
+    filter: brightness(0.94);
+}
+
+.botao-secundario {
+    background: #e8eeea;
+    color: var(--verde-escuro);
+}
+
+.botao-solucao {
+    background: var(--rosa-claro);
+    color: #ac3663;
+    border: 1px solid #efb5c8;
+}
+
+/* FINALIZAÇÃO */
+
+.resultado {
+    background: var(--verde-claro);
+    text-align: center;
+    padding: 25px;
+    border-radius: 18px;
+    margin: 30px 0;
+}
+
+.resultado h2 {
+    color: var(--verde-escuro);
+}
+
+footer {
+    background: var(--verde-escuro);
+    color: white;
+    text-align: center;
+    padding: 25px;
+    font-size: 14px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 600px) {
+
+    .bloco {
+        padding: 19px;
+    }
+
+    .hero {
+        padding: 35px 15px;
+    }
+
+    .codigo {
+        padding: 15px;
+    }
+
+    .codigo pre {
+        font-size: 12px;
+    }
+
+    .campo-medicao {
+        grid-template-columns: 1fr;
+        gap: 5px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ==========================================
+     CABEÇALHO
+     ========================================== -->
+
+<header>
+
+    <div class="container topo">
+
+        <div class="logo">
+            🌱 Glow<span>UP</span> Plant
+        </div>
+
+        <a class="voltar" href="index.html">
+            ← Voltar à oficina
+        </a>
+
+        <span class="versao">
+            Etapa 03 • v1.1
+        </span>
+
+    </div>
+
+</header>
+
+
+<!-- ==========================================
+     APRESENTAÇÃO
+     ========================================== -->
+
+<section class="hero">
+
+    <span class="tag">ETAPA 03</span>
+
+    <h1>🌱 Conectando os sensores</h1>
+
+    <p>
+        Nossa plantinha precisa de água?
+        Vamos descobrir como o ESP32-C3
+        consegue medir a umidade do solo!
+    </p>
+
+</section>
+
+
+<main class="container">
+
+
+<!-- ==========================================
+     PROGRESSO
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌿 Meu progresso</h2>
+
+    <p>
+        Realize as atividades, registre suas medições
+        e marque os experimentos concluídos.
+    </p>
+
+    <div
+        class="barra"
+        id="barra"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0">
+
+        <div
+            class="preenchimento"
+            id="preenchimento">
+        </div>
+
+    </div>
+
+    <p id="contador">
+        0 de 5 atividades concluídas
+    </p>
+
+    <p id="contadorAvancado">
+        🚀 Desafios avançados: opcionais
+    </p>
+
+</section>
+
+
+<!-- ==========================================
+     EXPERIMENTO 1
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌱 1. Conhecendo o sensor de umidade</h2>
+
+    <p>
+        O sensor capacitivo de umidade
+        permite investigar a quantidade
+        de água presente no solo.
+    </p>
+
+    <p>
+        Ele detecta alterações nas
+        características elétricas
+        do material próximo à sua
+        região de medição.
+    </p>
+
+    <img
+        class="foto"
+        src="glowup_imagens/sensor_umidade_capacitivo_1.jpeg"
+        alt="Sensor capacitivo de umidade do solo"
+        loading="lazy">
+
+    <div class="destaque">
+
+        <strong>💡 Você sabia?</strong>
+
+        <p>
+            Diferentemente de alguns sensores
+            resistivos, o sensor capacitivo
+            não depende de dois eletrodos
+            metálicos expostos diretamente
+            ao solo.
+        </p>
+
+        <p>
+            Isso ajuda a reduzir problemas
+            associados à corrosão.
+        </p>
+
+    </div>
+
+    <h3>🔍 Como utilizar o sensor?</h3>
+
+    <p>
+        Observe a imagem abaixo.
+        Ela identifica as regiões
+        de utilização do sensor capacitivo.
+    </p>
+
+    <a
+        class="imagem-link"
+        href="glowup_imagens/sensor_umidade_capacitivo_2_como_usar.png"
+        target="_blank"
+        rel="noopener noreferrer">
+
+        <img
+            src="glowup_imagens/sensor_umidade_capacitivo_2_como_usar.png"
+            alt="Regiões de utilização do sensor capacitivo"
+            loading="lazy">
+
+    </a>
+
+    <p class="legenda">
+        Regiões de utilização do sensor.
+        Clique na imagem para ampliar.
+    </p>
+
+    <div class="destaque">
+
+        <strong>Identifique:</strong>
+
+        <p>
+            <strong>Região de medição:</strong>
+            parte do sensor que pode
+            ser inserida no solo.
+        </p>
+
+        <p>
+            <strong>Região eletrônica:</strong>
+            contém os circuitos do sensor
+            e deve permanecer protegida.
+        </p>
+
+        <p>
+            <strong>Conector:</strong>
+            permite ligar o sensor
+            ao ESP32-C3.
+        </p>
+
+    </div>
+
+    <div class="aviso">
+
+        <strong>⚠️ Atenção!</strong>
+
+        <p>
+            Nunca mergulhe a região eletrônica
+            do sensor na água.
+        </p>
+
+        <p>
+            Respeite o limite indicado
+            na imagem ao inserir
+            o sensor no solo.
+        </p>
+
+    </div>
+
+    <label class="check">
+
+        <input type="checkbox" data-id="1">
+
+        <span>
+            Identifiquei as regiões
+            de utilização do sensor.
+        </span>
+
+    </label>
+
+</section>
+
+
+<!-- ==========================================
+     EXPERIMENTO 2
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌱 2. Montando e conectando o sensor</h2>
+
+    <p>
+        Vamos conectar o sensor capacitivo
+        ao ESP32-C3 instalado na protoboard.
+    </p>
+
+    <p>
+        Utilizaremos três conexões:
+        alimentação, referência elétrica
+        e sinal analógico.
+    </p>
+
+    <h3>🔌 Observe a montagem</h3>
+
+    <a
+        class="imagem-link"
+        href="glowup_imagens/montagem_sensores.png"
+        target="_blank"
+        rel="noopener noreferrer">
+
+        <img
+            src="glowup_imagens/montagem_sensores.png"
+            alt="Montagem do sensor capacitivo no ESP32-C3"
+            loading="lazy">
+
+    </a>
+
+    <p class="legenda">
+        Montagem do sensor capacitivo
+        com o ESP32-C3.
+        Clique para ampliar.
+    </p>
+
+    <h3>Conexões utilizadas</h3>
+
+    <div class="tabela-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>Sensor</th>
+                    <th>ESP32-C3</th>
+                    <th>Função</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>VCC</td>
+                    <td>3V3</td>
+                    <td>Alimentação</td>
+                </tr>
+
+                <tr>
+                    <td>GND</td>
+                    <td>GND</td>
+                    <td>Referência elétrica</td>
+                </tr>
+
+                <tr>
+                    <td>AOUT / AO</td>
+                    <td>GPIO1</td>
+                    <td>Sinal analógico</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="destaque">
+
+        <strong>🔍 Vamos montar!</strong>
+
+        <p>
+            1. Desconecte o cabo USB-C.
+        </p>
+
+        <p>
+            2. Identifique os terminais
+            do sensor.
+        </p>
+
+        <p>
+            3. Conecte VCC ao 3V3.
+        </p>
+
+        <p>
+            4. Conecte GND ao GND.
+        </p>
+
+        <p>
+            5. Conecte a saída analógica
+            ao <strong>GPIO1</strong>.
+        </p>
+
+        <p>
+            6. Peça à monitora
+            para conferir a montagem.
+        </p>
+
+        <p>
+            7. Conecte o cabo USB-C.
+        </p>
+
+    </div>
+
+    <div class="aviso">
+
+        <strong>⚠️ Segurança elétrica</strong>
+
+        <p>
+            Utilize alimentação de 3,3 V
+            e confira a identificação
+            dos terminais do sensor.
+        </p>
+
+        <p>
+            Nunca altere as conexões
+            com o circuito energizado.
+        </p>
+
+    </div>
+
+    <label class="check">
+
+        <input type="checkbox" data-id="2">
+
+        <span>
+            Montei o sensor e conferi
+            as conexões.
+        </span>
+
+    </label>
+
+</section>
+
+
+<!-- ==========================================
+     EXPERIMENTO 3
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌱 3. Descobrindo os valores do sensor</h2>
+
+    <p>
+        Chegou a hora de descobrir
+        como o ESP32-C3 recebe
+        informações do sensor!
+    </p>
+
+    <p>
+        O sensor produz um sinal
+        elétrico analógico.
+    </p>
+
+    <p>
+        O ESP32-C3 transforma esse sinal
+        em um número utilizando
+        seu conversor analógico-digital,
+        conhecido como <strong>ADC</strong>.
+    </p>
+
+    <div class="destaque">
+
+        <strong>💡 O que vamos observar?</strong>
+
+        <p>
+            Com resolução de 12 bits,
+            o ESP32-C3 pode apresentar
+            <strong>4096 valores diferentes</strong>.
+        </p>
+
+        <p>
+            Esses valores vão de
+            <strong>0 até 4095</strong>.
+        </p>
+
+    </div>
+
+    <h3>Nosso primeiro programa</h3>
+
+    <div class="codigo">
+
+        <button
+            class="copiar"
+            type="button"
+            onclick="copiarCodigo('codigoLeitura', this)">
+            Copiar código
+        </button>
+
+<pre id="codigoLeitura">// GlowUP Plant — Etapa 03
+// Experimento 3: lendo o sensor de umidade.
+
+// Define o pino conectado ao sensor.
+const int PINO_SENSOR = 1;
+
+void setup() {
+
+  // Inicia a comunicação serial
+  // na velocidade de 115200 baud.
+  Serial.begin(115200);
+
+  // Aguarda a inicialização.
+  delay(1500);
+
+  // Configura o ADC para 12 bits.
+  // Valores possíveis: 0 até 4095.
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Realiza uma leitura analógica.
+  int valor = analogRead(PINO_SENSOR);
+
+  // Apresenta uma mensagem
+  // antes do valor medido.
+  Serial.print("Umidade - valor do sensor: ");
+
+  // Mostra o valor obtido.
+  Serial.println(valor);
+
+  // Aguarda um segundo.
+  delay(1000);
+
+}</pre>
+
+    </div>
+
+    <h3>Como testar?</h3>
+
+    <ol>
+
+        <li>
+            Abra o Arduino IDE.
+        </li>
+
+        <li>
+            Copie o programa.
+        </li>
+
+        <li>
+            Grave o programa no ESP32-C3.
+        </li>
+
+        <li>
+            Abra o Monitor Serial.
+        </li>
+
+        <li>
+            Selecione 115200 baud.
+        </li>
+
+        <li>
+            Observe os números apresentados.
+        </li>
+
+    </ol>
+
+    <h3>Resultado esperado</h3>
+
+    <div class="codigo">
+
+<pre>Umidade - valor do sensor: 2840
+Umidade - valor do sensor: 2836
+Umidade - valor do sensor: 2848
+Umidade - valor do sensor: 2842
+...</pre>
+
+    </div>
+
+    <p class="legenda">
+        Valores ilustrativos.
+        As leituras reais dependem
+        do sensor e do ambiente.
+    </p>
+
+    <h3>🔍 Primeira observação</h3>
+
+    <div class="destaque">
+
+        <strong>Observe o Monitor Serial.</strong>
+
+        <p>
+            O valor apresentado permanece
+            sempre igual?
+        </p>
+
+        <p>
+            Ou apresenta pequenas variações?
+        </p>
+
+        <p>
+            Essas diferenças fazem parte
+            do processo de medição.
+        </p>
+
+    </div>
+
+    <label class="check">
+
+        <input type="checkbox" data-id="3">
+
+        <span>
+            Executei o programa
+            e observei os valores
+            no Monitor Serial.
+        </span>
+
+    </label>
+
+</section>
+
+
+<!-- ==========================================
+     EXPERIMENTO 4
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌱 4. Investigando a umidade do solo</h2>
+
+    <p>
+        Agora vamos comparar as leituras
+        do sensor em diferentes situações.
+    </p>
+
+    <p>
+        Utilize o mesmo programa
+        do experimento anterior.
+    </p>
+
+    <h3>🔍 Realizando as medições</h3>
+
+    <div class="destaque">
+
+        <strong>Vamos investigar!</strong>
+
+        <p>
+            Primeiro, observe o sensor
+            fora do solo.
+        </p>
+
+        <p>
+            Depois, insira a região
+            de medição em solo seco.
+        </p>
+
+        <p>
+            Por último, realize
+            uma medição em solo úmido.
+        </p>
+
+        <p>
+            Aguarde as leituras estabilizarem
+            e registre um valor representativo
+            de cada situação.
+        </p>
+
+    </div>
+
+    <div class="aviso">
+
+        <strong>⚠️ Cuidado com a água!</strong>
+
+        <p>
+            Molhe apenas o solo.
+            Mantenha a água afastada
+            do computador, da protoboard
+            e da parte eletrônica do sensor.
+        </p>
+
+        <p>
+            Não mergulhe a placa
+            do sensor em água.
+        </p>
+
+    </div>
+
+
+    <!-- REGISTRO DAS MEDIÇÕES -->
+
+    <div class="registro">
+
+        <h3>📝 Registre suas descobertas</h3>
+
+        <p>
+            Digite os valores observados
+            no Monitor Serial.
+        </p>
+
+        <div class="campo-medicao">
+
+            <label for="valorAr">
+                Sensor fora do solo
+            </label>
+
+            <input
+                type="number"
+                id="valorAr"
+                min="0"
+                max="4095"
+                step="1"
+                placeholder="0 a 4095">
+
+        </div>
+
+        <div class="campo-medicao">
+
+            <label for="valorSeco">
+                Sensor no solo seco
+            </label>
+
+            <input
+                type="number"
+                id="valorSeco"
+                min="0"
+                max="4095"
+                step="1"
+                placeholder="0 a 4095">
+
+        </div>
+
+        <div class="campo-medicao">
+
+            <label for="valorUmido">
+                Sensor no solo úmido
+            </label>
+
+            <input
+                type="number"
+                id="valorUmido"
+                min="0"
+                max="4095"
+                step="1"
+                placeholder="0 a 4095">
+
+        </div>
+
+        <p class="ajuda">
+            Os valores serão salvos automaticamente
+            neste navegador.
+        </p>
+
+        <p id="avisoMedicoes" class="ajuda" aria-live="polite"></p>
+
+    </div>
+
+
+    <!-- CHECKBOXES DE OBSERVAÇÃO -->
+
+    <h3>✅ Confira suas observações</h3>
+
+    <label class="check">
+
+        <input
+            type="checkbox"
+            data-id="observacaoAr">
+
+        <span>
+            Observei o sensor fora do solo
+            e registrei o valor.
+        </span>
+
+    </label>
+
+    <label class="check">
+
+        <input
+            type="checkbox"
+            data-id="observacaoSeco">
+
+        <span>
+            Observei o sensor no solo seco
+            e registrei o valor.
+        </span>
+
+    </label>
+
+    <label class="check">
+
+        <input
+            type="checkbox"
+            data-id="observacaoUmido">
+
+        <span>
+            Observei o sensor no solo úmido
+            e registrei o valor.
+        </span>
+
+    </label>
+
+
+    <!-- INTERPRETAÇÃO -->
+
+    <h3>🧠 O que você descobriu?</h3>
+
+    <p>
+        Compare os valores registrados
+        nas três situações.
+    </p>
+
+    <p>
+        <strong>
+            O que aconteceu com a leitura
+            quando o solo ficou úmido?
+        </strong>
+    </p>
+
+    <label class="opcao-radio">
+
+        <input
+            type="radio"
+            name="comportamentoSensor"
+            value="diminui">
+
+        <span>
+            O valor diminuiu
+            quando o sensor entrou
+            em contato com o solo úmido.
+        </span>
+
+    </label>
+
+    <label class="opcao-radio">
+
+        <input
+            type="radio"
+            name="comportamentoSensor"
+            value="aumenta">
+
+        <span>
+            O valor aumentou
+            quando o sensor entrou
+            em contato com o solo úmido.
+        </span>
+
+    </label>
+
+    <label class="opcao-radio">
+
+        <input
+            type="radio"
+            name="comportamentoSensor"
+            value="igual">
+
+        <span>
+            Não observei diferença
+            significativa entre as leituras.
+        </span>
+
+    </label>
+
+
+    <!-- RESUMO AUTOMÁTICO -->
+
+    <div class="resumo-medicoes">
+
+        <h3>🌿 Resumo das suas medições</h3>
+
+        <p>
+            <strong>Fora do solo:</strong>
+            <span id="resumoAr">—</span>
+        </p>
+
+        <p>
+            <strong>Solo seco:</strong>
+            <span id="resumoSeco">—</span>
+        </p>
+
+        <p>
+            <strong>Solo úmido:</strong>
+            <span id="resumoUmido">—</span>
+        </p>
+
+        <p id="comparacao">
+            Registre suas medições
+            para comparar os resultados.
+        </p>
+
+    </div>
+
+
+    <label class="check">
+
+        <input type="checkbox" data-id="4">
+
+        <span>
+            Realizei as três medições
+            e comparei os resultados.
+        </span>
+
+    </label>
+
+</section>
+
+
+<!-- ==========================================
+     EXPERIMENTO 5
+     ========================================== -->
+
+<section class="bloco">
+
+    <h2>🌱 5. Interpretando os resultados</h2>
+
+    <p>
+        Já sabemos que a leitura do sensor
+        pode variar conforme a umidade do solo.
+    </p>
+
+    <p>
+        Agora vamos utilizar essas informações
+        para criar mensagens que indiquem
+        a condição da nossa planta.
+    </p>
+
+    <h3>Classificando a umidade</h3>
+
+    <p>
+        O programa abaixo utiliza
+        duas referências:
+    </p>
+
+    <div class="destaque">
+
+        <p>
+            <strong>valorSeco:</strong>
+            leitura correspondente ao solo seco.
+        </p>
+
+        <p>
+            <strong>valorUmido:</strong>
+            leitura correspondente ao solo úmido.
+        </p>
+
+        <p>
+            Utilize as medições registradas
+            no experimento anterior.
+        </p>
+
+    </div>
+
+    <div class="aviso">
+
+        <strong>Antes de copiar o programa:</strong>
+
+        <p>
+            No código, os valores 3000 e 1500
+            são apenas exemplos.
+        </p>
+
+        <p>
+            Substitua-os pelos valores
+            medidos no seu experimento.
+        </p>
+
+    </div>
+
+    <div class="codigo">
+
+        <button
+            class="copiar"
+            type="button"
+            onclick="copiarCodigo('codigoIndicador', this)">
+            Copiar código
+        </button>
+
+<pre id="codigoIndicador">// GlowUP Plant — Experimento 5
+// Objetivo: classificar a umidade do solo.
+
+// Pino conectado ao sensor.
+const int PINO_SENSOR = 1;
+
+// Valores de EXEMPLO.
+// Substitua pelas suas medições reais.
+int valorSeco = 3000;
+int valorUmido = 1500;
+
+void setup() {
+
+  // Inicia a comunicação serial.
+  Serial.begin(115200);
+
+  delay(1500);
+
+  // Configura a resolução do ADC.
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Realiza uma leitura do sensor.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Apresenta o valor.
+  Serial.print("Leitura: ");
+  Serial.println(leitura);
+
+  // Verifica se a calibração é válida.
+  if (valorSeco == valorUmido) {
+
+    Serial.println("Confira a calibracao!");
+    delay(2000);
+    return;
+
+  }
+
+  // Converte a leitura para porcentagem.
+  // Funciona também quando a ordem
+  // das referências é invertida.
+  int umidade = map(
+    leitura,
+    valorSeco,
+    valorUmido,
+    0,
+    100
+  );
+
+  // Limita o resultado entre 0 e 100%.
+  umidade = constrain(umidade, 0, 100);
+
+  // Mostra a porcentagem.
+  Serial.print("Umidade relativa: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // Classifica a medição.
+  if (umidade &lt; 30) {
+
+    Serial.println("Solo seco!");
+
+  }
+  else if (umidade &lt; 70) {
+
+    Serial.println("Umidade intermediaria.");
+
+  }
+  else {
+
+    Serial.println("Solo umido!");
+
+  }
+
+  // Aguarda dois segundos.
+  delay(2000);
+
+}</pre>
+
+    </div>
+
+    <div class="destaque">
+
+        <strong>💡 Entendendo o programa</strong>
+
+        <p>
+            A função <code>map()</code>
+            transforma a leitura em uma
+            escala de 0 a 100.
+        </p>
+
+        <p>
+            A função <code>constrain()</code>
+            impede que o resultado
+            fique fora dessa escala.
+        </p>
+
+        <p>
+            As instruções <code>if</code>,
+            <code>else if</code> e
+            <code>else</code> permitem
+            tomar decisões.
+        </p>
+
+    </div>
+
+    <div class="aviso">
+
+        <strong>Importante:</strong>
+
+        <p>
+            A porcentagem apresentada
+            é uma escala relativa
+            às referências utilizadas.
+        </p>
+
+        <p>
+            Ela não representa uma medição
+            direta do teor de água no solo.
+        </p>
+
+        <p>
+            Os limites de 30% e 70%
+            são exemplos didáticos.
+        </p>
+
+    </div>
+
+    <label class="check">
+
+        <input type="checkbox" data-id="5">
+
+        <span>
+            Executei o programa
+            e interpretei os resultados.
+        </span>
+
+    </label>
+
+</section>
+
+
+<!-- ==========================================
+     DESAFIOS AVANÇADOS
+     ========================================== -->
+
+<section
+    class="bloco avancado"
+    id="desafio-avancado">
+
+    <h2>🚀 Desafios avançados</h2>
+
+    <p>
+        Agora vamos utilizar programação
+        para melhorar nossas medições.
+    </p>
+
+    <p>
+        Os programas estão incompletos.
+        Você deverá completar as instruções
+        identificadas por TODO.
+    </p>
+
+    <div class="destaque">
+
+        <strong>Como realizar os desafios?</strong>
+
+        <p>
+            Copie o programa, complete
+            as partes que faltam
+            e tente executar.
+        </p>
+
+        <p>
+            Se encontrar dificuldades,
+            você poderá consultar
+            a solução.
+        </p>
+
+        <p>
+            Mas tente resolver primeiro!
+        </p>
+
+    </div>
+
+
+    <!-- =====================================
+         DESAFIO A
+         ===================================== -->
+
+    <div class="desafio" id="desafio-a">
+
+        <h3>🚀 Desafio A — Calculando a média</h3>
+
+        <p>
+            As leituras do sensor
+            podem apresentar pequenas variações.
+        </p>
+
+        <p>
+            Vamos calcular a média
+            de cinco leituras consecutivas.
+        </p>
+
+        <div class="codigo">
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('codigoA', this)">
+                Copiar código
+            </button>
+
+<pre id="codigoA">// GlowUP Plant — Desafio A
+// Objetivo: calcular a média de cinco leituras.
+
+const int PINO_SENSOR = 1;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Variável que acumula as leituras.
+  int soma = 0;
+
+  // TODO 1:
+  // Complete o número de repetições.
+  for (int i = 0; i &lt; _____; i++) {
+
+    // TODO 2:
+    // Adicione uma leitura à variável soma.
+
+
+    delay(100);
+
+  }
+
+  // TODO 3:
+  // Calcule a média das cinco leituras.
+  float media = 0;
+
+  Serial.print("Media: ");
+  Serial.println(media);
+
+  delay(1000);
+
+}</pre>
+
+        </div>
+
+        <button
+            class="botao botao-solucao"
+            type="button"
+            onclick="mostrarSolucao('solucaoA', this)">
+            💡 Ver solução do desafio A
+        </button>
+
+        <div
+            class="codigo solucao"
+            id="solucaoA"
+            hidden>
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('respostaA', this)">
+                Copiar solução
+            </button>
+
+<pre id="respostaA">// GlowUP Plant — Solução do Desafio A
+
+const int PINO_SENSOR = 1;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Acumula as leituras.
+  int soma = 0;
+
+  // Repete cinco vezes.
+  for (int i = 0; i &lt; 5; i++) {
+
+    // Realiza uma leitura e adiciona à soma.
+    soma = soma + analogRead(PINO_SENSOR);
+
+    // Pequena pausa entre as leituras.
+    delay(100);
+
+  }
+
+  // Divide a soma por cinco.
+  // 5.0 permite uma divisão com decimais.
+  float media = soma / 5.0;
+
+  Serial.print("Media: ");
+  Serial.println(media);
+
+  delay(1000);
+
+}</pre>
+
+        </div>
+
+        <label class="check">
+
+            <input
+                type="checkbox"
+                data-id="avancadoA">
+
+            <span>
+                Concluí o desafio A!
+            </span>
+
+        </label>
+
+    </div>
+
+
+    <!-- =====================================
+         DESAFIO B
+         ===================================== -->
+
+    <div class="desafio" id="desafio-b">
+
+        <h3>🚀 Desafio B — Umidade em porcentagem</h3>
+
+        <p>
+            Vamos transformar a leitura
+            do sensor em uma escala
+            de 0% a 100%.
+        </p>
+
+        <p>
+            Utilize os valores de referência
+            obtidos nos experimentos.
+        </p>
+
+        <div class="codigo">
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('codigoB', this)">
+                Copiar código
+            </button>
+
+<pre id="codigoB">// GlowUP Plant — Desafio B
+// Objetivo: representar a umidade de 0 a 100%.
+
+const int PINO_SENSOR = 1;
+
+// Substitua pelos valores medidos.
+int valorSeco = 3000;
+int valorUmido = 1500;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Realiza uma leitura.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // TODO 1:
+  // Verifique se valorSeco e valorUmido
+  // são diferentes, para evitar erro
+  // durante o cálculo.
+
+  // TODO 2:
+  // Utilize map() para converter:
+  // valorSeco em 0%.
+  // valorUmido em 100%.
+  int umidade = 0;
+
+  // TODO 3:
+  // Utilize constrain()
+  // para limitar o valor entre 0 e 100.
+
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  delay(1000);
+
+}</pre>
+
+        </div>
+
+        <button
+            class="botao botao-solucao"
+            type="button"
+            onclick="mostrarSolucao('solucaoB', this)">
+            💡 Ver solução do desafio B
+        </button>
+
+        <div
+            class="codigo solucao"
+            id="solucaoB"
+            hidden>
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('respostaB', this)">
+                Copiar solução
+            </button>
+
+<pre id="respostaB">// GlowUP Plant — Solução do Desafio B
+
+const int PINO_SENSOR = 1;
+
+// Substitua pelos valores medidos.
+int valorSeco = 3000;
+int valorUmido = 1500;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  // Realiza uma leitura do sensor.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Evita uma calibração inválida.
+  if (valorSeco == valorUmido) {
+
+    Serial.println("Erro de calibracao!");
+
+    delay(1000);
+
+    return;
+
+  }
+
+  // Converte a leitura para porcentagem.
+  int umidade = map(
+    leitura,
+    valorSeco,
+    valorUmido,
+    0,
+    100
+  );
+
+  // Limita a porcentagem entre 0 e 100.
+  umidade = constrain(umidade, 0, 100);
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  delay(1000);
+
+}</pre>
+
+        </div>
+
+        <label class="check">
+
+            <input
+                type="checkbox"
+                data-id="avancadoB">
+
+            <span>
+                Concluí o desafio B!
+            </span>
+
+        </label>
+
+    </div>
+
+
+    <!-- =====================================
+         DESAFIO C
+         ===================================== -->
+
+    <div class="desafio" id="desafio-c">
+
+        <h3>🚀 Desafio C — Alerta de solo seco</h3>
+
+        <p>
+            Vamos criar um programa
+            que apresenta uma mensagem
+            quando a umidade fica
+            abaixo de 30%.
+        </p>
+
+        <p>
+            Esse valor é apenas
+            um exemplo para nosso experimento.
+        </p>
+
+        <div class="codigo">
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('codigoC', this)">
+                Copiar código
+            </button>
+
+<pre id="codigoC">// GlowUP Plant — Desafio C
+// Objetivo: criar um alerta de solo seco.
+
+const int PINO_SENSOR = 1;
+
+// Substitua pelas referências medidas.
+int valorSeco = 3000;
+int valorUmido = 1500;
+
+// Limite didático para o alerta.
+const int LIMITE_SECO = 30;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Confere as referências.
+  if (valorSeco == valorUmido) {
+
+    Serial.println("Erro de calibracao!");
+
+    delay(1000);
+
+    return;
+
+  }
+
+  // Converte para porcentagem.
+  int umidade = map(
+    leitura,
+    valorSeco,
+    valorUmido,
+    0,
+    100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // TODO 1:
+  // Crie uma condição para verificar
+  // se umidade é menor que LIMITE_SECO.
+
+  // TODO 2:
+  // Se estiver abaixo do limite, apresente:
+  // "Atencao! Sua planta precisa de agua!"
+
+  // TODO 3:
+  // Caso contrário, apresente:
+  // "Umidade adequada."
+
+  delay(2000);
+
+}</pre>
+
+        </div>
+
+        <button
+            class="botao botao-solucao"
+            type="button"
+            onclick="mostrarSolucao('solucaoC', this)">
+            💡 Ver solução do desafio C
+        </button>
+
+        <div
+            class="codigo solucao"
+            id="solucaoC"
+            hidden>
+
+            <button
+                class="copiar"
+                type="button"
+                onclick="copiarCodigo('respostaC', this)">
+                Copiar solução
+            </button>
+
+<pre id="respostaC">// GlowUP Plant — Solução do Desafio C
+
+const int PINO_SENSOR = 1;
+
+// Substitua pelas referências medidas.
+int valorSeco = 3000;
+int valorUmido = 1500;
+
+// Limite didático.
+const int LIMITE_SECO = 30;
+
+void setup() {
+
+  Serial.begin(115200);
+
+  delay(1500);
+
+  analogReadResolution(12);
+
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Confere as referências.
+  if (valorSeco == valorUmido) {
+
+    Serial.println("Erro de calibracao!");
+
+    delay(1000);
+
+    return;
+
+  }
+
+  // Converte para porcentagem.
+  int umidade = map(
+    leitura,
+    valorSeco,
+    valorUmido,
+    0,
+    100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // Verifica se a umidade
+  // está abaixo do limite.
+  if (umidade &lt; LIMITE_SECO) {
+
+    Serial.println(
+      "Atencao! Sua planta precisa de agua!"
+    );
+
+  }
+  else {
+
+    Serial.println("Umidade adequada.");
+
+  }
+
+  delay(2000);
+
+}</pre>
+
+        </div>
+
+        <div class="destaque">
+
+            <strong>🌱 Pense um pouco!</strong>
+
+            <p>
+                Todas as plantas precisam
+                da mesma quantidade de água?
+            </p>
+
+            <p>
+                Como poderíamos adaptar
+                o limite de alerta para
+                diferentes espécies?
+            </p>
+
+        </div>
+
+        <label class="check">
+
+            <input
+                type="checkbox"
+                data-id="avancadoC">
+
+            <span>
+                Concluí o desafio C!
+            </span>
+
+        </label>
+
+    </div>
+
+
+    <!-- PROGRESSO AVANÇADO -->
+
+    <div class="destaque">
+
+        <strong>🌱 Parabéns pelo esforço!</strong>
+
+        <p>
+            Você está aprendendo
+            a transformar medições
+            em informações úteis.
+        </p>
+
+        <p id="progressoDesafios">
+            0 de 3 desafios avançados concluídos.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ==========================================
+     FINALIZAÇÃO
+     ========================================== -->
+
+<section class="resultado">
+
+    <h2 id="tituloFinal">
+        🌱 Sua jornada continua!
+    </h2>
+
+    <p id="mensagemFinal">
+        Complete os cinco experimentos iniciais.
+    </p>
+
+    <a
+        class="botao"
+        href="index.html">
+        ← Voltar à oficina
+    </a>
+
+    <button
+        class="botao botao-secundario"
+        type="button"
+        id="reiniciar">
+        Reiniciar esta etapa
+    </button>
+
+</section>
+
+</main>
+
+
+<footer>
+    GlowUP Plant • NuRIA — Instituto Federal de São Paulo
+</footer>
+
+
+<!-- ==========================================
+     JAVASCRIPT
+     ========================================== -->
+
+<script>
+
+/* ==========================================
+   GLOWUP PLANT — ETAPA 03 — V1.1
+
+   - Progresso inicial e avançado
+   - Registro de medições
+   - Checkboxes de observação
+   - Respostas de investigação
+   - Soluções com confirmação
+   - Armazenamento local
+   ========================================== */
+
+
+/* CHAVES DO ARMAZENAMENTO */
+
+const CHAVE_ETAPA = "glowup-etapa03-v1";
+
+const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+
+
+/* ATIVIDADES INICIAIS */
+
+const ATIVIDADES = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+];
+
+
+/* DESAFIOS AVANÇADOS */
+
+const DESAFIOS = [
+    "avancadoA",
+    "avancadoB",
+    "avancadoC"
+];
+
+
+/* ==========================================
+   CARREGAR DADOS
+   ========================================== */
+
+function lerJSON(chave) {
+
+    try {
+
+        const texto = localStorage.getItem(chave);
+
+        if (!texto) {
+            return {};
+        }
+
+        const dados = JSON.parse(texto);
+
+        if (
+            dados &&
+            typeof dados === "object" &&
+            !Array.isArray(dados)
+        ) {
+            return dados;
+        }
+
+        return {};
+
+    } catch (erro) {
+
+        console.warn(
+            "Erro ao carregar dados:",
+            erro
+        );
+
+        return {};
+
+    }
+
+}
+
+
+/* PROGRESSO ATUAL */
+
+let progresso = lerJSON(CHAVE_ETAPA);
+
+
+/* ==========================================
+   VALIDAR MEDIÇÕES
+   ========================================== */
+
+/*
+   Os valores devem estar entre
+   0 e 4095, com números inteiros.
+*/
+
+function validarMedicao(valor) {
+
+    if (
+        valor === "" ||
+        valor === null ||
+        valor === undefined
+    ) {
+        return null;
+    }
+
+    const numero = Number(valor);
+
+    if (
+        !Number.isInteger(numero) ||
+        numero < 0 ||
+        numero > 4095
+    ) {
+        return null;
+    }
+
+    return numero;
+
+}
+
+
+/* ==========================================
+   SALVAR PROGRESSO
+   ========================================== */
+
+function salvarProgresso() {
+
+    const geral = lerJSON(CHAVE_GERAL);
+
+
+    const inicialConcluido = ATIVIDADES.every(
+        id => progresso[id] === true
+    );
+
+
+    const avancadoConcluido = DESAFIOS.every(
+        id => progresso[id] === true
+    );
+
+
+    geral[3] = {
+        ...(geral[3] || {}),
+        inicial: inicialConcluido,
+        avancado: avancadoConcluido
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            CHAVE_ETAPA,
+            JSON.stringify(progresso)
+        );
+
+        localStorage.setItem(
+            CHAVE_GERAL,
+            JSON.stringify(geral)
+        );
+
+    } catch (erro) {
+
+        console.warn(
+            "Erro ao salvar progresso:",
+            erro
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   ATUALIZAR RESUMO DAS MEDIÇÕES
+   ========================================== */
+
+function atualizarMedicoes() {
+
+    const ar = validarMedicao(
+        progresso.valorAr
+    );
+
+    const seco = validarMedicao(
+        progresso.valorSeco
+    );
+
+    const umido = validarMedicao(
+        progresso.valorUmido
+    );
+
+
+    document.getElementById(
+        "resumoAr"
+    ).textContent =
+        ar === null ? "—" : ar;
+
+
+    document.getElementById(
+        "resumoSeco"
+    ).textContent =
+        seco === null ? "—" : seco;
+
+
+    document.getElementById(
+        "resumoUmido"
+    ).textContent =
+        umido === null ? "—" : umido;
+
+
+    const comparacao = document.getElementById(
+        "comparacao"
+    );
+
+
+    if (seco === null || umido === null) {
+
+        comparacao.textContent =
+            "Registre as medições de solo seco " +
+            "e solo úmido para comparar os resultados.";
+
+        return;
+
+    }
+
+
+    if (umido < seco) {
+
+        comparacao.textContent =
+            "🌱 Na sua experiência, o valor diminuiu " +
+            "quando o sensor foi colocado no solo úmido.";
+
+    }
+    else if (umido > seco) {
+
+        comparacao.textContent =
+            "🌱 Na sua experiência, o valor aumentou " +
+            "quando o sensor foi colocado no solo úmido.";
+
+    }
+    else {
+
+        comparacao.textContent =
+            "🌱 Os valores registrados foram iguais. " +
+            "Repita as medições e confira as condições do solo.";
+
+    }
+
+}
+
+
+/* ==========================================
+   ATUALIZAR INTERFACE
+   ========================================== */
+
+function atualizar() {
+
+    /*
+       Atualiza as marcações dos checkboxes.
+    */
+
+    document.querySelectorAll(
+        "input[type='checkbox'][data-id]"
+    ).forEach(caixa => {
+
+        caixa.checked =
+            progresso[caixa.dataset.id] === true;
+
+    });
+
+
+    /*
+       Atualiza os campos de medição.
+    */
+
+    const campos = [
+        "valorAr",
+        "valorSeco",
+        "valorUmido"
+    ];
+
+
+    campos.forEach(id => {
+
+        const campo = document.getElementById(id);
+
+        const valor = validarMedicao(
+            progresso[id]
+        );
+
+        campo.value =
+            valor === null ? "" : valor;
+
+    });
+
+
+    /*
+       Atualiza a resposta de observação.
+    */
+
+    document.querySelectorAll(
+        "input[name='comportamentoSensor']"
+    ).forEach(opcao => {
+
+        opcao.checked =
+            progresso.comportamentoSensor ===
+            opcao.value;
+
+    });
+
+
+    /*
+       Calcula o progresso inicial.
+    */
+
+    const concluidas = ATIVIDADES.filter(
+        id => progresso[id] === true
+    ).length;
+
+
+    const porcentagem = Math.round(
+        concluidas / ATIVIDADES.length * 100
+    );
+
+
+    document.getElementById(
+        "preenchimento"
+    ).style.width =
+        porcentagem + "%";
+
+
+    document.getElementById(
+        "barra"
+    ).setAttribute(
+        "aria-valuenow",
+        porcentagem
+    );
+
+
+    document.getElementById(
+        "contador"
+    ).textContent =
+        concluidas +
+        " de " +
+        ATIVIDADES.length +
+        " atividades concluídas (" +
+        porcentagem +
+        "%)";
+
+
+    /*
+       Calcula o progresso avançado.
+    */
+
+    const avancadosConcluidos = DESAFIOS.filter(
+        id => progresso[id] === true
+    ).length;
+
+
+    document.getElementById(
+        "progressoDesafios"
+    ).textContent =
+        avancadosConcluidos +
+        " de 3 desafios avançados concluídos.";
+
+
+    const indicadorAvancado = document.getElementById(
+        "contadorAvancado"
+    );
+
+
+    if (avancadosConcluidos === 3) {
+
+        indicadorAvancado.textContent =
+            "🚀 Desafios avançados: concluídos ✓";
+
+    } else {
+
+        indicadorAvancado.textContent =
+            "🚀 Desafios avançados: " +
+            avancadosConcluidos +
+            " de 3 concluídos (opcionais)";
+
+    }
+
+
+    /*
+       Atualiza a mensagem final.
+    */
+
+    if (concluidas === ATIVIDADES.length) {
+
+        document.getElementById(
+            "tituloFinal"
+        ).textContent =
+            "🎉 Parabéns! Etapa 03 concluída!";
+
+
+        document.getElementById(
+            "mensagemFinal"
+        ).textContent =
+            "Você conectou o sensor, realizou " +
+            "leituras analógicas e aprendeu " +
+            "a interpretar a umidade do solo!";
+
+    } else {
+
+        document.getElementById(
+            "tituloFinal"
+        ).textContent =
+            "🌱 Sua jornada continua!";
+
+
+        document.getElementById(
+            "mensagemFinal"
+        ).textContent =
+            "Você concluiu " +
+            concluidas +
+            " de " +
+            ATIVIDADES.length +
+            " experimentos iniciais.";
+
+    }
+
+
+    atualizarMedicoes();
+
+}
+
+
+/* ==========================================
+   CHECKBOXES
+   ========================================== */
+
+document.addEventListener(
+    "change",
+    function(evento) {
+
+        const elemento = evento.target;
+
+        if (!elemento.matches(
+            "input[type='checkbox'][data-id]"
+        )) {
+            return;
+        }
+
+        progresso[elemento.dataset.id] =
+            elemento.checked;
+
+        salvarProgresso();
+
+        atualizar();
+
+    }
+);
+
+
+/* ==========================================
+   CAMPOS DE MEDIÇÃO
+   ========================================== */
+
+const camposMedicao = [
+    "valorAr",
+    "valorSeco",
+    "valorUmido"
+];
+
+
+camposMedicao.forEach(id => {
+
+    const campo = document.getElementById(id);
+
+    campo.addEventListener(
+        "input",
+        function() {
+
+            const valor = validarMedicao(
+                campo.value
+            );
+
+            const aviso = document.getElementById(
+                "avisoMedicoes"
+            );
+
+
+            if (campo.value === "") {
+
+                delete progresso[id];
+
+                aviso.textContent = "";
+
+            }
+            else if (valor === null) {
+
+                aviso.textContent =
+                    "Digite um número inteiro entre 0 e 4095.";
+
+                return;
+
+            }
+            else {
+
+                progresso[id] = valor;
+
+                aviso.textContent =
+                    "Medição registrada! ✓";
+
+            }
+
+            salvarProgresso();
+
+            atualizarMedicoes();
+
+        }
+    );
+
+
+    /*
+       Corrige o campo visualmente
+       se o valor digitado for inválido.
+    */
+
+    campo.addEventListener(
+        "blur",
+        function() {
+
+            const valor = validarMedicao(
+                progresso[id]
+            );
+
+            campo.value =
+                valor === null ? "" : valor;
+
+        }
+    );
+
+});
+
+
+/* ==========================================
+   RESPOSTA DE OBSERVAÇÃO
+   ========================================== */
+
+document.querySelectorAll(
+    "input[name='comportamentoSensor']"
+).forEach(opcao => {
+
+    opcao.addEventListener(
+        "change",
+        function() {
+
+            if (!opcao.checked) {
+                return;
+            }
+
+            progresso.comportamentoSensor =
+                opcao.value;
+
+            salvarProgresso();
+
+        }
+    );
+
+});
+
+
+/* ==========================================
+   COPIAR CÓDIGO
+   ========================================== */
+
+async function copiarCodigo(id, botao) {
+
+    const elemento = document.getElementById(id);
+
+    if (!elemento) {
+        return;
+    }
+
+    const codigo = elemento.textContent;
+
+    const textoAnterior = botao.textContent;
+
+    try {
+
+        await navigator.clipboard.writeText(codigo);
+
+        botao.textContent = "Copiado! ✓";
+
+        setTimeout(function() {
+
+            botao.textContent = textoAnterior;
+
+        }, 2000);
+
+    } catch (erro) {
+
+        alert(
+            "Não foi possível copiar automaticamente. " +
+            "Selecione o código e copie manualmente."
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   MOSTRAR SOLUÇÃO
+   ========================================== */
+
+function mostrarSolucao(id, botao) {
+
+    const bloco = document.getElementById(id);
+
+    if (!bloco) {
+        return;
+    }
+
+
+    /*
+       Permite ocultar uma solução aberta.
+    */
+
+    if (!bloco.hidden) {
+
+        bloco.hidden = true;
+
+        botao.textContent =
+            "💡 Ver solução";
+
+        return;
+
+    }
+
+
+    /*
+       Pergunta antes de revelar a resposta.
+    */
+
+    const confirmar = confirm(
+
+        "💡 Você quer mesmo saber a resposta?\n\n" +
+
+        "Que tal tentar mais um pouco antes " +
+        "de consultar a solução?\n\n" +
+
+        "Clique em OK para ver a resposta.\n" +
+
+        "Clique em Cancelar para continuar tentando."
+
+    );
+
+
+    if (!confirmar) {
+        return;
+    }
+
+
+    /*
+       Mostra a solução.
+    */
+
+    bloco.hidden = false;
+
+    botao.textContent =
+        "🙈 Ocultar solução";
+
+
+    bloco.scrollIntoView({
+
+        behavior: "smooth",
+        block: "nearest"
+
+    });
+
+}
+
+
+/* ==========================================
+   REINICIAR ETAPA
+   ========================================== */
+
+document.getElementById(
+    "reiniciar"
+).addEventListener(
+    "click",
+    function() {
+
+        const confirmar = confirm(
+            "Deseja reiniciar todo o progresso " +
+            "e apagar as medições da Etapa 03?"
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+
+        progresso = {};
+
+        salvarProgresso();
+
+        atualizar();
+
+
+        /*
+           Oculta as soluções.
+        */
+
+        document.querySelectorAll(
+            ".solucao"
+        ).forEach(bloco => {
+
+            bloco.hidden = true;
+
+        });
+
+
+        /*
+           Restaura os botões.
+        */
+
+        document.querySelectorAll(
+            ".botao-solucao"
+        ).forEach(botao => {
+
+            botao.textContent =
+                "💡 Ver solução";
+
+        });
+
+
+        /*
+           Limpa o aviso de registro.
+        */
+
+        document.getElementById(
+            "avisoMedicoes"
+        ).textContent = "";
+
+    }
+);
+
+
+/* ==========================================
+   INICIALIZAÇÃO
+   ========================================== */
+
+atualizar();
+
+</script>
+
+</body>
+</html>
