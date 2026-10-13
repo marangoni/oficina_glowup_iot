@@ -9,11 +9,16 @@
 
 <style>
 
+/* ==========================================
+   GLOWUP PLANT - MATERIAIS v1.1
+   ========================================== */
+
 :root {
     --verde: #277857;
     --verde-escuro: #18563e;
     --verde-claro: #e6f5eb;
     --rosa: #ef8ca8;
+    --rosa-claro: #fff0f5;
     --fundo: #f8faf8;
     --texto: #253b32;
     --cinza: #64756b;
@@ -159,29 +164,78 @@ header {
     gap: 22px;
 }
 
+/* CARTÕES */
+
 .card {
     background: white;
     border: 2px solid var(--borda);
     border-radius: 18px;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
 }
 
 .card.conferido {
     border-color: #52b788;
+    box-shadow: 0 4px 18px #52b78825;
+}
+
+/* ÁREA DA IMAGEM */
+
+.foto-container {
+    height: 225px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--borda);
 }
 
 .foto {
     width: 100%;
-    height: 220px;
+    height: 100%;
     object-fit: contain;
-    background: #fff;
-    display: block;
-    padding: 10px;
+    padding: 15px;
 }
+
+.foto-placeholder {
+    font-size: 76px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.foto-placeholder small {
+    font-size: 12px;
+    color: var(--cinza);
+    font-weight: normal;
+    margin-top: 8px;
+}
+
+.selo {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 9px;
+    border-radius: 12px;
+}
+
+/* CONTEÚDO DOS CARTÕES */
 
 .conteudo {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .conteudo h3 {
@@ -192,7 +246,7 @@ header {
 .descricao {
     font-size: 14px;
     color: var(--cinza);
-    min-height: 48px;
+    flex: 1;
 }
 
 .quantidade {
@@ -227,7 +281,7 @@ header {
     font-size: 14px;
 }
 
-/* MENSAGEM FINAL */
+/* RESULTADO */
 
 .resultado {
     padding: 25px;
@@ -291,24 +345,28 @@ footer {
 /* RESPONSIVIDADE */
 
 @media(max-width: 900px) {
+
     .grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 @media(max-width: 600px) {
+
     .grid {
         grid-template-columns: 1fr;
     }
 
-    .foto {
-        height: 200px;
+    .foto-container {
+        height: 210px;
     }
 
     .topo {
         flex-wrap: wrap;
         padding: 12px 0;
     }
+
 }
 
 </style>
@@ -316,7 +374,10 @@ footer {
 
 <body>
 
+<!-- CABEÇALHO -->
+
 <header>
+
     <div class="container topo">
 
         <div class="logo">
@@ -328,9 +389,14 @@ footer {
         </a>
 
     </div>
+
 </header>
 
+
+<!-- APRESENTAÇÃO -->
+
 <section class="hero">
+
     <div class="container">
 
         <span class="etiqueta">
@@ -345,15 +411,19 @@ footer {
             Antes de começar nossa aventura,
             vamos conferir os materiais?
 
-            Observe as imagens, encontre cada
+            Observe as fotografias, encontre cada
             componente e marque os itens
             que você já possui.
         </p>
 
     </div>
+
 </section>
 
+
 <main class="container">
+
+    <!-- PROGRESSO -->
 
     <section class="progresso">
 
@@ -382,24 +452,32 @@ footer {
         <div class="contador"
              id="contador"
              aria-live="polite">
+
             0 de 9 materiais conferidos
+
         </div>
 
     </section>
+
+
+    <!-- LISTA DE MATERIAIS -->
 
     <section class="secao">
 
         <h2>🔍 Conheça seus materiais</h2>
 
         <p>
-            Compare cada imagem com os materiais
-            disponíveis na sua bancada.
+            Compare cada fotografia com os
+            materiais disponíveis na sua bancada.
         </p>
 
         <div class="grid" id="listaMateriais">
         </div>
 
     </section>
+
+
+    <!-- RESULTADO -->
 
     <section class="resultado"
              id="resultado"
@@ -416,6 +494,7 @@ footer {
 
     </section>
 
+
     <div class="botoes">
 
         <a class="botao" href="index.html">
@@ -424,119 +503,201 @@ footer {
 
         <button class="botao botao-secundario"
                 id="reiniciar">
+
             Limpar conferência
+
         </button>
 
     </div>
 
 </main>
 
+
 <footer>
     GlowUP Plant • NuRIA — Instituto Federal de São Paulo
 </footer>
 
+
 <script>
 
-/* =====================================
+/* ==========================================
    GLOWUP PLANT
-   CONFERÊNCIA DOS MATERIAIS - V1.0
-   ===================================== */
+   CONFERÊNCIA DOS MATERIAIS - V1.1
+   ========================================== */
+
+/*
+   ATENÇÃO:
+
+   As imagens são carregadas da pasta:
+
+   glowup_imagens/
+
+   As imagens de detalhe e com sufixo _2
+   ficam reservadas para as próximas etapas.
+*/
+
 
 const materiais = [
 
     {
         id: "esp32",
-        nome: "ESP32-C3",
+
+        nome: "ESP32-C3 Super Mini",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/esp32-c3.jpg",
+
+        imagem:
+            "glowup_imagens/esp32_c3_supermini.jpg",
+
         descricao:
             "É o pequeno computador que controla " +
-            "nosso projeto."
+            "o funcionamento do nosso projeto.",
+
+        icone: "🔌"
     },
 
     {
         id: "sensor",
-        nome: "Sensor de umidade do solo",
+
+        nome: "Sensor capacitivo de umidade",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/sensor-umidade.jpg",
+
+        imagem:
+            "glowup_imagens/sensor_umidade_capacitivo_1.jpeg",
+
         descricao:
-            "Permite identificar as condições " +
-            "de umidade da terra."
+            "Permite medir a umidade do solo " +
+            "e identificar quando a planta " +
+            "precisa de água.",
+
+        icone: "💧"
     },
 
     {
         id: "oled",
+
         nome: "Display OLED 0,96 polegada",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/display-oled.jpg",
+
+        imagem:
+            "glowup_imagens/display-oled-096-i2c-128x64-branco.jpg",
+
         descricao:
-            "Uma pequena tela para apresentar " +
-            "mensagens e informações."
+            "Uma pequena tela que apresenta " +
+            "mensagens e informações " +
+            "sobre nossa planta.",
+
+        icone: "🖥️"
     },
 
     {
         id: "buzzer",
+
         nome: "Buzzer ativo",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/buzzer.jpg",
+
+        imagem:
+            "glowup_imagens/buzzer_ativo.jpg",
+
         descricao:
-            "Produz sons para avisar " +
-            "sobre situações importantes."
+            "É utilizado para produzir sons " +
+            "e alertar sobre situações importantes.",
+
+        icone: "🔔"
     },
 
     {
         id: "pilhas",
+
         nome: "Suporte para pilhas AA",
+
         quantidade: "1 suporte para 2 pilhas",
-        imagem: "glowup_imagens/suporte-pilhas.jpg",
+
+        imagem: "glowup_imagens/suporte_pilha_AA.jpeg",
+
         descricao:
             "Permite acomodar as pilhas " +
-            "utilizadas na alimentação do projeto."
+            "utilizadas na alimentação do projeto.",
+
+        icone: "🔋"
     },
 
     {
         id: "protoboard",
-        nome: "Protoboard",
+
+        nome: "Protoboard de 400 pontos",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/protoboard.jpg",
+
+        imagem:
+            "glowup_imagens/protoboard_400_pontos1.jpg",
+
         descricao:
-            "Permite montar circuitos sem " +
-            "precisar soldar os componentes."
+            "Permite montar circuitos eletrônicos " +
+            "sem precisar soldar os componentes.",
+
+        icone: "🔧"
     },
 
     {
         id: "jumpers",
+
         nome: "Fios de conexão (jumpers)",
+
         quantidade: "1 conjunto",
-        imagem: "glowup_imagens/jumpers.jpg",
+
+        imagem:
+            "glowup_imagens/kit_fio_cabinho.jpeg",
+
         descricao:
             "São utilizados para conectar " +
-            "os componentes do circuito."
+            "os componentes do circuito.",
+
+        icone: "🌈"
     },
 
     {
         id: "usb",
-        nome: "Cabo USB",
+
+        nome: "Cabo USB-C",
+
         quantidade: "1 unidade compatível",
-        imagem: "glowup_imagens/cabo-usb.jpg",
+
+        imagem:
+            "glowup_imagens/Cabo_usb_C.png",
+
         descricao:
-            "Permite conectar o ESP32 ao " +
-            "computador para programá-lo."
+            "Permite conectar o ESP32-C3 " +
+            "ao computador para programá-lo.",
+
+        icone: "🔗"
     },
 
     {
         id: "planta",
+
         nome: "Vaso com planta",
+
         quantidade: "1 unidade",
-        imagem: "glowup_imagens/vaso-planta.jpg",
+
+        imagem: "",
+
         descricao:
             "Nossa planta será a protagonista " +
-            "desta experiência!"
+            "desta experiência!",
+
+        icone: "🪴"
     }
 
 ];
 
-/* ARMAZENAMENTO */
+
+/* ==========================================
+   ARMAZENAMENTO LOCAL
+   ========================================== */
 
 const CHAVE = "glowup-materiais-v1";
 
@@ -547,16 +708,30 @@ try {
     const dados = localStorage.getItem(CHAVE);
 
     if (dados) {
+
         const objeto = JSON.parse(dados);
 
-        if (objeto && typeof objeto === "object") {
+        if (
+            objeto &&
+            typeof objeto === "object" &&
+            !Array.isArray(objeto)
+        ) {
             conferidos = objeto;
         }
+
     }
 
 } catch (erro) {
-    console.warn("Erro ao carregar conferência:", erro);
+
+    console.warn(
+        "Erro ao carregar conferência:",
+        erro
+    );
+
 }
+
+
+/* SALVAR */
 
 function salvar() {
 
@@ -569,15 +744,24 @@ function salvar() {
 
     } catch (erro) {
 
-        console.warn("Erro ao salvar conferência:", erro);
+        console.warn(
+            "Erro ao salvar conferência:",
+            erro
+        );
 
     }
 
 }
 
-/* GERAR CARTÕES */
 
-const lista = document.getElementById("listaMateriais");
+/* ==========================================
+   GERAR CARTÕES
+   ========================================== */
+
+const lista = document.getElementById(
+    "listaMateriais"
+);
+
 
 function renderizar() {
 
@@ -585,58 +769,201 @@ function renderizar() {
 
     materiais.forEach(material => {
 
-        const marcado = conferidos[material.id] === true;
+        const marcado =
+            conferidos[material.id] === true;
 
-        const card = document.createElement("article");
+        const card = document.createElement(
+            "article"
+        );
 
         card.className = marcado
             ? "card conferido"
             : "card";
 
-        const imagem = document.createElement("img");
 
-        imagem.className = "foto";
-        imagem.src = material.imagem;
-        imagem.alt = "Imagem ilustrativa de " + material.nome;
-        imagem.loading = "lazy";
+        /* ÁREA DA IMAGEM */
 
-        const conteudo = document.createElement("div");
+        const fotoContainer = document.createElement(
+            "div"
+        );
+
+        fotoContainer.className = "foto-container";
+
+
+        if (material.imagem) {
+
+            const imagem = document.createElement(
+                "img"
+            );
+
+            imagem.className = "foto";
+
+            imagem.src = material.imagem;
+
+            imagem.alt =
+                "Fotografia de " + material.nome;
+
+            imagem.loading = "lazy";
+
+            /*
+               Caso a imagem não seja encontrada,
+               apresenta um ícone em seu lugar.
+            */
+
+            imagem.onerror = function() {
+
+                const placeholder = document.createElement(
+                    "div"
+                );
+
+                placeholder.className =
+                    "foto-placeholder";
+
+                const icone = document.createElement(
+                    "span"
+                );
+
+                icone.textContent = material.icone;
+
+                const texto = document.createElement(
+                    "small"
+                );
+
+                texto.textContent =
+                    "Imagem não disponível";
+
+                placeholder.appendChild(icone);
+                placeholder.appendChild(texto);
+
+                fotoContainer.replaceChildren(
+                    placeholder
+                );
+
+            };
+
+            fotoContainer.appendChild(imagem);
+
+        } else {
+
+            const placeholder = document.createElement(
+                "div"
+            );
+
+            placeholder.className =
+                "foto-placeholder";
+
+            const icone = document.createElement(
+                "span"
+            );
+
+            icone.textContent = material.icone;
+
+            const texto = document.createElement(
+                "small"
+            );
+
+            texto.textContent =
+                "Fotografia em preparação";
+
+            placeholder.appendChild(icone);
+            placeholder.appendChild(texto);
+
+            fotoContainer.appendChild(placeholder);
+
+        }
+
+
+        /* SELO */
+
+        const selo = document.createElement(
+            "span"
+        );
+
+        selo.className = "selo";
+
+        selo.textContent = marcado
+            ? "✓ CONFERIDO"
+            : "MEU KIT";
+
+        fotoContainer.appendChild(selo);
+
+
+        /* CONTEÚDO */
+
+        const conteudo = document.createElement(
+            "div"
+        );
 
         conteudo.className = "conteudo";
 
-        const titulo = document.createElement("h3");
+
+        const titulo = document.createElement(
+            "h3"
+        );
+
         titulo.textContent = material.nome;
 
-        const descricao = document.createElement("p");
-        descricao.className = "descricao";
-        descricao.textContent = material.descricao;
 
-        const quantidade = document.createElement("p");
+        const descricao = document.createElement(
+            "p"
+        );
+
+        descricao.className = "descricao";
+
+        descricao.textContent =
+            material.descricao;
+
+
+        const quantidade = document.createElement(
+            "p"
+        );
+
         quantidade.className = "quantidade";
+
         quantidade.textContent =
             "Quantidade: " + material.quantidade;
 
-        const label = document.createElement("label");
+
+        /* CHECKBOX */
+
+        const label = document.createElement(
+            "label"
+        );
+
         label.className = "opcao";
 
-        const checkbox = document.createElement("input");
+
+        const checkbox = document.createElement(
+            "input"
+        );
 
         checkbox.type = "checkbox";
+
         checkbox.checked = marcado;
+
         checkbox.dataset.id = material.id;
 
-        const texto = document.createElement("span");
-        texto.textContent = "Já conferi este material";
+
+        const texto = document.createElement(
+            "span"
+        );
+
+        texto.textContent =
+            "Já conferi este material";
+
 
         label.appendChild(checkbox);
         label.appendChild(texto);
+
+
+        /* MONTAGEM */
 
         conteudo.appendChild(titulo);
         conteudo.appendChild(descricao);
         conteudo.appendChild(quantidade);
         conteudo.appendChild(label);
 
-        card.appendChild(imagem);
+        card.appendChild(fotoContainer);
         card.appendChild(conteudo);
 
         lista.appendChild(card);
@@ -645,53 +972,77 @@ function renderizar() {
 
 }
 
-/* ATUALIZAR MARCAÇÕES */
 
-lista.addEventListener("change", function(evento) {
+/* ==========================================
+   ATUALIZAR CHECKBOX
+   ========================================== */
 
-    const elemento = evento.target;
+lista.addEventListener(
+    "change",
+    function(evento) {
 
-    if (!elemento.matches("input[type='checkbox']")) {
-        return;
+        const elemento = evento.target;
+
+        if (
+            !elemento.matches(
+                "input[type='checkbox']"
+            )
+        ) {
+            return;
+        }
+
+        conferidos[elemento.dataset.id] =
+            elemento.checked;
+
+        salvar();
+
+        const card = elemento.closest(".card");
+
+        card.classList.toggle(
+            "conferido",
+            elemento.checked
+        );
+
+        const selo = card.querySelector(".selo");
+
+        selo.textContent = elemento.checked
+            ? "✓ CONFERIDO"
+            : "MEU KIT";
+
+        atualizarProgresso();
+
     }
+);
 
-    conferidos[elemento.dataset.id] = elemento.checked;
 
-    salvar();
-
-    const card = elemento.closest(".card");
-
-    card.classList.toggle(
-        "conferido",
-        elemento.checked
-    );
-
-    atualizarProgresso();
-
-});
-
-/* PROGRESSO */
+/* ==========================================
+   BARRA DE PROGRESSO
+   ========================================== */
 
 function atualizarProgresso() {
 
     const total = materiais.length;
 
     const concluidos = materiais.filter(
-        material => conferidos[material.id] === true
+        material =>
+            conferidos[material.id] === true
     ).length;
 
     const porcentagem = Math.round(
         (concluidos / total) * 100
     );
 
+
     document.getElementById(
         "preenchimento"
     ).style.width = porcentagem + "%";
+
 
     document.getElementById(
         "contador"
     ).textContent =
         `${concluidos} de ${total} materiais conferidos (${porcentagem}%)`;
+
 
     document.getElementById(
         "barra"
@@ -700,9 +1051,19 @@ function atualizarProgresso() {
         porcentagem
     );
 
-    const resultado = document.getElementById("resultado");
-    const titulo = document.getElementById("tituloResultado");
-    const mensagem = document.getElementById("mensagemResultado");
+
+    const resultado = document.getElementById(
+        "resultado"
+    );
+
+    const titulo = document.getElementById(
+        "tituloResultado"
+    );
+
+    const mensagem = document.getElementById(
+        "mensagemResultado"
+    );
+
 
     if (concluidos === total) {
 
@@ -713,7 +1074,8 @@ function atualizarProgresso() {
 
         mensagem.textContent =
             "Todos os materiais foram conferidos. " +
-            "Você está pronta para iniciar sua jornada GlowUP!";
+            "Você está pronta para iniciar " +
+            "sua jornada GlowUP!";
 
     } else {
 
@@ -724,33 +1086,50 @@ function atualizarProgresso() {
 
         mensagem.textContent =
             `Ainda faltam ${total - concluidos} materiais ` +
-            "para conferir. Se precisar, peça ajuda à monitora.";
+            "para conferir. Se precisar, " +
+            "peça ajuda à monitora.";
 
     }
 
 }
 
-/* REINICIAR */
+
+/* ==========================================
+   REINICIAR CONFERÊNCIA
+   ========================================== */
 
 document.getElementById(
     "reiniciar"
-).addEventListener("click", function() {
+).addEventListener(
+    "click",
+    function() {
 
-    if (!confirm("Deseja limpar todas as marcações?")) {
-        return;
+        const confirmar = confirm(
+            "Deseja limpar todas as marcações?"
+        );
+
+        if (!confirmar) {
+            return;
+        }
+
+        conferidos = {};
+
+        salvar();
+
+        renderizar();
+
+        atualizarProgresso();
+
     }
+);
 
-    conferidos = {};
 
-    salvar();
-    renderizar();
-    atualizarProgresso();
-
-});
-
-/* INICIAR */
+/* ==========================================
+   INICIALIZAÇÃO
+   ========================================== */
 
 renderizar();
+
 atualizarProgresso();
 
 </script>
