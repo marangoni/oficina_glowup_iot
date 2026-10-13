@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Conferência dos Materiais | GlowUP Plant</title>
+
+<style>
+
+:root {
+    --verde: #277857;
+    --verde-escuro: #18563e;
+    --verde-claro: #e6f5eb;
+    --rosa: #ef8ca8;
+    --fundo: #f8faf8;
+    --texto: #253b32;
+    --cinza: #64756b;
+    --borda: #e2eae4;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1100px;
+    width: 92%;
+    margin: auto;
+}
+
+/* CABEÇALHO */
+
+header {
+    background: white;
+    border-bottom: 1px solid var(--borda);
+}
+
+.topo {
+    min-height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--verde);
+}
+
+.logo span {
+    color: var(--rosa);
+}
+
+.voltar {
+    color: var(--verde);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* APRESENTAÇÃO */
+
+.hero {
+    padding: 42px 0;
+    background: linear-gradient(
+        135deg,
+        #e4f5e9,
+        #fff0f5
+    );
+    text-align: center;
+}
+
+.hero h1 {
+    color: var(--verde-escuro);
+    font-size: clamp(27px, 5vw, 40px);
+    margin: 5px 0 12px;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: auto;
+    font-size: 17px;
+}
+
+.etiqueta {
+    display: inline-block;
+    background: white;
+    color: var(--verde);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+/* PROGRESSO */
+
+.progresso {
+    background: white;
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid var(--borda);
+}
+
+.progresso h2 {
+    margin-top: 0;
+}
+
+.barra {
+    height: 15px;
+    background: #e6eee8;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 18px 0 10px;
+}
+
+.preenchimento {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #52b788,
+        #ef8ca8
+    );
+    transition: width 0.3s;
+}
+
+.contador {
+    font-weight: bold;
+    color: var(--verde);
+}
+
+/* COMPONENTES */
+
+.secao {
+    padding: 35px 0;
+}
+
+.secao h2 {
+    font-size: 26px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.card {
+    background: white;
+    border: 2px solid var(--borda);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+
+.card.conferido {
+    border-color: #52b788;
+}
+
+.foto {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background: #fff;
+    display: block;
+    padding: 10px;
+}
+
+.conteudo {
+    padding: 20px;
+}
+
+.conteudo h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.descricao {
+    font-size: 14px;
+    color: var(--cinza);
+    min-height: 48px;
+}
+
+.quantidade {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--verde);
+    margin-bottom: 15px;
+}
+
+/* CHECKBOX */
+
+.opcao {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--verde-claro);
+    padding: 13px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.opcao input {
+    width: 23px;
+    height: 23px;
+    accent-color: var(--verde);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.opcao span {
+    font-size: 14px;
+}
+
+/* MENSAGEM FINAL */
+
+.resultado {
+    padding: 25px;
+    border-radius: 18px;
+    background: white;
+    border: 1px solid var(--borda);
+    margin-bottom: 30px;
+}
+
+.resultado h2 {
+    margin-top: 0;
+}
+
+.resultado.completo {
+    background: var(--verde-claro);
+    border-color: #52b788;
+}
+
+.botoes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 45px;
+}
+
+.botao {
+    display: inline-block;
+    padding: 13px 22px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: bold;
+    background: var(--verde);
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.botao-secundario {
+    background: #e8ede9;
+    color: var(--texto);
+}
+
+.botao:focus-visible,
+.opcao input:focus-visible,
+.voltar:focus-visible {
+    outline: 3px solid #18563e;
+    outline-offset: 3px;
+}
+
+/* RODAPÉ */
+
+footer {
+    background: var(--verde-escuro);
+    color: white;
+    text-align: center;
+    padding: 25px;
+    font-size: 14px;
+}
+
+/* RESPONSIVIDADE */
+
+@media(max-width: 900px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .foto {
+        height: 200px;
+    }
+
+    .topo {
+        flex-wrap: wrap;
+        padding: 12px 0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="container topo">
+
+        <div class="logo">
+            🌱 Glow<span>UP</span> Plant
+        </div>
+
+        <a class="voltar" href="index.html">
+            ← Voltar à oficina
+        </a>
+
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+
+        <span class="etiqueta">
+            ETAPA 00
+        </span>
+
+        <h1>
+            🎒 Preparando nosso kit!
+        </h1>
+
+        <p>
+            Antes de começar nossa aventura,
+            vamos conferir os materiais?
+
+            Observe as imagens, encontre cada
+            componente e marque os itens
+            que você já possui.
+        </p>
+
+    </div>
+</section>
+
+<main class="container">
+
+    <section class="progresso">
+
+        <h2>📦 Minha conferência</h2>
+
+        <p>
+            Confira os componentes com atenção.
+            Se algum material estiver faltando,
+            peça ajuda à monitora.
+        </p>
+
+        <div class="barra"
+             id="barra"
+             role="progressbar"
+             aria-label="Materiais conferidos"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             aria-valuenow="0">
+
+            <div class="preenchimento"
+                 id="preenchimento">
+            </div>
+
+        </div>
+
+        <div class="contador"
+             id="contador"
+             aria-live="polite">
+            0 de 9 materiais conferidos
+        </div>
+
+    </section>
+
+    <section class="secao">
+
+        <h2>🔍 Conheça seus materiais</h2>
+
+        <p>
+            Compare cada imagem com os materiais
+            disponíveis na sua bancada.
+        </p>
+
+        <div class="grid" id="listaMateriais">
+        </div>
+
+    </section>
+
+    <section class="resultado"
+             id="resultado"
+             aria-live="polite">
+
+        <h2 id="tituloResultado">
+            🌱 Vamos conferir?
+        </h2>
+
+        <p id="mensagemResultado">
+            Marque os materiais conforme
+            encontrá-los na sua bancada.
+        </p>
+
+    </section>
+
+    <div class="botoes">
+
+        <a class="botao" href="index.html">
+            ← Voltar para a oficina
+        </a>
+
+        <button class="botao botao-secundario"
+                id="reiniciar">
+            Limpar conferência
+        </button>
+
+    </div>
+
+</main>
+
+<footer>
+    GlowUP Plant • NuRIA — Instituto Federal de São Paulo
+</footer>
+
+<script>
+
+/* =====================================
+   GLOWUP PLANT
+   CONFERÊNCIA DOS MATERIAIS - V1.0
+   ===================================== */
+
+const materiais = [
+
+    {
+        id: "esp32",
+        nome: "ESP32-C3",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/esp32-c3.jpg",
+        descricao:
+            "É o pequeno computador que controla " +
+            "nosso projeto."
+    },
+
+    {
+        id: "sensor",
+        nome: "Sensor de umidade do solo",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/sensor-umidade.jpg",
+        descricao:
+            "Permite identificar as condições " +
+            "de umidade da terra."
+    },
+
+    {
+        id: "oled",
+        nome: "Display OLED 0,96 polegada",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/display-oled.jpg",
+        descricao:
+            "Uma pequena tela para apresentar " +
+            "mensagens e informações."
+    },
+
+    {
+        id: "buzzer",
+        nome: "Buzzer ativo",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/buzzer.jpg",
+        descricao:
+            "Produz sons para avisar " +
+            "sobre situações importantes."
+    },
+
+    {
+        id: "pilhas",
+        nome: "Suporte para pilhas AA",
+        quantidade: "1 suporte para 2 pilhas",
+        imagem: "glowup_imagens/suporte-pilhas.jpg",
+        descricao:
+            "Permite acomodar as pilhas " +
+            "utilizadas na alimentação do projeto."
+    },
+
+    {
+        id: "protoboard",
+        nome: "Protoboard",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/protoboard.jpg",
+        descricao:
+            "Permite montar circuitos sem " +
+            "precisar soldar os componentes."
+    },
+
+    {
+        id: "jumpers",
+        nome: "Fios de conexão (jumpers)",
+        quantidade: "1 conjunto",
+        imagem: "glowup_imagens/jumpers.jpg",
+        descricao:
+            "São utilizados para conectar " +
+            "os componentes do circuito."
+    },
+
+    {
+        id: "usb",
+        nome: "Cabo USB",
+        quantidade: "1 unidade compatível",
+        imagem: "glowup_imagens/cabo-usb.jpg",
+        descricao:
+            "Permite conectar o ESP32 ao " +
+            "computador para programá-lo."
+    },
+
+    {
+        id: "planta",
+        nome: "Vaso com planta",
+        quantidade: "1 unidade",
+        imagem: "glowup_imagens/vaso-planta.jpg",
+        descricao:
+            "Nossa planta será a protagonista " +
+            "desta experiência!"
+    }
+
+];
+
+/* ARMAZENAMENTO */
+
+const CHAVE = "glowup-materiais-v1";
+
+let conferidos = {};
+
+try {
+
+    const dados = localStorage.getItem(CHAVE);
+
+    if (dados) {
+        const objeto = JSON.parse(dados);
+
+        if (objeto && typeof objeto === "object") {
+            conferidos = objeto;
+        }
+    }
+
+} catch (erro) {
+    console.warn("Erro ao carregar conferência:", erro);
+}
+
+function salvar() {
+
+    try {
+
+        localStorage.setItem(
+            CHAVE,
+            JSON.stringify(conferidos)
+        );
+
+    } catch (erro) {
+
+        console.warn("Erro ao salvar conferência:", erro);
+
+    }
+
+}
+
+/* GERAR CARTÕES */
+
+const lista = document.getElementById("listaMateriais");
+
+function renderizar() {
+
+    lista.innerHTML = "";
+
+    materiais.forEach(material => {
+
+        const marcado = conferidos[material.id] === true;
+
+        const card = document.createElement("article");
+
+        card.className = marcado
+            ? "card conferido"
+            : "card";
+
+        const imagem = document.createElement("img");
+
+        imagem.className = "foto";
+        imagem.src = material.imagem;
+        imagem.alt = "Imagem ilustrativa de " + material.nome;
+        imagem.loading = "lazy";
+
+        const conteudo = document.createElement("div");
+
+        conteudo.className = "conteudo";
+
+        const titulo = document.createElement("h3");
+        titulo.textContent = material.nome;
+
+        const descricao = document.createElement("p");
+        descricao.className = "descricao";
+        descricao.textContent = material.descricao;
+
+        const quantidade = document.createElement("p");
+        quantidade.className = "quantidade";
+        quantidade.textContent =
+            "Quantidade: " + material.quantidade;
+
+        const label = document.createElement("label");
+        label.className = "opcao";
+
+        const checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";
+        checkbox.checked = marcado;
+        checkbox.dataset.id = material.id;
+
+        const texto = document.createElement("span");
+        texto.textContent = "Já conferi este material";
+
+        label.appendChild(checkbox);
+        label.appendChild(texto);
+
+        conteudo.appendChild(titulo);
+        conteudo.appendChild(descricao);
+        conteudo.appendChild(quantidade);
+        conteudo.appendChild(label);
+
+        card.appendChild(imagem);
+        card.appendChild(conteudo);
+
+        lista.appendChild(card);
+
+    });
+
+}
+
+/* ATUALIZAR MARCAÇÕES */
+
+lista.addEventListener("change", function(evento) {
+
+    const elemento = evento.target;
+
+    if (!elemento.matches("input[type='checkbox']")) {
+        return;
+    }
+
+    conferidos[elemento.dataset.id] = elemento.checked;
+
+    salvar();
+
+    const card = elemento.closest(".card");
+
+    card.classList.toggle(
+        "conferido",
+        elemento.checked
+    );
+
+    atualizarProgresso();
+
+});
+
+/* PROGRESSO */
+
+function atualizarProgresso() {
+
+    const total = materiais.length;
+
+    const concluidos = materiais.filter(
+        material => conferidos[material.id] === true
+    ).length;
+
+    const porcentagem = Math.round(
+        (concluidos / total) * 100
+    );
+
+    document.getElementById(
+        "preenchimento"
+    ).style.width = porcentagem + "%";
+
+    document.getElementById(
+        "contador"
+    ).textContent =
+        `${concluidos} de ${total} materiais conferidos (${porcentagem}%)`;
+
+    document.getElementById(
+        "barra"
+    ).setAttribute(
+        "aria-valuenow",
+        porcentagem
+    );
+
+    const resultado = document.getElementById("resultado");
+    const titulo = document.getElementById("tituloResultado");
+    const mensagem = document.getElementById("mensagemResultado");
+
+    if (concluidos === total) {
+
+        resultado.classList.add("completo");
+
+        titulo.textContent =
+            "🎉 Parabéns! Seu kit está completo!";
+
+        mensagem.textContent =
+            "Todos os materiais foram conferidos. " +
+            "Você está pronta para iniciar sua jornada GlowUP!";
+
+    } else {
+
+        resultado.classList.remove("completo");
+
+        titulo.textContent =
+            "🌱 Vamos continuar a conferência!";
+
+        mensagem.textContent =
+            `Ainda faltam ${total - concluidos} materiais ` +
+            "para conferir. Se precisar, peça ajuda à monitora.";
+
+    }
+
+}
+
+/* REINICIAR */
+
+document.getElementById(
+    "reiniciar"
+).addEventListener("click", function() {
+
+    if (!confirm("Deseja limpar todas as marcações?")) {
+        return;
+    }
+
+    conferidos = {};
+
+    salvar();
+    renderizar();
+    atualizarProgresso();
+
+});
+
+/* INICIAR */
+
+renderizar();
+atualizarProgresso();
+
+</script>
+
+</body>
+</html>
