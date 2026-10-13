@@ -1,2145 +1,537 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Etapa 01 | Conhecendo o ESP32-C3 | GlowUP Plant</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Etapa 01 | Conhecendo o ESP32-C3</title>
 <style>
-
-/* ==========================================
-   GLOWUP PLANT - ETAPA 01 - V1.4
-   ========================================== */
-
-:root {
-    --verde: #277857;
-    --verde-escuro: #18563e;
-    --verde-claro: #e6f5eb;
-    --rosa: #ef8ca8;
-    --rosa-claro: #fff0f5;
-    --fundo: #f8faf8;
-    --texto: #253b32;
-    --cinza: #64756b;
-    --borda: #e2eae4;
+:root{--g:#247c58;--dark:#174b39;--pink:#e86695;--line:#dfeae3}
+*{box-sizing:border-box}
+body{margin:0;background:#f7faf8;color:#2a4238;font:16px/1.7 Arial,sans-serif}
+.wrap{max-width:940px;margin:auto;padding:0 20px}
+header{background:white;border-bottom:1px solid var(--line)}
+nav{min-height:70px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-weight:bold;font-size:23px;color:var(--g)}
+.brand span{color:var(--pink)}
+a{color:var(--g)}
+.hero{background:linear-gradient(120deg,#e5f6eb,#fff0f5);text-align:center;padding:40px 10px}
+.hero h1{font-size:clamp(27px,4.5vw,39px);color:var(--dark);margin:10px}
+.tag{color:var(--g);background:white;border-radius:25px;padding:7px 14px;font-size:13px;font-weight:bold}
+.block{background:white;border:1px solid var(--line);border-radius:18px;padding:27px;margin:24px 0}
+.block h2{color:var(--dark);margin-top:0}
+.block h3{color:var(--dark)}
+.pic{max-width:100%;max-height:370px;display:block;margin:20px auto;object-fit:contain}
+.piclink img{width:100%;height:auto;max-width:780px;display:block;margin:18px auto;border:1px solid var(--line);border-radius:12px}
+.caption{text-align:center;font-size:13px;color:#718579}
+.note{background:#e8f6ee;padding:17px;border-radius:11px;margin:18px 0}
+.warn{background:#fff5e8;padding:17px;border-left:5px solid #e9a23b;border-radius:9px;margin:18px 0}
+.danger{background:#fff0f0;padding:18px;border-left:5px solid #de4c4c;border-radius:9px}
+.versions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.version{padding:17px;text-align:center;border-radius:10px;background:#e4f6e8}
+.version.bad{background:#fee6e6}
+.version img{width:90px;height:90px;object-fit:contain}
+.table{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:10px;text-align:left}
+th{background:var(--g);color:white}
+.check{display:flex;gap:13px;align-items:center;background:#e6f6ec;border-radius:10px;padding:14px;margin-top:20px;font-weight:bold;cursor:pointer}
+.check input{width:22px;height:22px;accent-color:var(--g);flex-shrink:0}
+.advanced{border:2px solid #f0aac4;scroll-margin-top:20px}
+.advanced h2{color:#ac3663}
+.advanced .check{background:#fff0f5}
+.code{position:relative;background:#1e293b;border-radius:12px;color:#f1f5f9;padding:18px;margin:18px 0;overflow:auto}
+.code pre{margin:28px 0 0;white-space:pre;font:14px/1.65 Consolas,Monaco,monospace}
+.copy{position:absolute;right:9px;top:9px;background:#def7e8;color:#174b39;border:0;border-radius:7px;padding:6px 11px;cursor:pointer}
+.bar{height:13px;background:#e4eee7;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#47b582,#ec83ab)}
+.btn{display:inline-block;background:var(--g);color:#fff;text-decoration:none;border:0;border-radius:10px;padding:11px 16px;margin:6px;cursor:pointer;font-weight:bold}
+.btn.alt{background:#e8eeea;color:var(--dark)}
+footer{background:var(--dark);color:white;text-align:center;padding:24px}
+.end{text-align:center;background:#e7f6ed;border-radius:14px;padding:24px;margin:25px 0}
+@media(max-width:620px){
+    .versions{grid-template-columns:1fr}
+    .block{padding:18px}
 }
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    background: var(--fundo);
-    color: var(--texto);
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.7;
-}
-
-.container {
-    width: 92%;
-    max-width: 950px;
-    margin: auto;
-}
-
-/* CABEÇALHO */
-
-header {
-    background: white;
-    border-bottom: 1px solid var(--borda);
-}
-
-.topo {
-    min-height: 75px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-}
-
-.logo {
-    color: var(--verde);
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.logo span {
-    color: var(--rosa);
-}
-
-.versao {
-    font-size: 12px;
-    color: var(--cinza);
-}
-
-.voltar {
-    color: var(--verde);
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-/* APRESENTAÇÃO */
-
-.hero {
-    background: linear-gradient(
-        135deg,
-        #e4f5e9,
-        #fff0f5
-    );
-    text-align: center;
-    padding: 48px 15px;
-}
-
-.hero h1 {
-    color: var(--verde-escuro);
-    font-size: clamp(28px, 5vw, 40px);
-    margin: 10px 0;
-}
-
-.hero p {
-    max-width: 680px;
-    margin: auto;
-}
-
-.tag {
-    display: inline-block;
-    background: white;
-    color: var(--verde);
-    border-radius: 25px;
-    padding: 6px 15px;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-/* PROGRESSO */
-
-.progresso {
-    background: white;
-    padding: 25px;
-    margin: 30px 0;
-    border-radius: 18px;
-    border: 1px solid var(--borda);
-}
-
-.progresso h2 {
-    margin-top: 0;
-}
-
-.barra {
-    height: 15px;
-    background: #e6eee8;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.preenchimento {
-    width: 0;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        #52b788,
-        #ef8ca8
-    );
-    transition: width 0.3s;
-}
-
-#contador {
-    font-weight: bold;
-    color: var(--verde);
-}
-
-/* BLOCOS */
-
-.bloco {
-    background: white;
-    border: 1px solid var(--borda);
-    border-radius: 18px;
-    padding: 28px;
-    margin: 25px 0;
-}
-
-.bloco h2 {
-    color: var(--verde-escuro);
-    margin-top: 0;
-}
-
-.bloco h3 {
-    margin-top: 25px;
-}
-
-/* IMAGENS */
-
-.foto {
-    width: 100%;
-    max-width: 370px;
-    height: 260px;
-    object-fit: contain;
-    display: block;
-    margin: 20px auto;
-    background: white;
-}
-
-.legenda {
-    text-align: center;
-    font-size: 13px;
-    color: var(--cinza);
-}
-
-.imagem-link {
-    display: block;
-    max-width: 780px;
-    margin: 25px auto 8px;
-    border: 1px solid var(--borda);
-    border-radius: 12px;
-    overflow: hidden;
-    background: white;
-}
-
-.imagem-link img {
-    display: block;
-    width: 100%;
-    height: auto;
-    cursor: zoom-in;
-}
-
-.imagem-link:hover {
-    border-color: var(--verde);
-    box-shadow: 0 4px 18px #00000015;
-}
-
-/* DESTAQUES */
-
-.destaque {
-    background: var(--verde-claro);
-    padding: 18px;
-    border-radius: 12px;
-    margin: 20px 0;
-}
-
-.aviso {
-    background: #fff5e6;
-    padding: 18px;
-    border-left: 4px solid #e9a23b;
-    border-radius: 8px;
-    margin: 20px 0;
-}
-
-/* AVISO DO ARDUINO IDE */
-
-.aviso-arduino {
-    background: #fff1f2;
-    border: 1px solid #fecaca;
-    border-left: 6px solid #dc2626;
-    border-radius: 12px;
-    padding: 22px;
-    margin: 25px 0;
-}
-
-.aviso-arduino h3 {
-    color: #991b1b;
-    margin-top: 0;
-}
-
-.arduino-versoes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.arduino-versao {
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-}
-
-.arduino-errado {
-    background: #fee2e2;
-    border: 2px solid #fca5a5;
-}
-
-.arduino-correto {
-    background: #dcfce7;
-    border: 2px solid #86efac;
-}
-
-.arduino-versao img {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
-    display: block;
-    margin: 0 auto 15px;
-}
-
-.arduino-versao h4 {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.arduino-errado h4 {
-    color: #991b1b;
-}
-
-.arduino-correto h4 {
-    color: #166534;
-}
-
-.arduino-versao p {
-    font-size: 14px;
-}
-
-/* NÍVEL AVANÇADO */
-
-.avancado {
-    border: 2px solid var(--rosa);
-    scroll-margin-top: 20px;
-}
-
-.avancado h2 {
-    color: #a33359;
-}
-
-/* TABELAS */
-
-.tabela-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-    font-size: 14px;
-}
-
-th {
-    background: var(--verde);
-    color: white;
-    text-align: left;
-}
-
-th, td {
-    padding: 12px;
-    border: 1px solid var(--borda);
-}
-
-tr:nth-child(even) {
-    background: #f5faf6;
-}
-
-/* CÓDIGOS */
-
-.codigo {
-    position: relative;
-    background: #1e293b;
-    color: #f1f5f9;
-    padding: 20px;
-    border-radius: 12px;
-    margin: 20px 0;
-    overflow-x: auto;
-}
-
-.codigo pre {
-    margin: 0;
-    padding-top: 35px;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.codigo button {
-    position: absolute;
-    right: 12px;
-    top: 12px;
-    background: #dff4e6;
-    color: #18563e;
-    padding: 7px 13px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-/* PASSOS */
-
-.passo {
-    display: flex;
-    gap: 15px;
-    align-items: flex-start;
-    margin: 15px 0;
-}
-
-.numero {
-    background: var(--verde-claro);
-    color: var(--verde);
-    font-weight: bold;
-    border-radius: 50%;
-    min-width: 34px;
-    height: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.passo p {
-    margin: 3px 0;
-}
-
-/* CHECKBOX */
-
-.check {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--verde-claro);
-    padding: 14px;
-    border-radius: 10px;
-    margin-top: 25px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.check input {
-    width: 23px;
-    height: 23px;
-    accent-color: var(--verde);
-    flex-shrink: 0;
-}
-
-.avancado .check {
-    background: var(--rosa-claro);
-}
-
-/* BOTÕES */
-
-.botao {
-    display: inline-block;
-    background: var(--verde);
-    color: white;
-    padding: 12px 22px;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-}
-
-.botao:hover {
-    background: var(--verde-escuro);
-}
-
-.botao-secundario {
-    background: #e8ede9;
-    color: var(--texto);
-}
-
-.acoes {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin: 30px 0;
-}
-
-/* FINALIZAÇÃO */
-
-.resultado {
-    text-align: center;
-    padding: 25px;
-    border-radius: 18px;
-    background: var(--verde-claro);
-    margin: 30px 0;
-}
-
-.resultado h2 {
-    color: var(--verde-escuro);
-}
-
-/* RODAPÉ */
-
-footer {
-    background: var(--verde-escuro);
-    color: white;
-    text-align: center;
-    padding: 25px;
-    font-size: 14px;
-}
-
-/* ACESSIBILIDADE */
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible {
-    outline: 3px solid var(--verde-escuro);
-    outline-offset: 3px;
-}
-
-/* RESPONSIVIDADE */
-
-@media(max-width: 700px) {
-    .arduino-versoes {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media(max-width: 600px) {
-    .bloco {
-        padding: 20px;
-    }
-
-    .topo {
-        flex-wrap: wrap;
-        padding: 12px 0;
-    }
-
-    .hero {
-        padding: 35px 15px;
-    }
-
-    .foto {
-        height: 200px;
-    }
-
-    .aviso-arduino {
-        padding: 15px;
-    }
-}
-
 </style>
-
 </head>
-
 <body>
 
-<!-- CABEÇALHO -->
-
 <header>
-    <div class="container topo">
-
-        <div class="logo">
-            🌱 Glow<span>UP</span> Plant
-        </div>
-
-        <a href="index.html" class="voltar">
-            ← Voltar à oficina
-        </a>
-
-        <span class="versao">v1.4</span>
-
-    </div>
+<nav class="wrap">
+    <div class="brand">🌱 Glow<span>UP</span> Plant</div>
+    <a href="index.html">← Voltar à oficina</a>
+    <small>Etapa 01 · v1.5</small>
+</nav>
 </header>
 
-
-<!-- APRESENTAÇÃO -->
-
 <section class="hero">
-
     <span class="tag">ETAPA 01</span>
-
-    <h1>
-        🔌 Conhecendo nosso pequeno computador!
-    </h1>
-
-    <p>
-        Vamos descobrir como funciona o ESP32-C3
-        e ensinar nossa placa a enviar
-        sua primeira mensagem?
-    </p>
-
+    <h1>🔌 Conhecendo o ESP32-C3</h1>
+    <p>Observe a placa, prepare o ambiente e envie seu primeiro programa!</p>
 </section>
 
+<main class="wrap">
 
-<main class="container">
-
-<!-- ==========================================
-     PROGRESSO
-     ========================================== -->
-
-<section class="progresso">
-
+<section class="block">
     <h2>🌿 Meu progresso</h2>
-
-    <p>
-        Marque cada atividade depois de realizá-la.
-    </p>
-
-    <div class="barra"
-         id="barra"
-         role="progressbar"
-         aria-label="Progresso da etapa"
-         aria-valuemin="0"
-         aria-valuemax="100"
-         aria-valuenow="0">
-
-        <div class="preenchimento"
-             id="preenchimento"></div>
-
+    <div class="bar" role="progressbar" aria-valuemin="0"
+         aria-valuemax="100" aria-valuenow="0" id="bar">
+        <div class="fill" id="fill"></div>
     </div>
-
-    <p id="contador" aria-live="polite">
-        0 de 5 atividades concluídas
-    </p>
-
-    <p id="contadorAvancado">
-        🚀 Desafio avançado: opcional
-    </p>
-
+    <p id="count">0 de 5 atividades concluídas</p>
+    <p id="extra">🚀 Desafio avançado: opcional</p>
 </section>
 
-
-<!-- ==========================================
-     ATIVIDADE 1 - CONHECENDO O ESP32-C3
-     ========================================== -->
-
-<section class="bloco">
-
-    <h2>🌱 1. Conhecendo o ESP32-C3</h2>
+<section class="block">
+    <h2>1. Conhecendo a placa</h2>
 
     <p>
-        O ESP32-C3 é um microcontrolador:
-        um pequeno computador que podemos
-        programar para controlar
-        dispositivos eletrônicos.
+        O <strong>ESP32-C3 Super Mini</strong> é um microcontrolador:
+        um pequeno computador programável. Ele pode receber informações
+        de sensores, tomar decisões e controlar dispositivos.
     </p>
 
-    <p>
-        Ele recebe informações dos sensores,
-        processa esses dados e controla
-        outros componentes.
-    </p>
+    <img class="pic"
+         src="glowup_imagens/esp32_c3_supermini.jpg"
+         alt="Placa ESP32-C3 Super Mini">
 
-    <img
-        src="glowup_imagens/esp32_c3_supermini.jpg"
-        class="foto"
-        alt="Fotografia do ESP32-C3 Super Mini">
+    <p class="caption">Placa utilizada na oficina.</p>
 
-    <p class="legenda">
-        ESP32-C3 Super Mini utilizado na oficina.
-    </p>
-
-    <div class="destaque">
-
-        <strong>💡 Você sabia?</strong>
-
-        <p>
-            Apesar de ser muito pequeno,
-            o ESP32-C3 possui Wi-Fi,
-            Bluetooth Low Energy e
-            um microprocessador programável.
-        </p>
-
-        <p>
-            No GlowUP Plant, ele receberá
-            informações do sensor de umidade
-            e controlará os dispositivos conectados.
-        </p>
-
+    <div class="note">
+        <strong>Investigue:</strong> encontre o conector USB-C,
+        os botões BOOT e RESET (RST), o microcontrolador
+        e os contatos metálicos laterais.
     </div>
 
-    <h3>🔍 Observe sua placa</h3>
-
-    <p>Identifique:</p>
-
-    <ul>
-        <li>O conector USB-C.</li>
-        <li>O microcontrolador.</li>
-        <li>Os contatos metálicos laterais.</li>
-        <li>Os botões BOOT e RESET.</li>
-    </ul>
+    <p>
+        O ESP32-C3 conta com recursos de comunicação Wi-Fi
+        e Bluetooth Low Energy, que exploraremos em outras atividades.
+    </p>
 
     <label class="check">
         <input type="checkbox" data-id="1">
-        <span>
-            Concluí a identificação dos componentes da placa.
-        </span>
+        Identifiquei os principais elementos da placa.
     </label>
-
 </section>
 
-
-<!-- ==========================================
-     ATIVIDADE 2 - PINAGEM
-     ========================================== -->
-
-<section class="bloco">
-
-    <h2>🌱 2. Conhecendo a pinagem</h2>
+<section class="block">
+    <h2>2. Explorando a pinagem</h2>
 
     <p>
-        Os contatos metálicos encontrados nas
-        laterais da placa são utilizados
-        para conectar componentes eletrônicos.
+        Os pinos permitem alimentar a placa e conectar sensores
+        e dispositivos. Abra o desenho e encontre GND, 3V3,
+        GPIO1, GPIO4 e GPIO8.
     </p>
 
-    <p>
-        Cada contato possui uma identificação.
-        Alguns fornecem alimentação elétrica,
-        enquanto outros permitem enviar
-        ou receber sinais.
-    </p>
-
-    <h3>🔍 Explore os pinos da placa</h3>
-
-    <p>
-        Observe a imagem abaixo e identifique
-        a posição dos pinos, o conector USB-C
-        e os botões BOOT e RESET.
-    </p>
-
-    <a href="glowup_imagens/esp32_c3_pinagem.jpg"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="imagem-link"
-       title="Clique para ampliar a pinagem">
-
-        <img
-            src="glowup_imagens/esp32_c3_pinagem.jpg"
-            alt="Diagrama de pinagem do ESP32-C3 Super Mini"
-            loading="lazy">
-
+    <a class="piclink"
+       href="glowup_imagens/esp32_c3_pinagem.jpg"
+       target="_blank" rel="noopener">
+        <img src="glowup_imagens/esp32_c3_pinagem.jpg"
+             alt="Pinagem do ESP32-C3 Super Mini">
     </a>
 
-    <p class="legenda">
-        Pinagem do ESP32-C3 Super Mini.
-        Clique na imagem para ampliar.
-    </p>
+    <p class="caption">Clique para ampliar o diagrama.</p>
 
-    <div class="destaque">
-
-        <strong>🔎 Vamos investigar!</strong>
-
-        <p>
-            Observe a imagem e localize
-            os seguintes contatos na sua placa:
-        </p>
-
-        <ul>
-            <li><strong>5V:</strong> alimentação.</li>
-            <li><strong>GND:</strong> referência elétrica.</li>
-            <li><strong>3V3:</strong> alimentação de 3,3 V.</li>
-            <li><strong>GPIO1:</strong> entrada analógica.</li>
-            <li><strong>GPIO4:</strong> entrada/saída digital.</li>
-            <li><strong>GPIO8:</strong> entrada/saída digital.</li>
-        </ul>
-
-        <p>
-            Agora identifique os botões
-            <strong>BOOT</strong> e
-            <strong>RESET</strong>.
-        </p>
-
-        <p>
-            Mantenha a placa com o conector USB-C
-            voltado para cima, como na imagem,
-            para facilitar a comparação.
-        </p>
-
+    <div class="table">
+    <table>
+        <thead>
+            <tr>
+                <th>Identificação</th>
+                <th>Para que serve?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>GND</td><td>Referência elétrica do circuito.</td></tr>
+            <tr><td>3V3</td><td>Alimentação de 3,3 volts.</td></tr>
+            <tr><td>5V</td><td>Linha de alimentação de 5 volts; não é GPIO.</td></tr>
+            <tr><td>GPIO</td><td>Pino programável de entrada ou saída.</td></tr>
+            <tr><td>GPIO1</td><td>Pino que também pode realizar leituras analógicas (ADC).</td></tr>
+            <tr><td>GPIO4</td><td>Pino digital utilizável em atividades futuras.</td></tr>
+            <tr><td>GPIO8</td><td>Em algumas versões da placa, controla um LED integrado.</td></tr>
+            <tr><td>GPIO9</td><td>Associado ao botão BOOT e à seleção do modo de inicialização.</td></tr>
+        </tbody>
+    </table>
     </div>
 
-    <h3>Principais tipos de pinos</h3>
-
-    <div class="tabela-container">
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Identificação</th>
-                    <th>Função</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>GND</td>
-                    <td>Referência elétrica do circuito.</td>
-                </tr>
-                <tr>
-                    <td>3V3</td>
-                    <td>Alimentação de 3,3 V.</td>
-                </tr>
-                <tr>
-                    <td>5V</td>
-                    <td>Linha de alimentação de 5 V.</td>
-                </tr>
-                <tr>
-                    <td>GPIO</td>
-                    <td>Entrada ou saída digital programável.</td>
-                </tr>
-                <tr>
-                    <td>ADC</td>
-                    <td>Permite medir sinais analógicos.</td>
-                </tr>
-                <tr>
-                    <td>GPIO8</td>
-                    <td>Pode controlar o LED integrado.</td>
-                </tr>
-                <tr>
-                    <td>GPIO9</td>
-                    <td>Associado ao botão BOOT.</td>
-                </tr>
-            </tbody>
-
-        </table>
-    </div>
-
-    <h3>Exemplos de pinos do ESP32-C3</h3>
-
-    <div class="tabela-container">
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Pino</th>
-                    <th>Utilização</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr>
-                    <td>GPIO0</td>
-                    <td>Entrada/saída digital e ADC.</td>
-                </tr>
-                <tr>
-                    <td>GPIO1</td>
-                    <td>Entrada/saída digital e ADC.</td>
-                </tr>
-                <tr>
-                    <td>GPIO3</td>
-                    <td>Entrada/saída digital e ADC.</td>
-                </tr>
-                <tr>
-                    <td>GPIO4</td>
-                    <td>Entrada/saída digital e ADC.</td>
-                </tr>
-                <tr>
-                    <td>GPIO5</td>
-                    <td>Entrada/saída digital e ADC.</td>
-                </tr>
-                <tr>
-                    <td>GPIO8</td>
-                    <td>Pode controlar o LED integrado.</td>
-                </tr>
-                <tr>
-                    <td>GPIO9</td>
-                    <td>Associado ao botão BOOT.</td>
-                </tr>
-                <tr>
-                    <td>GPIO20/21</td>
-                    <td>Comunicação serial UART0.</td>
-                </tr>
-            </tbody>
-
-        </table>
-    </div>
-
-    <div class="aviso">
-
-        <strong>⚠️ Atenção!</strong>
-
-        <p>
-            Os GPIOs do ESP32-C3 trabalham
-            com sinais de 3,3 V.
-            Não aplique 5 V diretamente
-            a esses pinos.
-        </p>
-
-        <p>
-            Nesta etapa, não conectaremos
-            componentes externos.
-        </p>
-
+    <div class="warn">
+        <strong>⚠️ Importante:</strong>
+        os GPIOs trabalham com lógica de 3,3 V.
+        Nunca aplique 5 V diretamente a eles.
+        Nesta etapa, não conectaremos componentes externos.
     </div>
 
     <label class="check">
         <input type="checkbox" data-id="2">
-        <span>
-            Identifiquei os principais pinos do ESP32-C3.
-        </span>
+        Identifiquei os pinos principais.
     </label>
-
 </section>
 
-
-<!-- ==========================================
-     ATIVIDADE 3 - CONECTANDO AO COMPUTADOR
-     ========================================== -->
-
-<section class="bloco">
-
-    <h2>🌱 3. Conectando ao computador</h2>
+<section class="block">
+    <h2>3. Conectando o ESP32-C3</h2>
 
     <p>
-        Vamos conectar o ESP32-C3 ao computador
-        utilizando um cabo USB-C.
+        Utilize um cabo USB-C <strong>com transferência de dados</strong>
+        para conectar a placa ao computador.
     </p>
 
-    <h3>🔌 Observe a conexão</h3>
-
-    <p>
-        A imagem mostra o ESP32-C3 conectado
-        a uma porta USB do computador.
-    </p>
-
-    <a href="glowup_imagens/esp32_c3_conexao.png"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="imagem-link"
-       title="Clique para ampliar a conexão">
-
-        <img
-            src="glowup_imagens/esp32_c3_conexao.png"
-            alt="ESP32-C3 conectado à porta USB de um computador"
-            loading="lazy">
-
+    <a class="piclink"
+       href="glowup_imagens/esp32_c3_conexao.png"
+       target="_blank" rel="noopener">
+        <img src="glowup_imagens/esp32_c3_conexao.png"
+             alt="ESP32-C3 conectado ao computador com cabo USB">
     </a>
 
-    <p class="legenda">
-        Conexão do ESP32-C3 ao computador
-        utilizando um cabo USB de dados.
-        Clique para ampliar.
-    </p>
+    <p class="caption">Clique para ampliar a ligação.</p>
 
-    <div class="aviso">
-    
+    <div class="warn">
         <strong>⚠️ Atenção ao cabo USB-C!</strong>
-    
+
         <p>
-            Utilize um <strong>cabo USB-C que permita
-            a transferência de dados</strong>.
-            Alguns cabos são destinados apenas
-            ao carregamento de dispositivos.
+            Cabos que permitem somente carregamento, com mau contato
+            ou danificados, podem causar falhas de gravação,
+            desconexões e ausência de mensagens no Monitor Serial.
         </p>
-    
+
         <p>
-            Cabos inadequados, danificados ou com mau contato
-            podem provocar:
-        </p>
-    
-        <ul>
-            <li>Falhas na gravação do programa.</li>
-            <li>Desconexões inesperadas do ESP32-C3.</li>
-            <li>Problemas na comunicação com o Monitor Serial.</li>
-        </ul>
-    
-        <p>
-            <strong>💡 Dica:</strong>
-            Se a gravação falhar ou nenhuma mensagem
-            aparecer no Monitor Serial, experimente
-            outro cabo USB-C de dados antes de
-            modificar as configurações do Arduino IDE.
-        </p>
-    
-        <p>
-            Se o problema continuar,
-            peça ajuda à monitora.
-        </p>
-    
-    </div>
-
-
-    <h3>Agora é sua vez!</h3>
-
-    <div class="passo">
-        <span class="numero">1</span>
-        <p>Localize o conector USB-C da placa.</p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">2</span>
-        <p>Conecte o cabo USB ao ESP32-C3.</p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">3</span>
-        <p>
-            Conecte a outra extremidade
-            à porta USB do computador.
+            <strong>
+                Se algo falhar, experimente primeiro outro cabo USB-C
+                de dados, previamente testado
+            </strong>,
+            antes de alterar a configuração do Arduino IDE.
+            Peça ajuda à monitora.
         </p>
     </div>
 
-    <div class="passo">
-        <span class="numero">4</span>
-        <p>
-            Observe o comportamento dos LEDs
-            da placa, quando presentes.
-        </p>
-    </div>
-
-    <div class="destaque">
-
-        <strong>💡 Importante</strong>
-
-        <p>
-            Utilize um cabo USB que permita
-            transferir dados.
-            Alguns cabos servem apenas
-            para carregar dispositivos.
-        </p>
-
-    </div>
-
-    <div class="aviso">
-
-        Se a placa não for reconhecida,
-        peça ajuda à monitora.
-        Não altere as conexões elétricas.
-
-    </div>
+    <ol>
+        <li>Encaixe o cabo USB-C na placa, sem forçar.</li>
+        <li>Conecte a outra extremidade ao computador.</li>
+        <li>Observe os LEDs presentes e mantenha a conexão durante os testes.</li>
+    </ol>
 
     <label class="check">
         <input type="checkbox" data-id="3">
-        <span>
-            Conectei o ESP32-C3 ao computador.
-        </span>
+        Conectei a placa com um cabo USB-C de dados.
     </label>
-
 </section>
 
+<section class="block">
+    <h2>4. Preparando o Arduino IDE</h2>
 
-<!-- ==========================================
-     ATIVIDADE 4 - PREPARANDO O ARDUINO IDE
-     ========================================== -->
+    <div class="danger">
+        <strong>⚠️ Nos computadores desta oficina:</strong>
+        abra somente a versão <strong>Arduino IDE 1.8.9</strong>
+        (ícone quadrado). Evite a versão 2.1.3 (ícone redondo),
+        que apresentou travamentos no laboratório.
+        A aparência dos ícones é uma orientação específica
+        destes computadores, não uma regra universal.
+    </div>
 
-<section class="bloco">
-
-    <h2>🌱 4. Preparando o Arduino IDE</h2>
-
-    <!-- AVISO SOBRE AS VERSÕES -->
-
-    <div class="aviso-arduino">
-
-        <h3>
-            ⚠️ ATENÇÃO! Escolha a versão correta!
-        </h3>
-
-        <p>
-            Os computadores do laboratório possuem
-            duas versões do Arduino IDE instaladas.
-        </p>
-
-        <p>
-            <strong>
-                Antes de abrir o programa,
-                observe os ícones abaixo.
-            </strong>
-        </p>
-
-        <div class="arduino-versoes">
-
-            <!-- ARDUINO INCORRETO -->
-
-            <div class="arduino-versao arduino-errado">
-
-                <img
-                    src="glowup_imagens/arduino_icone_redondo.png"
-                    alt="Ícone redondo do Arduino IDE"
-                    loading="lazy">
-
-                <h4>❌ NÃO ABRA!</h4>
-
-                <strong>Arduino IDE 2.1.3</strong>
-
-                <p>Ícone redondo.</p>
-
-                <p>
-                    Essa versão apresenta problemas
-                    nos computadores do laboratório
-                    e pode provocar o travamento
-                    do sistema.
-                </p>
-
-            </div>
-
-            <!-- ARDUINO CORRETO -->
-
-            <div class="arduino-versao arduino-correto">
-
-                <img
-                    src="glowup_imagens/arduino_icone_quadrado.png"
-                    alt="Ícone quadrado do Arduino IDE"
-                    loading="lazy">
-
-                <h4>✅ ABRA ESTA VERSÃO!</h4>
-
-                <strong>Arduino IDE 1.8.9</strong>
-
-                <p>Ícone quadrado.</p>
-
-                <p>
-                    Esta é a versão utilizada
-                    durante a oficina GlowUP Plant.
-                </p>
-
-            </div>
-
+    <div class="versions">
+        <div class="version bad">
+            <img src="glowup_imagens/arduino_icone_redondo.png"
+                 alt="Ícone redondo">
+            <p><strong>❌ Não abrir</strong><br>IDE 2.1.3</p>
         </div>
 
-        <p style="
-            font-weight:bold;
-            text-align:center;
-            margin-bottom:0;
-        ">
-            💡 Na dúvida, peça ajuda à monitora
-            antes de abrir o programa!
-        </p>
-
+        <div class="version">
+            <img src="glowup_imagens/arduino_icone_quadrado.png"
+                 alt="Ícone quadrado">
+            <p><strong>✅ Abrir</strong><br>IDE 1.8.9</p>
+        </div>
     </div>
 
+    <h3>Configuração do suporte ESP32</h3>
 
-    <!-- INTRODUÇÃO -->
+    <ol>
+        <li>Acesse <strong>Arquivo → Preferências</strong>.</li>
+        <li>
+            No campo <strong>URLs Adicionais para Gerenciadores de Placas</strong>,
+            inclua o endereço abaixo. Se já houver endereços, preserve-os.
+        </li>
+    </ol>
 
-    <p>
-        O Arduino IDE é um ambiente de desenvolvimento
-        utilizado para escrever, verificar
-        e enviar programas para placas eletrônicas.
-    </p>
-
-    <p>
-        Para programar o ESP32-C3, precisamos
-        instalar o suporte às placas ESP32.
-    </p>
-
-
-    <h3>Instalação do suporte ao ESP32-C3</h3>
-
-    <div class="passo">
-        <span class="numero">1</span>
-        <p>
-            Abra o <strong>Arduino IDE 1.8.9</strong>,
-            utilizando o ícone quadrado.
-        </p>
+    <div class="code">
+        <button class="copy" type="button"
+                onclick="copiar('boardurl',this)">Copiar</button>
+        <pre id="boardurl">https://espressif.github.io/arduino-esp32/package_esp32_index.json</pre>
     </div>
 
-    <div class="passo">
-        <span class="numero">2</span>
-        <p>
-            Acesse o menu
-            <strong>Arquivo → Preferências</strong>.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">3</span>
-        <p>
-            Localize o campo
-            <strong>
-                URLs do Gerenciador de Placas Adicionais
-            </strong>
-            e insira o endereço abaixo.
-        </p>
-    </div>
-
-    <!-- URL DO ESP32 -->
-
-    <div class="codigo">
-
-        <button type="button"
-                onclick="copiarCodigo('urlESP', this)">
-            Copiar
-        </button>
-
-<pre><code id="urlESP">https://espressif.github.io/arduino-esp32/package_esp32_index.json</code></pre>
-
-    </div>
-
-    <!-- IMAGEM DAS PREFERÊNCIAS -->
-
-    <h3>🖥️ Onde inserir o endereço?</h3>
-
-    <p>
-        Observe a imagem abaixo.
-        Ela mostra a janela
-        <strong>Preferências</strong>
-        do Arduino IDE e o campo onde devemos
-        adicionar a URL do ESP32.
-    </p>
-
-    <a href="glowup_imagens/arduino_IDE_gerenciador_de_placas.png"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="imagem-link"
-       title="Clique para ampliar a imagem">
-
-        <img
-            src="glowup_imagens/arduino_IDE_gerenciador_de_placas.png"
-            alt="Janela Preferências do Arduino IDE mostrando a URL do Gerenciador de Placas"
-            loading="lazy">
-
+    <a class="piclink"
+       href="glowup_imagens/arduino_IDE_gerenciador_de_placas.png"
+       target="_blank" rel="noopener">
+        <img src="glowup_imagens/arduino_IDE_gerenciador_de_placas.png"
+             alt="Campo de URLs nas preferências do Arduino IDE">
     </a>
 
-    <p class="legenda">
-        Figura — Configuração da URL do ESP32
-        nas preferências do Arduino IDE.
-        Clique na imagem para ampliar.
-    </p>
+    <ol start="3">
+        <li>
+            Abra <strong>Ferramentas → Placa → Gerenciador de Placas</strong>.
+        </li>
+        <li>
+            Busque <strong>esp32 by Espressif Systems</strong>.
+            Utilize a versão do pacote previamente testada pela equipe,
+            pois o IDE 1.8.9 é antigo.
+        </li>
+        <li>
+            Selecione a placa <strong>ESP32C3 Dev Module</strong>
+            (não “ESP32 Dev Module”).
+        </li>
+    </ol>
 
-    <div class="destaque">
-
-        <strong>🔎 Confira antes de continuar!</strong>
-
-        <p>
-            Compare a configuração apresentada
-            na imagem com a janela aberta
-            no seu computador.
-        </p>
-
-        <p>
-            Depois de inserir o endereço,
-            clique em <strong>OK</strong>.
-        </p>
-
-        <p>
-            Se já existir outra URL,
-            mantenha o endereço anterior
-            e adicione o novo separadamente.
-        </p>
-
+    <div class="table">
+    <table>
+        <thead>
+            <tr><th>Opção</th><th>Valor de referência da oficina</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Placa</td><td>ESP32C3 Dev Module</td></tr>
+            <tr><td>USB CDC On Boot</td><td>Enabled</td></tr>
+            <tr><td>Upload Speed</td><td>115200</td></tr>
+            <tr><td>Porta</td><td>A porta detectada para a placa (ex.: /dev/ttyACM0)</td></tr>
+            <tr><td>Monitor Serial</td><td>115200 baud</td></tr>
+        </tbody>
+    </table>
     </div>
 
+    <h3>Confira na imagem</h3>
 
-    <!-- GERENCIADOR DE PLACAS -->
-
-    <div class="passo">
-        <span class="numero">4</span>
-        <p>
-            Abra o
-            <strong>Gerenciador de Placas</strong>
-            pelo menu
-            <strong>
-                Ferramentas → Placa → Gerenciador de Placas
-            </strong>.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">5</span>
-        <p>
-            No campo de pesquisa,
-            digite <strong>esp32</strong>.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">6</span>
-        <p>
-            Localize o pacote
-            <strong>esp32 by Espressif Systems</strong>.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">7</span>
-        <p>
-            Se o pacote ainda não estiver instalado,
-            peça ajuda à monitora para selecionar
-            a versão utilizada na oficina
-            e realizar a instalação.
-        </p>
-    </div>
-
-    <div class="aviso">
-
-        <strong>⚠️ Atenção à compatibilidade</strong>
-
-        <p>
-            O Arduino IDE 1.8.9 é uma versão antiga.
-            Nem todas as versões do pacote ESP32
-            são compatíveis com esse ambiente.
-        </p>
-
-        <p>
-            Utilize a versão preparada
-            e testada pela equipe da oficina.
-        </p>
-
-    </div>
-
-
-    <!-- CONFIGURAÇÕES DO ESP32-C3 -->
-
-    <h3>Configuração do ESP32-C3</h3>
-
-    <p>
-        Depois de instalar o suporte ao ESP32,
-        precisamos selecionar a placa correta.
-    </p>
-
-    <p>
-        Acesse
-        <strong>Ferramentas → Placa</strong>
-        e escolha
-        <strong>ESP32C3 Dev Module</strong>.
-    </p>
-
-    <div class="aviso">
-
-        <strong>⚠️ Cuidado!</strong>
-
-        <p>
-            Não selecione
-            <strong>ESP32 Dev Module</strong>.
-        </p>
-
-        <p>
-            Nossa placa é o
-            <strong>ESP32-C3 Super Mini</strong>,
-            portanto devemos selecionar
-            <strong>ESP32C3 Dev Module</strong>.
-        </p>
-
-    </div>
-
-    <p>
-        Depois, abra novamente
-        o menu <strong>Ferramentas</strong>
-        e confira as configurações.
-    </p>
-
-    <div class="tabela-container">
-
-        <table>
-
-            <thead>
-                <tr>
-                    <th>Configuração</th>
-                    <th>Valor</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-                <tr>
-                    <td>Board</td>
-                    <td>ESP32C3 Dev Module</td>
-                </tr>
-
-                <tr>
-                    <td>Port</td>
-                    <td>Porta correspondente ao ESP32-C3</td>
-                </tr>
-
-                <tr>
-                    <td>USB CDC On Boot</td>
-                    <td>Enabled</td>
-                </tr>
-
-                <tr>
-                    <td>CPU Frequency</td>
-                    <td>160 MHz (WiFi)</td>
-                </tr>
-
-                <tr>
-                    <td>Flash Frequency</td>
-                    <td>80 MHz</td>
-                </tr>
-
-                <tr>
-                    <td>Flash Mode</td>
-                    <td>QIO</td>
-                </tr>
-
-                <tr>
-                    <td>Flash Size</td>
-                    <td>4MB (32Mb)</td>
-                </tr>
-
-                <tr>
-                    <td>Upload Speed</td>
-                    <td>115200</td>
-                </tr>
-
-                <tr>
-                    <td>Monitor Serial</td>
-                    <td>115200 baud</td>
-                </tr>
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-
-    <!-- NOVA IMAGEM: CONFIGURAÇÃO CORRETA -->
-
-    <h3>✅ Confira as configurações da sua placa</h3>
-
-    <p>
-        Depois de selecionar
-        <strong>ESP32C3 Dev Module</strong>,
-        abra o menu <strong>Ferramentas</strong>
-        do Arduino IDE.
-    </p>
-
-    <p>
-        Compare as configurações do seu computador
-        com a imagem abaixo.
-        Os campos destacados em vermelho
-        são especialmente importantes.
-    </p>
-
-    <a href="glowup_imagens/arduino_IDE_Configuracao_ok.png"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="imagem-link"
-       title="Clique para ampliar as configurações">
-
-        <img
-            src="glowup_imagens/arduino_IDE_Configuracao_ok.png"
-            alt="Menu Ferramentas do Arduino IDE com ESP32C3 Dev Module, porta ttyACM0, USB CDC On Boot habilitado e Upload Speed 115200"
-            loading="lazy">
-
+    <a class="piclink"
+       href="glowup_imagens/arduino_IDE_Configuracao_ok.png"
+       target="_blank" rel="noopener">
+        <img src="glowup_imagens/arduino_IDE_Configuracao_ok.png"
+             alt="Configurações da placa ESP32-C3 no Arduino IDE">
     </a>
 
-    <p class="legenda">
-        Configuração de referência do ESP32-C3
-        no Arduino IDE.
-        Clique na imagem para ampliar.
+    <p class="caption">
+        Imagem de referência da configuração validada no laboratório.
+        Clique para ampliar.
     </p>
 
-    <div class="destaque">
-
-        <strong>🔍 Verifique estas configurações:</strong>
-
-        <ul>
-
-            <li>
-                <strong>Placa:</strong>
-                ESP32C3 Dev Module.
-            </li>
-
-            <li>
-                <strong>Porta:</strong>
-                selecione a porta correspondente
-                ao seu ESP32-C3.
-            </li>
-
-            <li>
-                <strong>USB CDC On Boot:</strong>
-                Enabled.
-            </li>
-
-            <li>
-                <strong>Upload Speed:</strong>
-                115200.
-            </li>
-
-        </ul>
-
-        <p>
-            Se alguma opção estiver diferente,
-            ajuste antes de continuar.
-        </p>
-
-        <p>
-            Na dúvida, peça ajuda à monitora.
-        </p>
-
+    <div class="note">
+        A porta pode ter outro nome em outro computador.
+        Se houver dúvidas, consulte a monitora.
+        <strong>Não altere opções avançadas sem orientação.</strong>
     </div>
-
-    <div class="aviso">
-
-        <strong>⚠️ Atenção à porta USB!</strong>
-
-        <p>
-            Na imagem, a porta aparece como
-            <strong>/dev/ttyACM0</strong>.
-        </p>
-
-        <p>
-            Esse valor é apenas um exemplo.
-            Dependendo do computador,
-            a porta poderá apresentar
-            outra identificação.
-        </p>
-
-        <p>
-            Selecione a porta correspondente
-            ao ESP32-C3 conectado ao seu computador.
-        </p>
-
-    </div>
-
-    <p>
-        Documentação oficial:
-
-        <a
-            href="https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html"
-            target="_blank"
-            rel="noopener noreferrer">
-            Instalação do Arduino ESP32
-        </a>.
-    </p>
 
     <label class="check">
-
         <input type="checkbox" data-id="4">
-
-        <span>
-            Configurei o Arduino IDE para o ESP32-C3.
-        </span>
-
+        Configurei o Arduino IDE para o ESP32-C3.
     </label>
-
 </section>
 
-
-<!-- ==========================================
-     ATIVIDADE 5 - HELLO WORLD
-     ========================================== -->
-
-<section class="bloco">
-
-    <h2>🌱 5. Meu primeiro programa: Hello World!</h2>
+<section class="block">
+    <h2>5. Meu primeiro programa: Hello World!</h2>
 
     <p>
-        Chegou o momento de conversar
-        com nosso pequeno computador!
+        O programa envia mensagens de texto ao computador.
+        Leia os comentários: eles explicam cada comando que você está utilizando.
     </p>
 
-    <p>
-        Vamos criar um programa que envia
-        mensagens ao computador utilizando
-        a comunicação serial.
-    </p>
+    <div class="code">
+        <button class="copy" type="button"
+                onclick="copiar('hello',this)">Copiar código</button>
 
-    <h3>Nosso código</h3>
+<pre id="hello">// GlowUP Plant — Etapa 01: primeiro programa
+// Objetivo: enviar mensagens ao Monitor Serial.
+// O Monitor Serial deve estar configurado em 115200 baud.
 
-    <div class="codigo">
-
-        <button type="button"
-                onclick="copiarCodigo('hello', this)">
-            Copiar código
-        </button>
-
-<pre><code id="hello">void setup() {
-
+// setup() é executada uma vez a cada inicialização.
+void setup() {
+  // Inicia a comunicação serial a 115200 bits por segundo.
   Serial.begin(115200);
 
+  // Aguarda um pouco para a comunicação se estabilizar.
   delay(1500);
 
+  // println() escreve uma mensagem e pula para outra linha.
   Serial.println("Ola, mundo!");
   Serial.println("Eu sou a GlowUP!");
-
 }
 
+// loop() repete continuamente enquanto a placa estiver ligada.
 void loop() {
-
+  // Envia a mesma mensagem a cada repetição.
   Serial.println("Minha primeira mensagem!");
 
+  // delay() usa milissegundos: 2000 ms = 2 segundos.
   delay(2000);
-
-}</code></pre>
-
+}</pre>
     </div>
 
+    <ol>
+        <li>Crie um projeto novo e cole o código.</li>
+        <li>Confira a placa e a porta em <strong>Ferramentas</strong>.</li>
+        <li>Clique em <strong>Verificar</strong> e depois em <strong>Carregar</strong>.</li>
+        <li>
+            A mensagem <code>Hard resetting via RTS pin...</code>
+            ao final da gravação normalmente indica apenas uma tentativa
+            de reinício, não um erro.
+        </li>
+        <li>
+            Abra <strong>Ferramentas → Monitor Serial</strong>
+            e ajuste para <strong>115200 baud</strong>.
+        </li>
+    </ol>
 
-    <h3>Como executar?</h3>
-
-    <div class="passo">
-        <span class="numero">1</span>
-        <p>
-            Abra um novo projeto no Arduino IDE.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">2</span>
-        <p>
-            Apague o código inicial e cole
-            o programa apresentado acima.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">3</span>
-        <p>
-            Clique em <strong>Verificar</strong>
-            para compilar o programa.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">4</span>
-        <p>
-            Clique em <strong>Carregar</strong>
-            para enviar o programa ao ESP32-C3.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">5</span>
-        <p>
-            Abra o <strong>Monitor Serial</strong>
-            e selecione <strong>115200 baud</strong>.
-        </p>
-    </div>
-
-    <div class="passo">
-        <span class="numero">6</span>
-        <p>
-            Observe as mensagens apresentadas.
-            Se necessário, pressione RESET
-            para reiniciar o programa.
-        </p>
-    </div>
-
-
-    <h3>Resultado esperado</h3>
-
-    <div class="codigo">
-
+    <div class="code">
 <pre>Ola, mundo!
 Eu sou a GlowUP!
 Minha primeira mensagem!
 Minha primeira mensagem!
-Minha primeira mensagem!
 ...</pre>
-
     </div>
 
-
-    <div class="destaque">
-
-        <strong>💡 Entendendo o programa</strong>
-
-        <p>
-            <strong>setup():</strong>
-            executa as instruções de inicialização.
-        </p>
-
-        <p>
-            <strong>loop():</strong>
-            executa repetidamente as instruções
-            colocadas dentro da função.
-        </p>
-
-        <p>
-            <strong>Serial.println():</strong>
-            envia uma mensagem ao Monitor Serial.
-        </p>
-
-        <p>
-            <strong>delay(2000):</strong>
-            aguarda 2000 milissegundos,
-            equivalentes a dois segundos.
-        </p>
-
-    </div>
-
-
-    <div class="aviso">
-
-        <strong>Não apareceu nenhuma mensagem?</strong>
-
-        <p>
-            Verifique a porta selecionada,
-            a velocidade de 115200 baud
-            e a configuração USB CDC On Boot.
-        </p>
-
-        <p>
-            Se o carregamento falhar,
-            peça ajuda à monitora.
-        </p>
-
+    <div class="warn">
+        <strong>Se nada aparecer:</strong>
+        feche o Monitor Serial, confira o cabo USB-C de dados,
+        a porta e a opção <strong>USB CDC On Boot: Enabled</strong>.
+        Se necessário, peça ajuda à monitora antes de usar BOOT/RESET.
+        O cabo ruim foi uma causa real de falha nos testes da oficina.
     </div>
 
     <label class="check">
-
         <input type="checkbox" data-id="5">
-
-        <span>
-            Executei meu primeiro Hello World!
-        </span>
-
+        Executei meu primeiro programa e vi as mensagens.
     </label>
-
 </section>
 
-
-<!-- ==========================================
-     DESAFIO AVANÇADO
-     ========================================== -->
-
-<section class="bloco avancado" id="desafio-avancado">
-
+<section class="block advanced" id="desafio-avancado">
     <h2>🚀 Desafio avançado</h2>
 
     <p>
-        Você já conseguiu enviar mensagens
-        para o computador?
+        <strong>Desafio A:</strong> personalize as mensagens com seu nome
+        e o nome do projeto.
+
+        <strong>Desafio B:</strong> altere <code>delay(2000)</code>
+        para que as mensagens apareçam a cada cinco segundos.
+
+        <strong>Desafio C:</strong> pesquise o que acontece quando
+        usamos <code>Serial.print()</code> no lugar de
+        <code>Serial.println()</code> e teste.
     </p>
 
-    <p>
-        Agora vamos experimentar
-        algumas modificações!
-    </p>
-
-
-    <h3>Desafio A — Personalize sua mensagem</h3>
-
-    <p>
-        Modifique o programa para apresentar:
-    </p>
-
-    <ul>
-        <li>Seu nome.</li>
-        <li>Uma mensagem de boas-vindas.</li>
-        <li>O nome do projeto GlowUP.</li>
-    </ul>
-
-
-    <h3>Desafio B — Controle o intervalo</h3>
-
-    <p>
-        Modifique o valor de
-        <strong>delay()</strong>
-        para que a mensagem apareça
-        a cada cinco segundos.
-    </p>
-
-    <p>
-        Descubra qual valor deverá ser utilizado.
-    </p>
-
-
-    <h3>Desafio C — Piscando o LED integrado</h3>
-
-    <p>
-        Algumas versões do ESP32-C3 Super Mini
-        possuem um LED conectado ao GPIO8.
-    </p>
-
-    <p>
-        Experimente o programa abaixo.
-    </p>
-
-    <div class="codigo">
-
-        <button type="button"
-                onclick="copiarCodigo('blink', this)">
-            Copiar código
-        </button>
-
-<pre><code id="blink">const int LED = 8;
-
-void setup() {
-
-  pinMode(LED, OUTPUT);
-
-}
-
-void loop() {
-
-  digitalWrite(LED, LOW);
-
-  delay(1000);
-
-  digitalWrite(LED, HIGH);
-
-  delay(1000);
-
-}</code></pre>
-
+    <div class="note">
+        Na próxima etapa, vamos montar a placa na protoboard
+        e testar os LEDs integrados. Não é necessário
+        conectá-los nesta atividade.
     </div>
-
-
-    <div class="destaque">
-
-        <strong>🔍 Investigue!</strong>
-
-        <p>
-            Por que o LED pode acender
-            quando utilizamos LOW e apagar
-            quando utilizamos HIGH?
-        </p>
-
-        <p>
-            Em algumas versões do Super Mini,
-            o LED integrado é acionado
-            em nível baixo.
-        </p>
-
-    </div>
-
-
-    <div class="aviso">
-
-        <p>
-            O funcionamento do LED integrado
-            depende da versão da placa.
-        </p>
-
-        <p>
-            Algumas versões utilizam LEDs
-            endereçáveis, que exigem outro programa.
-        </p>
-
-        <p>
-            Se o LED não responder,
-            peça ajuda à monitora.
-        </p>
-
-        <p>
-            Não conecte LEDs externos diretamente
-            aos GPIOs sem resistor limitador
-            de corrente.
-        </p>
-
-    </div>
-
 
     <label class="check">
-
         <input type="checkbox" data-id="avancado">
-
-        <span>
-            Concluí o desafio avançado!
-        </span>
-
+        Concluí os desafios avançados da Etapa 01.
     </label>
-
 </section>
 
+<section class="end">
+    <h2 id="endTitle">🌱 Continue sua jornada!</h2>
+    <p id="endText">Complete as cinco atividades.</p>
 
-<!-- ==========================================
-     FINALIZAÇÃO
-     ========================================== -->
-
-<section class="resultado">
-
-    <h2 id="tituloFinal">
-        🌱 Sua jornada está começando!
-    </h2>
-
-    <p id="mensagemFinal">
-        Complete as cinco atividades iniciais
-        para finalizar esta etapa.
-    </p>
-
-</section>
-
-
-<div class="acoes">
-
-    <a class="botao" href="index.html">
-        ← Voltar para a oficina
-    </a>
-
-    <button class="botao botao-secundario"
-            id="reiniciar">
+    <a class="btn" href="etapa02.html">Próxima etapa →</a>
+    <a class="btn alt" href="index.html">Voltar à oficina</a>
+    <button class="btn alt" type="button" id="reset">
         Reiniciar esta etapa
     </button>
-
-</div>
+</section>
 
 </main>
-
 
 <footer>
     GlowUP Plant • NuRIA — Instituto Federal de São Paulo
 </footer>
 
-
 <script>
+const K = 'glowup-etapa01-v1';
+const G = 'glowup-oficina-progresso-v1';
+const IDS = ['1','2','3','4','5'];
 
-/* ==========================================
-   GLOWUP PLANT - ETAPA 01 v1.4
-   CONTROLE DE PROGRESSO
-   ========================================== */
-
-/*
-   Chaves mantidas para preservar
-   o progresso das versões anteriores.
-*/
-
-const CHAVE = "glowup-etapa01-v1";
-
-const CHAVE_GERAL = "glowup-oficina-progresso-v1";
-
-const ATIVIDADES = ["1", "2", "3", "4", "5"];
-
-
-/* CARREGAR DADOS */
-
-function lerJSON(chave) {
-
+function read(k) {
     try {
-
-        const salvo = localStorage.getItem(chave);
-
-        if (!salvo) return {};
-
-        const dados = JSON.parse(salvo);
-
-        if (
-            dados &&
-            typeof dados === "object" &&
-            !Array.isArray(dados)
-        ) {
-            return dados;
-        }
-
-        return {};
-
-    } catch (erro) {
-
-        console.warn(
-            "Erro ao carregar progresso:",
-            erro
-        );
-
+        const x = JSON.parse(localStorage.getItem(k) || '{}');
+        return x && typeof x === 'object' ? x : {};
+    } catch {
         return {};
     }
 }
 
+let state = read(K);
 
-let progresso = lerJSON(CHAVE);
+function sync() {
+    const g = read(G);
 
+    g[1] = {
+        ...(g[1] || {}),
+        inicial: IDS.every(id => state[id] === true),
+        avancado: state.avancado === true
+    };
 
-/* SALVAR */
-
-function salvar() {
-
-    try {
-
-        localStorage.setItem(
-            CHAVE,
-            JSON.stringify(progresso)
-        );
-
-    } catch (erro) {
-
-        console.warn(
-            "Erro ao salvar progresso:",
-            erro
-        );
-
-    }
+    localStorage.setItem(K, JSON.stringify(state));
+    localStorage.setItem(G, JSON.stringify(g));
 }
 
-
-/* SINCRONIZAR COM A PÁGINA INICIAL */
-
-function sincronizarGeral() {
-
-    const geral = lerJSON(CHAVE_GERAL);
-
-    const concluidas = ATIVIDADES.filter(
-        id => progresso[id] === true
-    ).length;
-
-    if (!geral[1]) {
-        geral[1] = {};
-    }
-
-    geral[1].inicial =
-        concluidas === ATIVIDADES.length;
-
-    geral[1].avancado =
-        progresso.avancado === true;
-
-    try {
-
-        localStorage.setItem(
-            CHAVE_GERAL,
-            JSON.stringify(geral)
-        );
-
-    } catch (erro) {
-
-        console.warn(
-            "Erro ao sincronizar progresso:",
-            erro
-        );
-
-    }
-}
-
-
-/* ATUALIZAR INTERFACE */
-
-function atualizar() {
-
-    const caixas = document.querySelectorAll(
-        "input[type='checkbox'][data-id]"
-    );
-
-    caixas.forEach(caixa => {
-
-        caixa.checked =
-            progresso[caixa.dataset.id] === true;
-
+function paint() {
+    document.querySelectorAll('[data-id]').forEach(x => {
+        x.checked = state[x.dataset.id] === true;
     });
 
+    const n = IDS.filter(id => state[id] === true).length;
+    const p = n * 20;
 
-    const concluidas = ATIVIDADES.filter(
-        id => progresso[id] === true
-    ).length;
+    document.querySelector('#fill').style.width = p + '%';
+    document.querySelector('#bar').setAttribute('aria-valuenow', p);
 
+    document.querySelector('#count').textContent =
+        `${n} de 5 atividades concluídas (${p}%)`;
 
-    const porcentagem = Math.round(
-        concluidas / ATIVIDADES.length * 100
-    );
+    document.querySelector('#extra').textContent =
+        state.avancado
+            ? '🚀 Desafio avançado: concluído ✓'
+            : '🚀 Desafio avançado: opcional';
 
+    document.querySelector('#endTitle').textContent =
+        n === 5
+            ? '🎉 Etapa 01 concluída!'
+            : '🌱 Continue sua jornada!';
 
-    document.getElementById(
-        "preenchimento"
-    ).style.width = porcentagem + "%";
-
-
-    document.getElementById(
-        "barra"
-    ).setAttribute(
-        "aria-valuenow",
-        porcentagem
-    );
-
-
-    document.getElementById(
-        "contador"
-    ).textContent =
-        `${concluidas} de ${ATIVIDADES.length} ` +
-        `atividades concluídas (${porcentagem}%)`;
-
-
-    const avancado =
-        progresso.avancado === true;
-
-
-    document.getElementById(
-        "contadorAvancado"
-    ).textContent = avancado
-        ? "🚀 Desafio avançado: concluído ✓"
-        : "🚀 Desafio avançado: opcional";
-
-
-    const titulo = document.getElementById(
-        "tituloFinal"
-    );
-
-    const mensagem = document.getElementById(
-        "mensagemFinal"
-    );
-
-
-    if (concluidas === ATIVIDADES.length) {
-
-        titulo.textContent =
-            "🎉 Parabéns! Etapa 01 concluída!";
-
-        mensagem.textContent =
-            "Você conheceu o ESP32-C3, explorou " +
-            "sua pinagem, configurou o Arduino IDE " +
-            "e executou seu primeiro programa!";
-
-    } else {
-
-        titulo.textContent =
-            "🌱 Sua jornada está começando!";
-
-        mensagem.textContent =
-            `Você concluiu ${concluidas} de ` +
-            `${ATIVIDADES.length} atividades iniciais. ` +
-            "Continue no seu ritmo!";
-
-    }
+    document.querySelector('#endText').textContent =
+        n === 5
+            ? 'Você já conheceu o ESP32-C3 e executou seu primeiro programa!'
+            : 'Conclua as cinco atividades iniciais no seu ritmo.';
 }
 
-
-/* EVENTOS DOS CHECKBOXES */
-
-document.addEventListener(
-    "change",
-    function(evento) {
-
-        const elemento = evento.target;
-
-        if (!elemento.matches(
-            "input[type='checkbox'][data-id]"
-        )) {
-            return;
-        }
-
-        progresso[elemento.dataset.id] =
-            elemento.checked;
-
-        salvar();
-
-        sincronizarGeral();
-
-        atualizar();
-
+document.addEventListener('change', e => {
+    if (e.target.matches('[data-id]')) {
+        state[e.target.dataset.id] = e.target.checked;
+        sync();
+        paint();
     }
-);
+});
 
+document.querySelector('#reset').addEventListener('click', () => {
+    if (confirm('Reiniciar o progresso da Etapa 01?')) {
+        state = {};
+        sync();
+        paint();
+    }
+});
 
-/* COPIAR CÓDIGO */
-
-async function copiarCodigo(id, botao) {
-
-    const codigo = document.getElementById(
-        id
-    ).textContent;
-
-    const textoAnterior = botao.textContent;
-
+async function copiar(id, button) {
     try {
-
-        await navigator.clipboard.writeText(codigo);
-
-        botao.textContent = "Copiado! ✓";
-
-        setTimeout(function() {
-            botao.textContent = textoAnterior;
-        }, 2000);
-
-    } catch (erro) {
-
-        alert(
-            "Não foi possível copiar automaticamente. " +
-            "Selecione o texto e copie manualmente."
+        await navigator.clipboard.writeText(
+            document.querySelector('#' + id).textContent
         );
 
+        button.textContent = 'Copiado ✓';
+
+        setTimeout(() => {
+            button.textContent = 'Copiar código';
+        }, 1700);
+
+    } catch {
+        alert('Selecione e copie o texto manualmente.');
     }
 }
 
-
-/* REINICIAR ETAPA */
-
-document.getElementById(
-    "reiniciar"
-).addEventListener(
-    "click",
-    function() {
-
-        if (!confirm(
-            "Deseja reiniciar a Etapa 01?"
-        )) {
-            return;
-        }
-
-        progresso = {};
-
-        salvar();
-
-        sincronizarGeral();
-
-        atualizar();
-
-    }
-);
-
-
-/* INICIALIZAÇÃO */
-
-atualizar();
-
+paint();
 </script>
 
 </body>
