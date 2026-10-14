@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 04 — Dando vida à nossa planta | GlowUP Plant</title>
+
+<style>
+/* ==============================================
+   GlowUP Plant — Etapa 04 — v1.1
+   OLED SSD1306: branco ou bicolor
+   ============================================== */
+
+:root {
+  --verde: #247c58;
+  --verde-escuro: #174b39;
+  --verde-claro: #e6f6ec;
+  --rosa: #e86695;
+  --rosa-claro: #fff0f5;
+  --fundo: #f7faf8;
+  --texto: #2a4238;
+  --borda: #dfeae3;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font: 16px/1.7 Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: 92%;
+  max-width: 950px;
+  margin: auto;
+}
+
+a { color: var(--verde); }
+
+header {
+  background: white;
+  border-bottom: 1px solid var(--borda);
+}
+
+.topo {
+  min-height: 75px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: bold;
+  color: var(--verde);
+}
+
+.logo span { color: var(--rosa); }
+
+.voltar {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.versao {
+  color: #718579;
+  font-size: 12px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #e5f6eb, #fff0f5);
+  padding: 45px 15px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: clamp(28px, 5vw, 40px);
+  color: var(--verde-escuro);
+  margin: 12px 0;
+}
+
+.hero p {
+  max-width: 720px;
+  margin: auto;
+}
+
+.tag {
+  display: inline-block;
+  background: white;
+  color: var(--verde);
+  padding: 6px 15px;
+  border-radius: 25px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.bloco {
+  background: white;
+  border: 1px solid var(--borda);
+  border-radius: 18px;
+  padding: 28px;
+  margin: 25px 0;
+}
+
+.bloco h2 {
+  margin-top: 0;
+  color: var(--verde-escuro);
+}
+
+.bloco h3 {
+  margin-top: 28px;
+  color: var(--verde-escuro);
+}
+
+.bloco h4 {
+  color: var(--verde-escuro);
+}
+
+.destaque {
+  background: var(--verde-claro);
+  border-radius: 12px;
+  padding: 18px;
+  margin: 20px 0;
+}
+
+.aviso {
+  background: #fff5e8;
+  border-left: 5px solid #e9a23b;
+  border-radius: 9px;
+  padding: 18px;
+  margin: 20px 0;
+}
+
+.legenda {
+  color: #718579;
+  font-size: 13px;
+  text-align: center;
+}
+
+.tabela-container {
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+  margin: 18px 0;
+}
+
+th, td {
+  padding: 12px;
+  border: 1px solid var(--borda);
+  text-align: left;
+}
+
+th {
+  background: var(--verde);
+  color: white;
+}
+
+tr:nth-child(even) {
+  background: #f5faf6;
+}
+
+/* CÓDIGOS */
+
+.codigo {
+  position: relative;
+  background: #1e293b;
+  color: #f1f5f9;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.codigo pre {
+  margin: 38px 0 0;
+  font: 14px/1.65 Consolas, Monaco, monospace;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.codigo-simples pre {
+  margin-top: 0;
+}
+
+.copiar {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 13px;
+  color: var(--verde-escuro);
+  background: #dff4e6;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+code {
+  background: #edf3ee;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+/* PROGRESSO */
+
+.barra {
+  height: 14px;
+  background: #e4eee7;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.preenchimento {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #47b582, #ec83ab);
+  transition: width .3s;
+}
+
+#contador {
+  color: var(--verde);
+  font-weight: bold;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--verde-claro);
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 22px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.check input {
+  width: 23px;
+  height: 23px;
+  accent-color: var(--verde);
+  flex-shrink: 0;
+}
+
+/* ==============================================
+   PRÉVIAS DO OLED
+   Os desenhos SVG usam viewBox 128 x 64,
+   igual à resolução real do display.
+   ============================================== */
+
+.oled-controles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.oled-controles button {
+  padding: 9px 15px;
+  border: 1px solid #b8d3c2;
+  border-radius: 9px;
+  background: white;
+  color: var(--verde-escuro);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.oled-controles button.ativo {
+  background: var(--verde);
+  color: white;
+  border-color: var(--verde);
+}
+
+.oled-area {
+  display: flex;
+  justify-content: center;
+  padding: 25px 12px;
+  background: #f1f6f3;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+
+.oled-moldura {
+  width: 100%;
+  max-width: 430px;
+  padding: 14px;
+  border: 9px solid #253849;
+  border-radius: 17px;
+  background: #111b25;
+  box-shadow: 0 5px 15px #0002;
+}
+
+.oled-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 1;
+  background: #010916;
+  border-radius: 4px;
+  image-rendering: pixelated;
+}
+
+.oled-svg .faixa-topo {
+  fill: #ffd53b;
+}
+
+.oled-svg .faixa-baixo {
+  fill: #67c5ff;
+}
+
+body.oled-branco .oled-svg .faixa-topo,
+body.oled-branco .oled-svg .faixa-baixo {
+  fill: #eff8ff;
+}
+
+.oled-svg text {
+  font-family: monospace;
+}
+
+.oled-svg .texto {
+  font-size: 7.5px;
+}
+
+.oled-svg .texto-grande {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.oled-svg .contorno {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+}
+
+.oled-svg .pixel {
+  fill: currentColor;
+}
+
+.oled-svg .faixa-topo .contorno,
+.oled-svg .faixa-baixo .contorno {
+  stroke: currentColor;
+}
+
+/* GUIAS GRÁFICOS DE COORDENADAS */
+
+.guia {
+  border: 1px solid var(--borda);
+  border-radius: 14px;
+  padding: 18px;
+  background: #f9fcfa;
+  margin: 22px 0;
+}
+
+.guia h4 {
+  margin-top: 0;
+}
+
+.guia-desenho {
+  max-width: 500px;
+  margin: 15px auto;
+}
+
+.guia-desenho svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #dce8e0;
+}
+
+.guia .explicacao {
+  font-size: 14px;
+}
+
+.parametros {
+  font-family: Consolas, monospace;
+  font-weight: bold;
+  color: var(--verde-escuro);
+}
+
+/* CALIBRAÇÃO */
+
+.calibracao {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.calibracao label {
+  display: block;
+  font-weight: bold;
+}
+
+.calibracao input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #b8d3c2;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+/* DESAFIOS */
+
+.avancado {
+  border: 2px solid #f0aac4;
+  scroll-margin-top: 20px;
+}
+
+.avancado > h2 {
+  color: #ac3663;
+}
+
+.desafio {
+  border-bottom: 2px dashed #e8c0cf;
+  margin-bottom: 30px;
+  padding-bottom: 30px;
+}
+
+.desafio h3 {
+  color: #ac3663;
+}
+
+.desafio .check {
+  background: var(--rosa-claro);
+}
+
+.solucao {
+  border: 2px solid #57b785;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.botao {
+  display: inline-block;
+  background: var(--verde);
+  color: white;
+  padding: 11px 19px;
+  margin: 6px 6px 6px 0;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.botao-secundario {
+  background: #e8eeea;
+  color: var(--verde-escuro);
+}
+
+.botao-solucao {
+  background: var(--rosa-claro);
+  color: #ac3663;
+  border: 1px solid #efb5c8;
+}
+
+.resultado {
+  margin: 30px 0;
+  padding: 25px;
+  background: var(--verde-claro);
+  border-radius: 18px;
+  text-align: center;
+}
+
+.resultado h2 {
+  color: var(--verde-escuro);
+}
+
+footer {
+  background: var(--verde-escuro);
+  color: white;
+  padding: 25px;
+  text-align: center;
+  font-size: 14px;
+}
+
+@media(max-width: 600px) {
+  .bloco { padding: 19px; }
+  .hero { padding: 35px 15px; }
+  .codigo { padding: 15px; }
+  .codigo pre { font-size: 12px; }
+  .calibracao { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container topo">
+    <div class="logo">🌱 Glow<span>UP</span> Plant</div>
+
+    <a class="voltar" href="index.html">
+      ← Voltar à oficina
+    </a>
+
+    <span class="versao">Etapa 04 • v1.1</span>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="tag">ETAPA 04</span>
+
+  <h1>🖥️ Dando vida à nossa planta!</h1>
+
+  <p>
+    Vamos mostrar números, criar gráficos,
+    desenhar corações e ensinar nossa
+    plantinha a expressar suas emoções!
+  </p>
+</section>
+
+<main class="container">
+
+<!-- ==============================================
+     PROGRESSO
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌿 Meu progresso</h2>
+
+  <p>
+    Realize os cinco experimentos iniciais.
+    Depois, explore os três desafios avançados!
+  </p>
+
+  <div
+    class="barra"
+    id="barra"
+    role="progressbar"
+    aria-label="Progresso da Etapa 04"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="0">
+
+    <div class="preenchimento" id="preenchimento"></div>
+  </div>
+
+  <p id="contador">0 de 5 atividades concluídas</p>
+
+  <p id="contadorAvancado">
+    🚀 Desafios avançados: opcionais
+  </p>
+
+</section>
+
+
+<!-- ==============================================
+     PRÉVIAS BRANCO / BICOLOR
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🎨 Como é o OLED da oficina?</h2>
+
+  <p>
+    Utilizaremos o display OLED SSD1306
+    de <strong>128 × 64 pixels</strong>.
+  </p>
+
+  <p>
+    Algumas placas possuem pixels brancos.
+    Outras possuem uma faixa superior amarela
+    e uma região inferior azul.
+  </p>
+
+  <p>
+    O programa é o mesmo nos dois modelos.
+    A diferença está na cor física dos pixels.
+  </p>
+
+  <div class="oled-controles">
+
+    <span><strong>Visualizar como:</strong></span>
+
+    <button
+      type="button"
+      id="modoBicolor"
+      class="ativo"
+      onclick="alterarModoOLED('bicolor')">
+      🟡🔵 Bicolor
+    </button>
+
+    <button
+      type="button"
+      id="modoBranco"
+      onclick="alterarModoOLED('branco')">
+      ⚪ Branco
+    </button>
+
+  </div>
+
+  <p class="legenda">
+    Utilize os botões acima para alternar
+    as cores de todas as prévias desta página.
+  </p>
+
+  <div class="destaque">
+
+    <strong>💡 Nossa regra de organização</strong>
+
+    <p>
+      Reservaremos as linhas de <strong>0 a 15</strong>
+      para o título e as linhas de
+      <strong>16 a 63</strong>
+      para números e desenhos.
+    </p>
+
+    <p>
+      Dessa maneira, o mesmo programa
+      terá uma apresentação organizada
+      tanto no OLED branco quanto no bicolor.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- ==============================================
+     EXPERIMENTO 1
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌱 1. Conhecendo e conectando o OLED</h2>
+
+  <p>
+    O OLED é uma pequena tela que permite
+    mostrar textos, números e figuras.
+  </p>
+
+  <p>
+    Seu controlador é o SSD1306
+    e a comunicação será realizada
+    pelo barramento I²C.
+  </p>
+
+  <div class="tabela-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Terminal OLED</th>
+          <th>ESP32-C3</th>
+          <th>Função</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td>VCC</td>
+          <td>3V3</td>
+          <td>Alimentação</td>
+        </tr>
+        <tr>
+          <td>GND</td>
+          <td>GND</td>
+          <td>Referência elétrica</td>
+        </tr>
+        <tr>
+          <td>SDA</td>
+          <td>GPIO8</td>
+          <td>Dados I²C</td>
+        </tr>
+        <tr>
+          <td>SCL / SCK</td>
+          <td>GPIO9</td>
+          <td>Clock I²C</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="destaque">
+    <strong>🧰 Bibliotecas necessárias</strong>
+
+    <p>
+      No Gerenciador de Bibliotecas
+      do Arduino IDE, localize:
+    </p>
+
+    <ul>
+      <li>Adafruit SSD1306</li>
+      <li>Adafruit GFX Library</li>
+    </ul>
+
+    <p>
+      A biblioteca <strong>Wire</strong>
+      é utilizada para comunicação I²C.
+    </p>
+
+    <p>
+      A equipe do laboratório deve utilizar
+      versões das bibliotecas compatíveis
+      com o Arduino IDE instalado.
+    </p>
+  </div>
+
+  <div class="aviso">
+
+    <strong>⚠️ Confira a montagem</strong>
+
+    <p>
+      Desconecte o USB antes de modificar
+      qualquer conexão.
+    </p>
+
+    <p>
+      Os GPIOs 8 e 9 participam também
+      das condições de inicialização
+      do ESP32-C3. A ligação I²C escolhida
+      deve ser validada na placa real.
+    </p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="1">
+
+    <span>
+      Conferi as conexões e preparei
+      as bibliotecas do OLED.
+    </span>
+  </label>
+
+</section>
+
+
+<!-- ==============================================
+     EXPERIMENTO 2
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌱 2. Minha primeira mensagem no OLED</h2>
+
+  <p>
+    Vamos escrever nossa primeira mensagem
+    diretamente na tela!
+  </p>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED exibindo GlowUP Plant e OLA">
+
+        <g class="faixa-topo">
+          <text x="28" y="9" class="texto">GlowUP Plant</text>
+        </g>
+
+        <g class="faixa-baixo">
+          <text x="40" y="43" class="texto-grande">OLA!</text>
+          <text x="2" y="61" class="texto">Minha primeira tela!</text>
+        </g>
+
+      </svg>
+
+    </div>
+  </div>
+
+  <div class="codigo">
+
+    <button class="copiar"
+      onclick="copiarCodigo('codigo2',this)">
+      Copiar código
+    </button>
+
+<pre id="codigo2">// GlowUP Plant — Experimento 2
+// Objetivo: apresentar nossa primeira mensagem.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+// Dimensoes do display.
+#define LARGURA 128
+#define ALTURA 64
+
+// Conexoes I2C.
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+// Cria o objeto display.
+// -1 indica ausencia de reset dedicado.
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  // Inicia o barramento I2C.
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  // Inicializa o OLED no endereco 0x3C.
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  // Limpa a memoria grafica.
+  display.clearDisplay();
+
+  // Define a cor dos pixels acesos.
+  display.setTextColor(SSD1306_WHITE);
+
+  // Titulo na faixa superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Mensagem principal, com letras maiores.
+  display.setTextSize(2);
+  display.setCursor(40, 27);
+  display.println("OLA!");
+
+  // Mensagem inferior.
+  display.setTextSize(1);
+  display.setCursor(2, 55);
+  display.println("Minha primeira tela!");
+
+  // Atualiza os pixels da tela.
+  display.display();
+}
+
+void loop() {
+  // A mensagem permanece exibida.
+}</pre>
+
+  </div>
+
+  <div class="destaque">
+
+    <strong>🔍 Observe!</strong>
+
+    <p>
+      O que acontece ao modificar
+      <code>setTextSize(2)</code>
+      para <code>setTextSize(1)</code>?
+    </p>
+
+    <p>
+      E ao alterar a posição do cursor?
+    </p>
+
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="2">
+
+    <span>
+      Consegui exibir minha primeira mensagem!
+    </span>
+  </label>
+
+</section>
+
+
+<!-- ==============================================
+     EXPERIMENTO 3
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌱 3. Mostrando a leitura atual</h2>
+
+  <p>
+    Agora vamos apresentar no OLED
+    o valor analógico do sensor
+    de umidade conectado ao GPIO1.
+  </p>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED mostrando leitura atual 2840">
+
+        <g class="faixa-topo">
+          <text x="28" y="9" class="texto">GlowUP Plant</text>
+        </g>
+
+        <g class="faixa-baixo">
+          <text x="10" y="26" class="texto">Leitura atual:</text>
+          <text x="40" y="49" class="texto-grande">2840</text>
+        </g>
+
+      </svg>
+
+    </div>
+  </div>
+
+  <div class="codigo">
+
+    <button class="copiar"
+      onclick="copiarCodigo('codigo3',this)">
+      Copiar código
+    </button>
+
+<pre id="codigo3">// GlowUP Plant — Experimento 3
+// Objetivo: mostrar a leitura atual no OLED.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+
+  // Configura o ADC para 12 bits.
+  analogReadResolution(12);
+
+  // Inicia a comunicacao I2C.
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("OLED nao encontrado!");
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Obtem a leitura do sensor.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Limpa a imagem anterior.
+  display.clearDisplay();
+
+  // Titulo.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Identificacao da leitura.
+  display.setCursor(10, 20);
+  display.println("Leitura atual:");
+
+  // Numero em tamanho maior.
+  display.setTextSize(2);
+  display.setCursor(40, 34);
+  display.println(leitura);
+
+  // Atualiza a tela.
+  display.display();
+
+  // Apresenta tambem no Monitor Serial.
+  Serial.println(leitura);
+
+  delay(1000);
+}</pre>
+
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="3">
+
+    <span>
+      Apresentei a leitura atual no OLED.
+    </span>
+  </label>
+
+</section>
+
+
+<!-- ==============================================
+     EXPERIMENTO 4
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌱 4. Leitura atual e média</h2>
+
+  <p>
+    Vamos calcular a média de cinco
+    leituras consecutivas e apresentar
+    os dois valores no display.
+  </p>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED mostrando leitura atual e média">
+
+        <g class="faixa-topo">
+          <text x="28" y="9" class="texto">GlowUP Plant</text>
+        </g>
+
+        <g class="faixa-baixo">
+          <text x="2" y="27" class="texto">Atual: 2840</text>
+          <text x="2" y="42" class="texto">Media: 2837</text>
+          <text x="2" y="61" class="texto">Monitorando...</text>
+        </g>
+
+      </svg>
+
+    </div>
+  </div>
+
+  <div class="codigo">
+
+    <button class="copiar"
+      onclick="copiarCodigo('codigo4',this)">
+      Copiar código
+    </button>
+
+<pre id="codigo4">// GlowUP Plant — Experimento 4
+// Objetivo: mostrar leitura atual e media.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+const int NUM_LEITURAS = 5;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Leitura atual.
+  int atual = analogRead(PINO_SENSOR);
+
+  // Acumulador das cinco leituras.
+  long soma = 0;
+
+  // Executa cinco leituras consecutivas.
+  for (int i = 0; i &lt; NUM_LEITURAS; i++) {
+
+    soma = soma + analogRead(PINO_SENSOR);
+
+    delay(50);
+  }
+
+  // Calcula a media.
+  float media = soma / float(NUM_LEITURAS);
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  display.setCursor(2, 20);
+  display.print("Atual: ");
+  display.println(atual);
+
+  display.setCursor(2, 35);
+  display.print("Media: ");
+  display.println(media, 0);
+
+  display.setCursor(2, 54);
+  display.println("Monitorando...");
+
+  display.display();
+
+  Serial.print("Atual: ");
+  Serial.println(atual);
+
+  Serial.print("Media: ");
+  Serial.println(media);
+
+  delay(1000);
+}</pre>
+
+  </div>
+
+  <div class="destaque">
+
+    <strong>🔍 Investigando a média</strong>
+
+    <p>
+      Compare a leitura atual com
+      a média de cinco leituras.
+    </p>
+
+    <p>
+      Qual delas apresenta menores
+      variações ao longo do tempo?
+    </p>
+
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="4">
+
+    <span>
+      Apresentei a leitura atual
+      e a média no OLED.
+    </span>
+  </label>
+
+</section>
+
+
+<!-- ==============================================
+     EXPERIMENTO 5
+     ============================================== -->
+
+<section class="bloco">
+
+  <h2>🌱 5. Umidade percentual no OLED</h2>
+
+  <p>
+    Vamos transformar os valores
+    do sensor em uma escala relativa
+    de 0% a 100%.
+  </p>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED mostrando 67 por cento">
+
+        <g class="faixa-topo">
+          <text x="28" y="9" class="texto">GlowUP Plant</text>
+        </g>
+
+        <g class="faixa-baixo">
+          <text x="19" y="26" class="texto">Umidade do solo</text>
+          <text x="40" y="47" class="texto-grande">67%</text>
+          <text x="16" y="61" class="texto">Solo adequado</text>
+        </g>
+
+      </svg>
+
+    </div>
+  </div>
+
+  <h3>Utilizando nossas medições</h3>
+
+  <div class="calibracao">
+
+    <label>
+      Valor do sensor no solo seco
+      <input
+        id="calSeco"
+        type="number"
+        min="0"
+        max="4095"
+        placeholder="Ex.: 3800">
+    </label>
+
+    <label>
+      Valor do sensor no solo úmido
+      <input
+        id="calUmido"
+        type="number"
+        min="0"
+        max="4095"
+        placeholder="Ex.: 1326">
+    </label>
+
+  </div>
+
+  <p id="avisoCalibracao" class="legenda" aria-live="polite">
+    As medições podem ser recuperadas da Etapa 03.
+  </p>
+
+  <div class="aviso">
+
+    <strong>Antes de gravar:</strong>
+
+    <p>
+      Os códigos abaixo usam inicialmente
+      as referências 3800 e 1326.
+      Confirme se são adequadas ao seu sensor.
+    </p>
+
+    <p>
+      Os campos acima registram os valores
+      neste navegador, mas não modificam
+      automaticamente o programa Arduino.
+    </p>
+
+  </div>
+
+  <div class="codigo">
+
+    <button class="copiar"
+      onclick="copiarCodigo('codigo5',this)">
+      Copiar código
+    </button>
+
+<pre id="codigo5">// GlowUP Plant — Experimento 5
+// Objetivo: apresentar a umidade percentual.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+// Referencias de calibracao.
+// Ajuste para o sensor utilizado.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Le o sinal analogico.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Evita usar duas referencias iguais.
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  // Converte para uma escala relativa.
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  // Limita o resultado de 0 a 100.
+  umidade = constrain(umidade, 0, 100);
+
+  display.clearDisplay();
+
+  // Titulo na faixa superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Identificacao.
+  display.setCursor(19, 20);
+  display.println("Umidade do solo");
+
+  // Porcentagem em destaque.
+  display.setTextSize(2);
+  display.setCursor(40, 32);
+  display.print(umidade);
+  display.print("%");
+
+  // Texto na parte inferior.
+  display.setTextSize(1);
+  display.setCursor(16, 55);
+
+  if (umidade &lt; 30) {
+    display.println("Solo seco!");
+  }
+  else if (umidade &lt; 70) {
+    display.println("Solo adequado");
+  }
+  else {
+    display.println("Solo muito umido");
+  }
+
+  display.display();
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  delay(1000);
+}</pre>
+
+  </div>
+
+  <div class="destaque">
+
+    <strong>💡 O que aprendemos?</strong>
+
+    <p>
+      A função <code>map()</code>
+      transforma a leitura em uma
+      escala relativa de porcentagem.
+    </p>
+
+    <p>
+      Já a função <code>constrain()</code>
+      impede valores menores que zero
+      ou maiores que 100.
+    </p>
+
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="5">
+
+    <span>
+      Apresentei a porcentagem de umidade no OLED!
+    </span>
+  </label>
+
+</section>
+
+
+<!-- ==============================================
+     GUIA GRÁFICO
+     ============================================== -->
+
+<section class="bloco" id="guia-grafico">
+
+  <h2>🎨 Aprendendo a desenhar no OLED</h2>
+
+  <p>
+    Antes de começar os desafios avançados,
+    vamos descobrir como utilizar
+    as funções gráficas da biblioteca
+    <strong>Adafruit GFX</strong>.
+  </p>
+
+  <p>
+    Pense no display como uma folha
+    de papel formada por pequenos pontos.
+    Cada ponto é chamado de
+    <strong>pixel</strong>.
+  </p>
+
+  <h3>1. Entendendo as coordenadas</h3>
+
+  <p>
+    Nosso OLED possui 128 pixels
+    na horizontal e 64 na vertical.
+  </p>
+
+  <div class="guia">
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 245"
+           aria-label="Sistema de coordenadas do OLED">
+
+        <rect x="95" y="35" width="320" height="160"
+              fill="#071b2d" rx="4"/>
+
+        <line x1="95" y1="35" x2="427" y2="35"
+              stroke="#247c58" stroke-width="2"/>
+
+        <polygon points="427,35 417,30 417,40"
+                 fill="#247c58"/>
+
+        <line x1="95" y1="35" x2="95" y2="210"
+              stroke="#e86695" stroke-width="2"/>
+
+        <polygon points="95,210 90,200 100,200"
+                 fill="#e86695"/>
+
+        <circle cx="95" cy="35" r="5"
+                fill="#ffd54b"/>
+
+        <text x="25" y="28" font-size="14"
+              fill="#29443a">(0,0)</text>
+
+        <text x="380" y="24" font-size="13"
+              fill="#247c58">X →</text>
+
+        <text x="66" y="220" font-size="13"
+              fill="#e86695">Y ↓</text>
+
+        <text x="310" y="225" font-size="13"
+              fill="#29443a">(127,63)</text>
+
+        <rect x="95" y="35" width="320" height="40"
+              fill="#fff0a5" opacity=".2"/>
+
+        <line x1="95" y1="75" x2="415" y2="75"
+              stroke="#ffe26c" stroke-dasharray="5 4"/>
+
+        <text x="176" y="61" font-size="15"
+              fill="#ffe26c">Faixa superior</text>
+
+        <text x="182" y="137" font-size="18"
+              fill="#90d4ff">Area principal</text>
+
+      </svg>
+
+    </div>
+
+    <p class="explicacao">
+      <strong>X:</strong> posição horizontal,
+      da esquerda para a direita.
+      Vai de 0 até 127.
+    </p>
+
+    <p class="explicacao">
+      <strong>Y:</strong> posição vertical,
+      de cima para baixo.
+      Vai de 0 até 63.
+    </p>
+
+    <p class="explicacao">
+      A origem <strong>(0,0)</strong>
+      está no canto superior esquerdo,
+      e não no canto inferior, como
+      em muitos gráficos matemáticos.
+    </p>
+
+  </div>
+
+
+  <!-- DRAWRECT -->
+
+  <h3>2. Desenhando um retângulo</h3>
+
+  <p>
+    Utilizamos a função
+    <code>drawRect()</code>.
+  </p>
+
+  <div class="codigo codigo-simples">
+<pre>display.drawRect(
+  x, y, largura, altura, SSD1306_WHITE
+);</pre>
+  </div>
+
+  <div class="guia">
+
+    <h4>Entendendo os parâmetros</h4>
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 240"
+           aria-label="Retângulo com posição, largura e altura">
+
+        <rect x="55" y="40" width="350" height="160"
+              fill="#eef7f0" stroke="#cadfd0"/>
+
+        <rect x="130" y="85" width="205" height="85"
+              fill="none" stroke="#247c58"
+              stroke-width="4"/>
+
+        <circle cx="130" cy="85" r="6"
+                fill="#e86695"/>
+
+        <text x="72" y="75" font-size="15"
+              fill="#a83265">(x,y)</text>
+
+        <line x1="130" y1="67" x2="335" y2="67"
+              stroke="#d98b28" stroke-width="2"/>
+
+        <polygon points="130,67 139,62 139,72"
+                 fill="#d98b28"/>
+
+        <polygon points="335,67 326,62 326,72"
+                 fill="#d98b28"/>
+
+        <text x="207" y="56" font-size="15"
+              fill="#aa681a">largura</text>
+
+        <line x1="353" y1="85" x2="353" y2="170"
+              stroke="#3767bb" stroke-width="2"/>
+
+        <polygon points="353,85 348,94 358,94"
+                 fill="#3767bb"/>
+
+        <polygon points="353,170 348,161 358,161"
+                 fill="#3767bb"/>
+
+        <text x="365" y="133" font-size="15"
+              fill="#3767bb">altura</text>
+
+      </svg>
+
+    </div>
+
+    <p>
+      <span class="parametros">x, y</span>:
+      posição do canto superior esquerdo.
+    </p>
+
+    <p>
+      <span class="parametros">largura</span>:
+      tamanho horizontal em pixels.
+    </p>
+
+    <p>
+      <span class="parametros">altura</span>:
+      tamanho vertical em pixels.
+    </p>
+
+    <p><strong>Exemplo:</strong></p>
+
+    <div class="codigo codigo-simples">
+<pre>display.drawRect(
+  10, 38, 104, 14, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      Isso desenha um retângulo começando
+      na posição (10,38), com largura
+      de 104 pixels e altura de 14 pixels.
+    </p>
+
+  </div>
+
+
+  <!-- FILLRECT -->
+
+  <h3>3. Preenchendo um retângulo</h3>
+
+  <p>
+    Para desenhar um retângulo preenchido,
+    utilizamos <code>fillRect()</code>.
+  </p>
+
+  <div class="guia">
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 185"
+           aria-label="Retângulo com parte preenchida">
+
+        <rect x="60" y="50" width="340" height="85"
+              rx="3" fill="none" stroke="#247c58"
+              stroke-width="4"/>
+
+        <rect x="67" y="57" width="195" height="71"
+              fill="#76be98"/>
+
+        <text x="109" y="99"
+              font-size="15" fill="#164b38">
+          preenchimento
+        </text>
+
+        <text x="279" y="98"
+              font-size="15" fill="#718579">
+          vazio
+        </text>
+
+      </svg>
+
+    </div>
+
+    <div class="codigo codigo-simples">
+<pre>// Contorno.
+display.drawRect(
+  10, 38, 104, 14, SSD1306_WHITE
+);
+
+// Preenchimento.
+display.fillRect(
+  12, 40, 50, 10, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      <strong>Observe:</strong>
+      o preenchimento começa dois pixels
+      à direita e dois pixels abaixo
+      do contorno.
+    </p>
+
+    <p>
+      Isso deixa uma pequena margem
+      interna e evita sobrepor
+      as bordas da barra.
+    </p>
+
+    <p>
+      O valor <strong>50</strong>
+      corresponde à largura preenchida.
+      Podemos modificá-lo para representar
+      diferentes porcentagens.
+    </p>
+
+  </div>
+
+
+  <!-- CÍRCULOS -->
+
+  <h3>4. Desenhando círculos</h3>
+
+  <p>
+    Para criar olhos, rostos e outras figuras,
+    podemos utilizar círculos.
+  </p>
+
+  <div class="guia">
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 210"
+           aria-label="Círculo indicando centro e raio">
+
+        <circle cx="220" cy="110" r="65"
+                fill="none"
+                stroke="#247c58"
+                stroke-width="4"/>
+
+        <circle cx="220" cy="110" r="6"
+                fill="#e86695"/>
+
+        <line x1="220" y1="110"
+              x2="285" y2="110"
+              stroke="#e9a23b" stroke-width="3"/>
+
+        <text x="229" y="98" font-size="15"
+              fill="#a66a14">raio</text>
+
+        <text x="150" y="195" font-size="15"
+              fill="#a83265">centro (x,y)</text>
+
+      </svg>
+
+    </div>
+
+    <p>
+      <strong>Para desenhar apenas o contorno:</strong>
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.drawCircle(
+  64, 40, 20, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      <strong>Para desenhar um círculo preenchido:</strong>
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.fillCircle(
+  56, 34, 2, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      Os dois primeiros números representam
+      o centro do círculo.
+      O terceiro representa o raio,
+      em pixels.
+    </p>
+
+  </div>
+
+
+  <!-- LINHAS -->
+
+  <h3>5. Desenhando linhas</h3>
+
+  <p>
+    Uma linha é definida pelas coordenadas
+    de seus dois extremos.
+  </p>
+
+  <div class="guia">
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 170"
+           aria-label="Linha com pontos inicial e final">
+
+        <line x1="95" y1="110"
+              x2="355" y2="50"
+              stroke="#247c58"
+              stroke-width="5"/>
+
+        <circle cx="95" cy="110" r="6"
+                fill="#e86695"/>
+
+        <circle cx="355" cy="50" r="6"
+                fill="#e86695"/>
+
+        <text x="40" y="137" font-size="15"
+              fill="#a83265">(x1,y1)</text>
+
+        <text x="337" y="33" font-size="15"
+              fill="#a83265">(x2,y2)</text>
+
+      </svg>
+
+    </div>
+
+    <div class="codigo codigo-simples">
+<pre>display.drawLine(
+  x1, y1, x2, y2, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      Essa função será útil para desenhar
+      as bocas das expressões faciais.
+    </p>
+
+  </div>
+
+
+  <!-- TRIÂNGULOS -->
+
+  <h3>6. Desenhando triângulos</h3>
+
+  <p>
+    Um triângulo é definido por três pontos.
+    Para preenchê-lo, utilizamos
+    <code>fillTriangle()</code>.
+  </p>
+
+  <div class="guia">
+
+    <div class="guia-desenho">
+
+      <svg viewBox="0 0 460 240"
+           aria-label="Triângulo com três vértices">
+
+        <polygon points="110,65 350,65 230,185"
+                 fill="#a7dac0"
+                 stroke="#247c58"
+                 stroke-width="4"/>
+
+        <circle cx="110" cy="65" r="6"
+                fill="#e86695"/>
+
+        <circle cx="350" cy="65" r="6"
+                fill="#e86695"/>
+
+        <circle cx="230" cy="185" r="6"
+                fill="#e86695"/>
+
+        <text x="35" y="52" font-size="15"
+              fill="#a83265">(x1,y1)</text>
+
+        <text x="355" y="52" font-size="15"
+              fill="#a83265">(x2,y2)</text>
+
+        <text x="238" y="208" font-size="15"
+              fill="#a83265">(x3,y3)</text>
+
+      </svg>
+
+    </div>
+
+    <div class="codigo codigo-simples">
+<pre>display.fillTriangle(
+  45, 35,
+  83, 35,
+  64, 58,
+  SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      Utilizaremos dois círculos
+      e um triângulo para formar
+      o coração do próximo desafio.
+    </p>
+
+  </div>
+
+  <div class="aviso">
+
+    <strong>⚠️ Uma instrução indispensável</strong>
+
+    <p>
+      Depois de desenhar na memória
+      do display, utilize:
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.display();</pre>
+    </div>
+
+    <p>
+      Sem essa instrução, os novos desenhos
+      poderão não aparecer na tela.
+    </p>
+
+    <p>
+      Ao iniciar um novo desenho,
+      normalmente utilizamos também:
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.clearDisplay();</pre>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ==============================================
+     DESAFIOS AVANÇADOS
+     ============================================== -->
+
+<section class="bloco avancado" id="desafio-avancado">
+
+  <h2>🚀 Desafios avançados — Programando desenhos!</h2>
+
+  <p>
+    Agora você já conhece as funções
+    gráficas necessárias para resolver
+    os próximos desafios.
+  </p>
+
+  <p>
+    Cada programa está parcialmente
+    preenchido. Complete os trechos
+    indicados pelos comentários
+    <strong>TODO</strong>.
+  </p>
+
+  <div class="destaque">
+
+    <strong>Como trabalhar?</strong>
+
+    <ol>
+      <li>Observe o desenho esperado.</li>
+      <li>Consulte os exemplos do guia gráfico.</li>
+      <li>Copie e complete o código.</li>
+      <li>Grave e teste no ESP32-C3.</li>
+      <li>Compare o resultado com a prévia.</li>
+    </ol>
+
+    <p>
+      Se precisar, utilize o botão
+      de solução. Mas tente primeiro!
+    </p>
+
+  </div>
+
+
+  <!-- ==========================================
+       DESAFIO A — BARRA
+       ========================================== -->
+
+  <div class="desafio" id="desafio-a">
+
+    <h3>🚀 Desafio A — Barra gráfica de umidade</h3>
+
+    <p>
+      Vamos criar uma barra cujo
+      preenchimento aumenta conforme
+      a umidade medida pelo sensor.
+    </p>
+
+    <h4>Resultado esperado</h4>
+
+    <div class="oled-area">
+      <div class="oled-moldura">
+
+        <svg class="oled-svg" viewBox="0 0 128 64"
+             aria-label="OLED com barra de umidade 65 por cento">
+
+          <g class="faixa-topo">
+            <text x="28" y="9" class="texto">GlowUP Plant</text>
+          </g>
+
+          <g class="faixa-baixo">
+
+            <text x="2" y="27" class="texto">Umidade: 65%</text>
+
+            <rect
+              x="10" y="38" width="104" height="14"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1"/>
+
+            <rect
+              x="12" y="40" width="65" height="10"
+              fill="currentColor"/>
+
+            <text x="22" y="61" class="texto">Monitorando...</text>
+
+          </g>
+
+        </svg>
+
+      </div>
+    </div>
+
+    <h4>Observe como construir a barra</h4>
+
+    <p>
+      O primeiro retângulo desenha
+      apenas o contorno.
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.drawRect(
+  10, 38, 104, 14, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <p>
+      O segundo retângulo desenha
+      o preenchimento.
+    </p>
+
+    <div class="codigo codigo-simples">
+<pre>display.fillRect(
+  12, 40, larguraBarra, 10, SSD1306_WHITE
+);</pre>
+    </div>
+
+    <div class="destaque">
+
+      <strong>💡 Como calcular larguraBarra?</strong>
+
+      <p>
+        O espaço útil para o preenchimento
+        possui 100 pixels.
+      </p>
+
+      <p>
+        Portanto:
+        <strong>0% → 0 pixels</strong>,
+        <strong>50% → 50 pixels</strong>,
+        <strong>100% → 100 pixels</strong>.
+      </p>
+
+      <p>
+        Como a variável <code>umidade</code>
+        já está entre 0 e 100,
+        podemos utilizá-la diretamente
+        como largura do preenchimento.
+      </p>
+
+    </div>
+
+    <h4>Agora complete o programa</h4>
+
+    <div class="codigo">
+
+      <button class="copiar"
+        onclick="copiarCodigo('codigoA',this)">
+        Copiar código
+      </button>
+
+<pre id="codigoA">// GlowUP Plant — Desafio A
+// Objetivo: criar uma barra de umidade.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+// Referencias utilizadas na calibracao.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Realiza uma leitura.
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  // Calcula a porcentagem.
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  // TODO 1:
+  // Calcule a largura preenchida da barra.
+  // Lembre-se: 0% = 0 pixels e 100% = 100 pixels.
+  int larguraBarra = 0;
+
+  display.clearDisplay();
+
+  // Titulo superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Mostra a porcentagem.
+  display.setCursor(2, 20);
+  display.print("Umidade: ");
+  display.print(umidade);
+  display.println("%");
+
+  // TODO 2:
+  // Desenhe o contorno.
+  // Comeca em (10,38).
+  // Largura = 104; altura = 14.
+
+
+  // TODO 3:
+  // Desenhe o preenchimento.
+  // Comeca em (12,40).
+  // Largura = larguraBarra; altura = 10.
+
+
+  display.setCursor(22, 54);
+  display.println("Monitorando...");
+
+  display.display();
+
+  delay(1000);
+}</pre>
+
+    </div>
+
+    <button class="botao botao-solucao"
+      onclick="mostrarSolucao('solucaoA',this)">
+      💡 Ver solução do desafio A
+    </button>
+
+    <div class="codigo solucao" id="solucaoA" hidden>
+
+      <button class="copiar"
+        onclick="copiarCodigo('respostaA',this)">
+        Copiar solução
+      </button>
+
+<pre id="respostaA">// GlowUP Plant — Solucao do Desafio A
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  // A porcentagem corresponde diretamente
+  // aos 100 pixels da largura util.
+  int larguraBarra = umidade;
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  display.setCursor(2, 20);
+  display.print("Umidade: ");
+  display.print(umidade);
+  display.println("%");
+
+  // Contorno da barra.
+  display.drawRect(
+    10, 38, 104, 14, SSD1306_WHITE
+  );
+
+  // Preenchimento proporcional a umidade.
+  display.fillRect(
+    12, 40, larguraBarra, 10, SSD1306_WHITE
+  );
+
+  display.setCursor(22, 54);
+  display.println("Monitorando...");
+
+  display.display();
+
+  Serial.print("Umidade: ");
+  Serial.println(umidade);
+
+  delay(1000);
+}</pre>
+
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoA">
+      <span>Concluí o desafio A!</span>
+    </label>
+
+  </div>
+
+
+  <!-- ==========================================
+       DESAFIO B — CORAÇÃO
+       ========================================== -->
+
+  <div class="desafio" id="desafio-b">
+
+    <h3>🚀 Desafio B — Um coração pulsante</h3>
+
+    <p>
+      Vamos combinar duas formas
+      geométricas diferentes:
+      círculos e triângulos.
+    </p>
+
+    <p>
+      Nosso coração será formado por
+      <strong>dois círculos preenchidos</strong>
+      e <strong>um triângulo preenchido</strong>.
+    </p>
+
+    <h4>Resultado esperado</h4>
+
+    <div class="oled-area">
+      <div class="oled-moldura">
+
+        <svg class="oled-svg" viewBox="0 0 128 64"
+             aria-label="OLED mostrando coração">
+
+          <g class="faixa-topo">
+            <text x="28" y="9" class="texto">GlowUP Plant</text>
+          </g>
+
+          <g class="faixa-baixo">
+
+            <circle cx="55" cy="34" r="10"
+                    fill="currentColor"/>
+
+            <circle cx="73" cy="34" r="10"
+                    fill="currentColor"/>
+
+            <polygon points="45,35 83,35 64,58"
+                     fill="currentColor"/>
+
+          </g>
+
+        </svg>
+
+      </div>
+    </div>
+
+    <h4>Como construiremos o coração?</h4>
+
+    <div class="guia">
+
+      <div class="guia-desenho">
+
+        <svg viewBox="0 0 460 250"
+             aria-label="Construção de coração com círculos e triângulo">
+
+          <circle cx="185" cy="88" r="47"
+                  fill="#b7e2cb"
+                  stroke="#247c58"
+                  stroke-width="2"/>
+
+          <circle cx="275" cy="88" r="47"
+                  fill="#b7e2cb"
+                  stroke="#247c58"
+                  stroke-width="2"/>
+
+          <polygon points="135,93 325,93 230,210"
+                   fill="#80c7a2"
+                   stroke="#247c58"
+                   stroke-width="2"/>
+
+          <text x="95" y="30"
+                font-size="14" fill="#29443a">
+            Circulo 1
+          </text>
+
+          <text x="287" y="30"
+                font-size="14" fill="#29443a">
+            Circulo 2
+          </text>
+
+          <text x="188" y="164"
+                font-size="15" fill="#174b39">
+            Triangulo
+          </text>
+
+        </svg>
+
+      </div>
+
+      <p>
+        <strong>Primeiro círculo:</strong>
+        centro (55,34), raio 10.
+      </p>
+
+      <p>
+        <strong>Segundo círculo:</strong>
+        centro (73,34), raio 10.
+      </p>
+
+      <p>
+        <strong>Triângulo:</strong>
+        vértices (45,35), (83,35) e (64,58).
+      </p>
+
+      <p>
+        Observe que todos esses pontos
+        estão dentro da região principal
+        do OLED.
+      </p>
+
+    </div>
+
+    <div class="destaque">
+
+      <strong>💡 Como criar a animação?</strong>
+
+      <p>
+        Primeiro desenharemos o coração grande.
+        Depois, um coração menor.
+      </p>
+
+      <p>
+        Alternando os dois desenhos,
+        teremos a impressão de
+        um coração pulsando.
+      </p>
+
+      <p>
+        Para isso, podemos criar uma função
+        <code>desenharCoracao(bool grande)</code>.
+      </p>
+
+    </div>
+
+    <h4>Complete o programa</h4>
+
+    <div class="codigo">
+
+      <button class="copiar"
+        onclick="copiarCodigo('codigoB',this)">
+        Copiar código
+      </button>
+
+<pre id="codigoB">// GlowUP Plant — Desafio B
+// Objetivo: desenhar um coracao pulsante.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+// Desenha o coracao grande ou pequeno.
+void desenharCoracao(bool grande) {
+
+  if (grande) {
+
+    // TODO 1:
+    // Desenhe dois circulos preenchidos:
+    // (55,34), raio 10
+    // (73,34), raio 10
+
+
+    // TODO 2:
+    // Desenhe um triangulo preenchido:
+    // (45,35), (83,35), (64,58)
+
+
+  }
+  else {
+
+    // Coracao menor, ja fornecido.
+    display.fillCircle(
+      57, 34, 8, SSD1306_WHITE
+    );
+
+    display.fillCircle(
+      71, 34, 8, SSD1306_WHITE
+    );
+
+    display.fillTriangle(
+      49, 35, 79, 35, 64, 53,
+      SSD1306_WHITE
+    );
+  }
+}
+
+void setup() {
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Desenha o coracao grande.
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  desenharCoracao(true);
+
+  // TODO 3:
+  // Atualize o display.
+
+
+  delay(500);
+
+  // Desenha o coracao pequeno.
+  display.clearDisplay();
+
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  desenharCoracao(false);
+
+  // TODO 4:
+  // Atualize o display.
+
+
+  delay(500);
+}</pre>
+
+    </div>
+
+    <button class="botao botao-solucao"
+      onclick="mostrarSolucao('solucaoB',this)">
+      💡 Ver solução do desafio B
+    </button>
+
+    <div class="codigo solucao" id="solucaoB" hidden>
+
+      <button class="copiar"
+        onclick="copiarCodigo('respostaB',this)">
+        Copiar solução
+      </button>
+
+<pre id="respostaB">// GlowUP Plant — Solucao do Desafio B
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+// Funcao que desenha dois tamanhos de coracao.
+void desenharCoracao(bool grande) {
+
+  if (grande) {
+
+    // Parte superior esquerda.
+    display.fillCircle(
+      55, 34, 10, SSD1306_WHITE
+    );
+
+    // Parte superior direita.
+    display.fillCircle(
+      73, 34, 10, SSD1306_WHITE
+    );
+
+    // Parte inferior do coracao.
+    display.fillTriangle(
+      45, 35, 83, 35, 64, 58,
+      SSD1306_WHITE
+    );
+
+  }
+  else {
+
+    // Coracao menor.
+    display.fillCircle(
+      57, 34, 8, SSD1306_WHITE
+    );
+
+    display.fillCircle(
+      71, 34, 8, SSD1306_WHITE
+    );
+
+    display.fillTriangle(
+      49, 35, 79, 35, 64, 53,
+      SSD1306_WHITE
+    );
+  }
+}
+
+void setup() {
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Primeira imagem: coracao grande.
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  desenharCoracao(true);
+
+  display.display();
+
+  delay(500);
+
+  // Segunda imagem: coracao pequeno.
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  desenharCoracao(false);
+
+  display.display();
+
+  delay(500);
+}</pre>
+
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoB">
+      <span>Concluí o desafio B!</span>
+    </label>
+
+  </div>
+
+
+  <!-- ==========================================
+       DESAFIO C — EXPRESSÕES
+       ========================================== -->
+
+  <div class="desafio" id="desafio-c">
+
+    <h3>🚀 Desafio C — As emoções da nossa planta</h3>
+
+    <p>
+      Vamos combinar as leituras do sensor
+      de umidade com três expressões faciais:
+      triste, feliz e surpresa!
+    </p>
+
+    <div class="tabela-container">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Umidade relativa</th>
+            <th>Expressão</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Abaixo de 30%</td>
+            <td>😟 Triste</td>
+          </tr>
+
+          <tr>
+            <td>De 30% a 69%</td>
+            <td>🙂 Feliz</td>
+          </tr>
+
+          <tr>
+            <td>70% ou mais</td>
+            <td>😮 Surpresa</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    <h4>Resultado esperado</h4>
+
+    <div class="oled-area">
+      <div class="oled-moldura">
+
+        <svg class="oled-svg" viewBox="0 0 128 64"
+             aria-label="OLED com rosto feliz">
+
+          <g class="faixa-topo">
+            <text x="28" y="9" class="texto">GlowUP Plant</text>
+          </g>
+
+          <g class="faixa-baixo"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="1.3">
+
+            <circle cx="64" cy="40" r="20"/>
+
+            <circle cx="56" cy="34" r="2"
+                    fill="currentColor"/>
+
+            <circle cx="72" cy="34" r="2"
+                    fill="currentColor"/>
+
+            <polyline points="53,45 59,50 69,50 75,45"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+
+          </g>
+
+        </svg>
+
+      </div>
+    </div>
+
+    <h4>Como desenhar o rosto?</h4>
+
+    <div class="guia">
+
+      <p>
+        Primeiro utilizaremos
+        um círculo maior para
+        representar o contorno.
+      </p>
+
+      <div class="codigo codigo-simples">
+<pre>display.drawCircle(
+  64, 40, 20, SSD1306_WHITE
+);</pre>
+      </div>
+
+      <p>
+        Depois utilizaremos dois
+        círculos pequenos como olhos.
+      </p>
+
+      <div class="codigo codigo-simples">
+<pre>display.fillCircle(
+  56, 34, 2, SSD1306_WHITE
+);
+
+display.fillCircle(
+  72, 34, 2, SSD1306_WHITE
+);</pre>
+      </div>
+
+      <p>
+        Finalmente, usaremos linhas
+        para construir a boca.
+      </p>
+
+      <div class="codigo codigo-simples">
+<pre>// Boca sorrindo.
+display.drawLine(53, 45, 59, 50, SSD1306_WHITE);
+display.drawLine(59, 50, 69, 50, SSD1306_WHITE);
+display.drawLine(69, 50, 75, 45, SSD1306_WHITE);</pre>
+      </div>
+
+      <p>
+        Observe que alterando as posições
+        dos pontos da boca podemos
+        criar outras expressões.
+      </p>
+
+    </div>
+
+    <div class="destaque">
+
+      <strong>💡 O desafio</strong>
+
+      <p>
+        As funções que desenham os rostos
+        já estão prontas.
+      </p>
+
+      <p>
+        Sua tarefa será completar
+        as instruções condicionais
+        responsáveis por escolher
+        a expressão adequada.
+      </p>
+
+    </div>
+
+    <div class="codigo">
+
+      <button class="copiar"
+        onclick="copiarCodigo('codigoC',this)">
+        Copiar código
+      </button>
+
+<pre id="codigoC">// GlowUP Plant — Desafio C
+// Objetivo: mostrar as emocoes da planta.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+// Valores de calibracao.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+// Desenha o contorno e os olhos.
+void desenharRosto() {
+
+  display.drawCircle(64, 40, 20, SSD1306_WHITE);
+
+  display.fillCircle(56, 34, 2, SSD1306_WHITE);
+  display.fillCircle(72, 34, 2, SSD1306_WHITE);
+}
+
+// Expressao feliz.
+void rostoFeliz() {
+
+  desenharRosto();
+
+  display.drawLine(53,45,59,50,SSD1306_WHITE);
+  display.drawLine(59,50,69,50,SSD1306_WHITE);
+  display.drawLine(69,50,75,45,SSD1306_WHITE);
+}
+
+// Expressao triste.
+void rostoTriste() {
+
+  desenharRosto();
+
+  display.drawLine(53,51,59,46,SSD1306_WHITE);
+  display.drawLine(59,46,69,46,SSD1306_WHITE);
+  display.drawLine(69,46,75,51,SSD1306_WHITE);
+}
+
+// Expressao surpresa.
+void rostoSurpreso() {
+
+  desenharRosto();
+
+  display.drawCircle(64,49,5,SSD1306_WHITE);
+}
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  display.clearDisplay();
+
+  // Titulo superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // TODO 1:
+  // Se a umidade for menor que 30,
+  // execute rostoTriste().
+
+
+  // TODO 2:
+  // Se a umidade for menor que 70,
+  // execute rostoFeliz().
+
+
+  // TODO 3:
+  // Nos demais casos,
+  // execute rostoSurpreso().
+
+
+  // Atualiza a imagem.
+  display.display();
+
+  delay(1000);
+}</pre>
+
+    </div>
+
+    <button class="botao botao-solucao"
+      onclick="mostrarSolucao('solucaoC',this)">
+      💡 Ver solução do desafio C
+    </button>
+
+    <div class="codigo solucao" id="solucaoC" hidden>
+
+      <button class="copiar"
+        onclick="copiarCodigo('respostaC',this)">
+        Copiar solução
+      </button>
+
+<pre id="respostaC">// GlowUP Plant — Solucao do Desafio C
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+// Contorno e olhos.
+void desenharRosto() {
+
+  display.drawCircle(64, 40, 20, SSD1306_WHITE);
+
+  display.fillCircle(56, 34, 2, SSD1306_WHITE);
+  display.fillCircle(72, 34, 2, SSD1306_WHITE);
+}
+
+// Boca sorrindo.
+void rostoFeliz() {
+
+  desenharRosto();
+
+  display.drawLine(53,45,59,50,SSD1306_WHITE);
+  display.drawLine(59,50,69,50,SSD1306_WHITE);
+  display.drawLine(69,50,75,45,SSD1306_WHITE);
+}
+
+// Boca triste.
+void rostoTriste() {
+
+  desenharRosto();
+
+  display.drawLine(53,51,59,46,SSD1306_WHITE);
+  display.drawLine(59,46,69,46,SSD1306_WHITE);
+  display.drawLine(69,46,75,51,SSD1306_WHITE);
+}
+
+// Boca de surpresa.
+void rostoSurpreso() {
+
+  desenharRosto();
+
+  display.drawCircle(64,49,5,SSD1306_WHITE);
+}
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  display.clearDisplay();
+
+  // Titulo superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Escolhe a expressao conforme a umidade.
+  if (umidade &lt; 30) {
+
+    rostoTriste();
+
+  }
+  else if (umidade &lt; 70) {
+
+    rostoFeliz();
+
+  }
+  else {
+
+    rostoSurpreso();
+
+  }
+
+  display.display();
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  delay(1000);
+}</pre>
+
+    </div>
+
+    <div class="destaque">
+
+      <strong>🌱 Personalize a sua planta!</strong>
+
+      <p>
+        Experimente modificar as coordenadas
+        dos olhos e da boca.
+      </p>
+
+      <p>
+        Você consegue desenhar sobrancelhas?
+        E uma nova expressão facial?
+      </p>
+
+    </div>
+
+    <div class="aviso">
+
+      <strong>Importante:</strong>
+
+      <p>
+        Os limites de umidade utilizados
+        são referências didáticas.
+        Diferentes plantas apresentam
+        necessidades de irrigação distintas.
+      </p>
+
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoC">
+
+      <span>Concluí o desafio C!</span>
+    </label>
+
+  </div>
+
+  <div class="destaque">
+
+    <strong>🎉 Parabéns!</strong>
+
+    <p>
+      Você aprendeu a utilizar a biblioteca
+      gráfica para criar desenhos e animações
+      e a combinar essas figuras
+      com informações de um sensor.
+    </p>
+
+    <p id="progressoDesafios">
+      0 de 3 desafios avançados concluídos.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- ==============================================
+     FINALIZAÇÃO
+     ============================================== -->
+
+<section class="resultado">
+
+  <h2 id="tituloFinal">
+    🌱 Sua jornada continua!
+  </h2>
+
+  <p id="mensagemFinal">
+    Complete os cinco experimentos iniciais.
+  </p>
+
+  <a class="botao" href="index.html">
+    ← Voltar à oficina
+  </a>
+
+  <button
+    class="botao botao-secundario"
+    type="button"
+    id="reiniciar">
+    Reiniciar esta etapa
+  </button>
+
+</section>
+
+</main>
+
+<footer>
+  GlowUP Plant • NuRIA — Instituto Federal de São Paulo
+</footer>
+
+
+<script>
+
+/* ==============================================
+   GlowUP Plant — Etapa 04 — v1.1
+   ============================================== */
+
+const CHAVE_ETAPA = "glowup-etapa04-v1";
+const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+const CHAVE_ETAPA03 = "glowup-etapa03-v1";
+const CHAVE_VISUAL = "glowup-oled-visual-v1";
+
+const ATIVIDADES = ["1", "2", "3", "4", "5"];
+
+const DESAFIOS = [
+  "avancadoA",
+  "avancadoB",
+  "avancadoC"
+];
+
+
+/* LEITURA DO ARMAZENAMENTO */
+
+function lerJSON(chave) {
+  try {
+    const texto = localStorage.getItem(chave);
+
+    if (!texto) return {};
+
+    const dados = JSON.parse(texto);
+
+    if (
+      dados &&
+      typeof dados === "object" &&
+      !Array.isArray(dados)
+    ) {
+      return dados;
+    }
+
+    return {};
+
+  } catch (erro) {
+    return {};
+  }
+}
+
+let progresso = lerJSON(CHAVE_ETAPA);
+
+
+/* VALIDAÇÃO ADC */
+
+function validarADC(valor) {
+
+  if (
+    valor === "" ||
+    valor === null ||
+    valor === undefined
+  ) {
+    return null;
+  }
+
+  const numero = Number(valor);
+
+  if (
+    !Number.isInteger(numero) ||
+    numero < 0 ||
+    numero > 4095
+  ) {
+    return null;
+  }
+
+  return numero;
+}
+
+
+/* RECUPERAR CALIBRAÇÃO */
+
+function recuperarCalibracao() {
+
+  const etapa03 = lerJSON(CHAVE_ETAPA03);
+
+  if (progresso.calSeco === undefined) {
+    const valor = validarADC(etapa03.valorSeco);
+
+    if (valor !== null) {
+      progresso.calSeco = valor;
+    }
+  }
+
+  if (progresso.calUmido === undefined) {
+    const valor = validarADC(etapa03.valorUmido);
+
+    if (valor !== null) {
+      progresso.calUmido = valor;
+    }
+  }
+}
+
+
+/* SALVAR PROGRESSO */
+
+function salvarProgresso() {
+
+  const geral = lerJSON(CHAVE_GERAL);
+
+  const inicial = ATIVIDADES.every(
+    id => progresso[id] === true
+  );
+
+  const avancado = DESAFIOS.every(
+    id => progresso[id] === true
+  );
+
+  geral[4] = {
+    ...(geral[4] || {}),
+    inicial: inicial,
+    avancado: avancado
+  };
+
+  try {
+    localStorage.setItem(
+      CHAVE_ETAPA,
+      JSON.stringify(progresso)
+    );
+
+    localStorage.setItem(
+      CHAVE_GERAL,
+      JSON.stringify(geral)
+    );
+  } catch (erro) {
+    console.warn("Não foi possível salvar.", erro);
+  }
+}
+
+
+/* ATUALIZAR TELA */
+
+function atualizar() {
+
+  document.querySelectorAll(
+    "input[type='checkbox'][data-id]"
+  ).forEach(caixa => {
+    caixa.checked =
+      progresso[caixa.dataset.id] === true;
+  });
+
+  const concluidas = ATIVIDADES.filter(
+    id => progresso[id] === true
+  ).length;
+
+  const percentual = Math.round(
+    concluidas / ATIVIDADES.length * 100
+  );
+
+  document.getElementById(
+    "preenchimento"
+  ).style.width = percentual + "%";
+
+  document.getElementById(
+    "barra"
+  ).setAttribute(
+    "aria-valuenow",
+    percentual
+  );
+
+  document.getElementById(
+    "contador"
+  ).textContent =
+    concluidas + " de 5 atividades concluídas (" +
+    percentual + "%)";
+
+  const avancados = DESAFIOS.filter(
+    id => progresso[id] === true
+  ).length;
+
+  document.getElementById(
+    "progressoDesafios"
+  ).textContent =
+    avancados + " de 3 desafios avançados concluídos.";
+
+  document.getElementById(
+    "contadorAvancado"
+  ).textContent =
+    avancados === 3
+      ? "🚀 Desafios avançados: concluídos ✓"
+      : "🚀 Desafios avançados: " +
+        avancados + " de 3 concluídos (opcionais)";
+
+  if (concluidas === 5) {
+
+    document.getElementById(
+      "tituloFinal"
+    ).textContent =
+      "🎉 Parabéns! Etapa 04 concluída!";
+
+    document.getElementById(
+      "mensagemFinal"
+    ).textContent =
+      "Você apresentou medições e porcentagens " +
+      "no OLED e descobriu seus recursos gráficos!";
+
+  } else {
+
+    document.getElementById(
+      "tituloFinal"
+    ).textContent =
+      "🌱 Sua jornada continua!";
+
+    document.getElementById(
+      "mensagemFinal"
+    ).textContent =
+      "Você concluiu " + concluidas +
+      " de 5 experimentos iniciais.";
+  }
+}
+
+
+/* CHECKBOXES */
+
+document.addEventListener("change", function(evento) {
+
+  const elemento = evento.target;
+
+  if (!elemento.matches(
+    "input[type='checkbox'][data-id]"
+  )) {
+    return;
+  }
+
+  progresso[elemento.dataset.id] = elemento.checked;
+
+  salvarProgresso();
+  atualizar();
+});
+
+
+/* CALIBRAÇÃO */
+
+["calSeco", "calUmido"].forEach(id => {
+
+  const campo = document.getElementById(id);
+
+  campo.addEventListener("input", function() {
+
+    const aviso = document.getElementById(
+      "avisoCalibracao"
+    );
+
+    const valor = validarADC(campo.value);
+
+    if (campo.value === "") {
+      delete progresso[id];
+
+      aviso.textContent = "Valor apagado.";
+
+    } else if (valor === null) {
+
+      aviso.textContent =
+        "Digite um número inteiro entre 0 e 4095.";
+
+      return;
+
+    } else {
+
+      progresso[id] = valor;
+
+      aviso.textContent =
+        "Referência registrada neste navegador. ✓";
+    }
+
+    salvarProgresso();
+  });
+
+  campo.addEventListener("blur", function() {
+
+    const valor = validarADC(progresso[id]);
+
+    campo.value =
+      valor === null ? "" : valor;
+  });
+
+});
+
+
+function atualizarCampos() {
+
+  ["calSeco", "calUmido"].forEach(id => {
+
+    const valor = validarADC(progresso[id]);
+
+    document.getElementById(id).value =
+      valor === null ? "" : valor;
+  });
+}
+
+
+/* COPIAR CÓDIGO */
+
+async function copiarCodigo(id, botao) {
+
+  const elemento = document.getElementById(id);
+
+  if (!elemento) return;
+
+  const codigo = elemento.textContent;
+  const anterior = botao.textContent;
+
+  try {
+
+    await navigator.clipboard.writeText(codigo);
+
+    botao.textContent = "Copiado! ✓";
+
+    setTimeout(() => {
+      botao.textContent = anterior;
+    }, 2000);
+
+  } catch (erro) {
+
+    alert(
+      "Não foi possível copiar automaticamente. " +
+      "Selecione o código e copie manualmente."
+    );
+  }
+}
+
+
+/* SOLUÇÕES */
+
+function mostrarSolucao(id, botao) {
+
+  const bloco = document.getElementById(id);
+
+  if (!bloco) return;
+
+  if (!bloco.hidden) {
+
+    bloco.hidden = true;
+    botao.textContent = "💡 Ver solução";
+    return;
+  }
+
+  const confirmar = confirm(
+
+    "💡 Você quer mesmo saber a resposta?\n\n" +
+
+    "Que tal tentar mais um pouco antes " +
+    "de consultar a solução?\n\n" +
+
+    "Clique em OK para ver a resposta.\n" +
+
+    "Clique em Cancelar para continuar tentando."
+  );
+
+  if (!confirmar) return;
+
+  bloco.hidden = false;
+  botao.textContent = "🙈 Ocultar solução";
+
+  bloco.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest"
+  });
+}
+
+
+/* PRÉVIA BRANCO / BICOLOR */
+
+function alterarModoOLED(modo) {
+
+  const branco = modo === "branco";
+
+  document.body.classList.toggle(
+    "oled-branco",
+    branco
+  );
+
+  document.getElementById(
+    "modoBranco"
+  ).classList.toggle("ativo", branco);
+
+  document.getElementById(
+    "modoBicolor"
+  ).classList.toggle("ativo", !branco);
+
+  try {
+    localStorage.setItem(CHAVE_VISUAL, modo);
+  } catch (erro) {
+    console.warn("Preferência visual não salva.");
+  }
+}
+
+
+/* REINICIAR ETAPA */
+
+document.getElementById(
+  "reiniciar"
+).addEventListener("click", function() {
+
+  const confirmar = confirm(
+    "Deseja reiniciar o progresso da Etapa 04?"
+  );
+
+  if (!confirmar) return;
+
+  progresso = {};
+
+  salvarProgresso();
+  atualizar();
+  atualizarCampos();
+
+  document.querySelectorAll(
+    ".solucao"
+  ).forEach(bloco => {
+    bloco.hidden = true;
+  });
+
+  document.querySelectorAll(
+    ".botao-solucao"
+  ).forEach(botao => {
+    botao.textContent = "💡 Ver solução";
+  });
+
+  document.getElementById(
+    "avisoCalibracao"
+  ).textContent =
+    "Registros reiniciados.";
+});
+
+
+/* INICIALIZAÇÃO */
+
+recuperarCalibracao();
+salvarProgresso();
+atualizar();
+atualizarCampos();
+
+try {
+  alterarModoOLED(
+    localStorage.getItem(CHAVE_VISUAL) || "bicolor"
+  );
+} catch (erro) {
+  alterarModoOLED("bicolor");
+}
+
+</script>
+
+</body>
+</html>
