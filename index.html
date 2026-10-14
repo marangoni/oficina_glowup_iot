@@ -2,345 +2,128 @@
 <html lang="pt-BR">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GlowUP Plant | Oficina</title>
+    <meta name="description"
+          content="GlowUp IoT: Ciência Delas - Expressões da Natureza. Oficina de eletrônica, programação e IoT do IFSP Campus Hortolândia.">
 
-<style>
+    <title>GlowUp IoT: Ciência Delas - Expressões da Natureza</title>
 
-:root {
-    --verde: #247c58;
-    --verde-escuro: #174b39;
-    --verde-claro: #e6f6ec;
-    --rosa: #e86695;
-    --rosa-claro: #fff0f5;
-    --fundo: #f7faf8;
-    --texto: #29443a;
-    --borda: #dfeae3;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    margin: 0;
-    background: var(--fundo);
-    color: var(--texto);
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
-}
-
-.container {
-    width: 92%;
-    max-width: 1120px;
-    margin: auto;
-}
-
-header {
-    background: white;
-    border-bottom: 1px solid var(--borda);
-}
-
-.topo {
-    min-height: 75px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.logo {
-    color: var(--verde);
-    font-size: 23px;
-    font-weight: bold;
-}
-
-.logo span {
-    color: var(--rosa);
-}
-
-.versao {
-    color: #718579;
-    font-size: 12px;
-}
-
-.hero {
-    background: linear-gradient(
-        135deg,
-        #e5f6eb,
-        #fff0f5
-    );
-    padding: 50px 0;
-}
-
-.hero h1 {
-    color: var(--verde-escuro);
-    font-size: clamp(30px, 5vw, 46px);
-    line-height: 1.2;
-    margin: 12px 0;
-}
-
-.hero p {
-    max-width: 700px;
-}
-
-.tag {
-    color: var(--verde);
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.botao {
-    display: inline-block;
-    background: var(--verde);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 8px 8px 0 0;
-}
-
-.botao-secundario {
-    background: white;
-    color: var(--verde);
-    border: 1px solid #b9d7c6;
-}
-
-.painel {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    margin: 28px 0;
-}
-
-.indicador {
-    background: white;
-    border: 1px solid var(--borda);
-    border-radius: 15px;
-    padding: 22px;
-}
-
-.indicador strong {
-    display: block;
-    color: var(--verde);
-    font-size: 25px;
-    margin: 5px 0;
-}
-
-.indicador a {
-    color: var(--verde);
-}
-
-.barra {
-    height: 13px;
-    background: #e4eee7;
-    border-radius: 20px;
-    overflow: hidden;
-    margin-top: 12px;
-}
-
-.preenchimento {
-    width: 0;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        #47b582,
-        #ec83ab
-    );
-}
-
-h2 {
-    color: var(--verde-escuro);
-    margin-top: 35px;
-}
-
-.grade {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 22px;
-    margin: 25px 0 45px;
-}
-
-.cartao {
-    background: white;
-    border: 1px solid var(--borda);
-    border-radius: 18px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-.cartao-corpo {
-    padding: 24px;
-    flex: 1;
-}
-
-.etiqueta {
-    display: inline-block;
-    background: var(--verde-claro);
-    color: var(--verde);
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-.icone {
-    font-size: 38px;
-    margin: 18px 0;
-}
-
-.cartao h3 {
-    color: var(--verde-escuro);
-    font-size: 21px;
-    margin: 5px 0;
-}
-
-.cartao p {
-    color: #617c70;
-    font-size: 15px;
-}
-
-.estado {
-    font-size: 13px;
-    line-height: 1.8;
-    color: var(--verde);
-    font-weight: bold;
-    margin-top: 18px;
-}
-
-.acoes {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    padding: 15px;
-    border-top: 1px solid var(--borda);
-}
-
-.acoes a {
-    text-align: center;
-    text-decoration: none;
-    background: var(--verde-claro);
-    color: #116843;
-    border-radius: 10px;
-    padding: 11px 5px;
-    font-size: 14px;
-    font-weight: bold;
-}
-
-.acoes a:last-child {
-    background: var(--rosa-claro);
-    color: #b92e65;
-}
-
-.acoes span {
-    display: block;
-    text-align: center;
-    background: #f0f3f1;
-    color: #84948c;
-    border-radius: 10px;
-    padding: 11px 5px;
-    font-size: 14px;
-}
-
-footer {
-    background: var(--verde-escuro);
-    color: white;
-    text-align: center;
-    padding: 25px;
-    font-size: 14px;
-}
-
-@media (max-width: 680px) {
-
-    .painel,
-    .grade {
-        grid-template-columns: 1fr;
-    }
-
-    .hero {
-        padding: 35px 0;
-    }
-
-    .topo {
-        padding: 15px 0;
-    }
-
-}
-
-</style>
+    <!-- Estilos da página inicial -->
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
+<!-- =========================================
+     CABEÇALHO
+     ========================================= -->
+
 <header>
+
     <div class="container topo">
 
         <div class="logo">
-            🌱 Glow<span>UP</span> Plant
+            🌱 Glow<span>Up</span> IoT
         </div>
 
-        <span class="versao">
-            NuRIA • IFSP • Oficina Maker • v1.6
-        </span>
+        <div class="topo-direita">
+
+            <div class="instituicao-topo">
+                IFSP — Campus Hortolândia
+            </div>
+
+            <div class="versao">
+                v1.7
+            </div>
+
+        </div>
 
     </div>
+
 </header>
+
+
+<!-- =========================================
+     APRESENTAÇÃO DA OFICINA
+     ========================================= -->
 
 <section class="hero">
 
     <div class="container">
 
-        <span class="tag">
-            APRENDER • EXPERIMENTAR • CRIAR
-        </span>
+        <div class="hero-conteudo">
 
-        <h1>
-            Uma plantinha, muitas descobertas! 🌿
-        </h1>
+            <span class="tag">
+                Ciência Delas • Oficina Maker
+            </span>
 
-        <p>
-            Explore componentes eletrônicos,
-            programe o ESP32-C3 e construa
-            um dispositivo inteligente
-            para acompanhar sua planta.
-        </p>
+            <h1>
+                GlowUp IoT:<br>
+                <span>Ciência Delas</span> —
+                Expressões da Natureza
+            </h1>
 
-        <p>
-            Realize as atividades no seu ritmo
-            e registre suas descobertas!
-        </p>
+            <p>
+                <strong>
+                    Uma plantinha, muitas descobertas! 🌿
+                </strong>
+            </p>
 
-        <a class="botao" href="materiais.html">
-            🧰 Conferir materiais
-        </a>
+            <p>
+                Explore componentes eletrônicos,
+                programe o ESP32-C3 e construa
+                um dispositivo inteligente
+                para acompanhar sua planta.
+            </p>
 
-        <a class="botao botao-secundario" href="#etapas">
-            🌱 Ver etapas
-        </a>
+            <p>
+                Aprenda no seu ritmo, realize
+                experimentos, resolva desafios
+                e descubra como a tecnologia
+                pode ajudar a compreender
+                a natureza.
+            </p>
+
+            <div class="botoes-hero">
+
+                <a
+                    class="botao"
+                    href="materiais.html">
+                    🧰 Conferir materiais
+                </a>
+
+                <a
+                    class="botao botao-secundario"
+                    href="#etapas">
+                    🌱 Ver etapas
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
+
 <main class="container">
 
-<section class="painel">
+<!-- =========================================
+     INDICADORES DE PROGRESSO
+     ========================================= -->
+
+<section class="indicadores">
 
     <div class="indicador">
 
-        <span>Materiais conferidos</span>
+        <h3>
+            Materiais conferidos
+        </h3>
 
-        <strong id="contadorMateriais">
+        <strong id="materialCount">
             0 de 9
         </strong>
 
@@ -352,23 +135,26 @@ footer {
 
     <div class="indicador">
 
-        <span>Etapas iniciais concluídas</span>
+        <h3>
+            Atividades iniciais concluídas
+        </h3>
 
-        <strong id="contadorEtapas">
+        <strong id="stageCount">
             0 de 6 etapas
         </strong>
 
         <div
-            class="barra"
-            id="barraGeral"
+            class="barra-progresso"
+            id="globalBar"
             role="progressbar"
+            aria-label="Progresso geral da oficina"
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow="0">
 
             <div
                 class="preenchimento"
-                id="preenchimentoGeral">
+                id="globalFill">
             </div>
 
         </div>
@@ -377,34 +163,78 @@ footer {
 
 </section>
 
-<h2 id="etapas">🚀 Etapas da oficina</h2>
 
-<p>
-    Comece pelas atividades iniciais.
-    Os desafios avançados são opcionais
-    e podem ser realizados posteriormente.
-</p>
+<!-- =========================================
+     ETAPAS DA OFICINA
+     ========================================= -->
 
-<div class="grade" id="gradeEtapas"></div>
+<section id="etapas">
+
+    <h2 class="titulo-secao">
+        🚀 Etapas da oficina
+    </h2>
+
+    <p class="introducao-etapas">
+
+        Comece pelo nível inicial de cada etapa.
+        Os desafios avançados são opcionais
+        e podem ser realizados depois.
+
+    </p>
+
+    <div
+        class="grade-etapas"
+        id="cards">
+    </div>
+
+</section>
 
 </main>
 
+
+<!-- =========================================
+     RODAPÉ INSTITUCIONAL
+     ========================================= -->
+
 <footer>
-    GlowUP Plant • NuRIA — Instituto Federal de São Paulo
+
+    <div class="nome-oficina">
+        GlowUp IoT: Ciência Delas -
+        Expressões da Natureza
+    </div>
+
+    <div class="nome-instituto">
+        IFSP - Instituto Federal de Educação,
+        Ciência e Tecnologia - Campus Hortolândia
+    </div>
+
+    <div class="nuria">
+        NuRIA • Núcleo de Robótica e Inteligência Artificial
+    </div>
+
 </footer>
+
 
 <script>
 
-/* ==========================================
-   GLOWUP PLANT — PÁGINA INICIAL v1.6
-   ========================================== */
+/* =========================================
+   GLOWUP IOT — PÁGINA INICIAL
+   Versão 1.7
 
-const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+   Preserva as chaves de armazenamento
+   utilizadas nas etapas anteriores.
+   ========================================= */
 
-const CHAVE_MATERIAIS = "glowup-materiais-v1";
+const CHAVE_GERAL =
+    "glowup-oficina-progresso-v1";
+
+const CHAVE_MATERIAIS =
+    "glowup-materiais-v1";
 
 
-/* ETAPAS DA OFICINA */
+/* =========================================
+   DEFINIÇÃO DAS ETAPAS
+   ========================================= */
 
 const ETAPAS = [
 
@@ -414,7 +244,8 @@ const ETAPAS = [
         titulo: "Conhecendo o ESP32-C3",
         descricao:
             "Conheça a placa, explore sua pinagem, " +
-            "configure o Arduino IDE e execute seu primeiro programa.",
+            "configure o Arduino IDE e execute " +
+            "seu primeiro programa.",
         arquivo: "etapa01.html"
     },
 
@@ -423,39 +254,42 @@ const ETAPAS = [
         icone: "💡",
         titulo: "Experimentando o ESP32-C3",
         descricao:
-            "Monte o ESP32-C3 na protoboard e explore " +
-            "programas de controle de LEDs e alertas sonoros.",
+            "Monte a placa na protoboard " +
+            "e experimente programas com LEDs " +
+            "e alertas sonoros utilizando o buzzer.",
         arquivo: "etapa02.html"
     },
 
     {
         numero: 3,
-        icone: "🌱",
+        icone: "🌡️",
         titulo: "Conectando os sensores",
         descricao:
-            "Conecte o sensor capacitivo, observe suas " +
-            "leituras e descubra como medir a umidade do solo.",
+            "Aprenda a utilizar o sensor capacitivo " +
+            "para medir a umidade do solo " +
+            "e interpretar suas leituras.",
         arquivo: "etapa03.html"
     },
 
     {
-    numero: 4,
-    icone: "🖥️",
-    titulo: "Dando vida à nossa planta!",
-    descricao:
-        "Aprenda a utilizar o display OLED para apresentar " +
-        "medições, desenhar figuras e criar expressões " +
-        "que representam a condição da planta.",
-    arquivo: "etapa04.html"
-},
+        numero: 4,
+        icone: "🖥️",
+        titulo: "Dando vida à nossa planta!",
+        descricao:
+            "Aprenda a apresentar medições no OLED " +
+            "e criar desenhos, corações " +
+            "e expressões faciais.",
+        arquivo: "etapa04.html"
+    },
+
     {
         numero: 5,
         icone: "🪴",
         titulo: "Construindo o GlowUP Plant",
         descricao:
-            "Integre o sensor de umidade, o display OLED " +
-            "e o buzzer para criar um sistema inteligente " +
-            "com expressões faciais e alertas sonoros.",
+            "Integre sensor, display OLED e buzzer " +
+            "para criar um sistema inteligente " +
+            "com indicações visuais e sonoras.",
         arquivo: "etapa05.html"
     },
 
@@ -464,21 +298,25 @@ const ETAPAS = [
         icone: "✨",
         titulo: "Personalizando o GlowUP Plant",
         descricao:
-            "Teste, calibre e personalize " +
-            "o seu dispositivo inteligente.",
+            "Personalize as expressões da sua planta " +
+            "e descubra novas possibilidades " +
+            "para o projeto.",
         arquivo: null
     }
 
 ];
 
 
-/* LER DADOS DO NAVEGADOR */
+/* =========================================
+   LEITURA SEGURA DO LOCALSTORAGE
+   ========================================= */
 
-function lerJSON(chave) {
+function lerDados(chave) {
 
     try {
 
-        const texto = localStorage.getItem(chave);
+        const texto =
+            localStorage.getItem(chave);
 
         if (!texto) {
             return {};
@@ -498,142 +336,165 @@ function lerJSON(chave) {
 
     } catch (erro) {
 
-        return {};
+        console.warn(
+            "Não foi possível ler os dados:",
+            erro
+        );
 
+        return {};
     }
 
 }
 
 
-/* ATUALIZAR PÁGINA */
+/* =========================================
+   MONTAGEM DOS CARTÕES
+   ========================================= */
 
-function atualizarPagina() {
+function montarEtapas() {
 
-    const progresso = lerJSON(CHAVE_GERAL);
+    const progresso =
+        lerDados(CHAVE_GERAL);
 
-    const materiais = lerJSON(CHAVE_MATERIAIS);
+    const materiais =
+        lerDados(CHAVE_MATERIAIS);
 
-    let concluidas = 0;
+    const elementoCards =
+        document.getElementById("cards");
 
+    let etapasConcluidas = 0;
 
-    /* MONTAR OS CARTÕES */
+    elementoCards.innerHTML = ETAPAS.map(
+        etapa => {
 
-    const html = ETAPAS.map(etapa => {
+            const estado =
+                progresso[etapa.numero] || {};
 
-        const estado = progresso[etapa.numero] || {};
+            if (estado.inicial === true) {
+                etapasConcluidas++;
+            }
 
-        if (estado.inicial === true) {
-            concluidas++;
-        }
+            const statusInicial =
+                estado.inicial === true
+                    ? "Concluído ✓"
+                    : "Pendente";
 
-        const inicial = estado.inicial
-            ? "Concluído ✓"
-            : "Pendente";
+            const statusAvancado =
+                estado.avancado === true
+                    ? "Concluído ✓"
+                    : "Opcional";
 
-        const avancado = estado.avancado
-            ? "Concluído ✓"
-            : "Opcional";
+            let botoes = "";
 
+            if (etapa.arquivo) {
 
-        let botoes = "";
+                botoes = `
+                    <a href="${etapa.arquivo}">
+                        🌱 Inicial
+                    </a>
 
-        if (etapa.arquivo) {
+                    <a href="${etapa.arquivo}#desafio-avancado">
+                        🚀 Avançado
+                    </a>
+                `;
 
-            botoes = `
-                <a href="${etapa.arquivo}">
-                    🌱 Inicial
-                </a>
+            } else {
 
-                <a href="${etapa.arquivo}#desafio-avancado">
-                    🚀 Avançado
-                </a>
-            `;
+                botoes = `
+                    <a
+                        class="desabilitado"
+                        aria-disabled="true">
+                        Em breve
+                    </a>
 
-        } else {
+                    <a
+                        class="desabilitado"
+                        aria-disabled="true">
+                        Em breve
+                    </a>
+                `;
 
-            botoes = `
-                <span>Em breve</span>
-                <span>Em breve</span>
-            `;
+            }
 
-        }
+            return `
 
+                <article class="cartao">
 
-        return `
+                    <div class="cartao-conteudo">
 
-            <article class="cartao">
+                        <span class="numero-etapa">
 
-                <div class="cartao-corpo">
+                            ETAPA ${
+                                String(etapa.numero).padStart(2, "0")
+                            }
 
-                    <span class="etiqueta">
-                        ETAPA ${String(etapa.numero).padStart(2, "0")}
-                    </span>
+                        </span>
 
-                    <div class="icone">
-                        ${etapa.icone}
+                        <div class="icone-etapa">
+                            ${etapa.icone}
+                        </div>
+
+                        <h3>
+                            ${etapa.titulo}
+                        </h3>
+
+                        <p>
+                            ${etapa.descricao}
+                        </p>
+
+                        <div class="estado-etapa">
+
+                            🌱 Inicial:
+                            ${statusInicial}
+
+                            <br>
+
+                            🚀 Avançado:
+                            ${statusAvancado}
+
+                        </div>
+
                     </div>
 
-                    <h3>${etapa.titulo}</h3>
-
-                    <p>${etapa.descricao}</p>
-
-                    <div class="estado">
-
-                        🌱 Inicial: ${inicial}
-
-                        <br>
-
-                        🚀 Avançado: ${avancado}
-
+                    <div class="acoes-etapa">
+                        ${botoes}
                     </div>
 
-                </div>
+                </article>
 
-                <div class="acoes">
-                    ${botoes}
-                </div>
+            `;
 
-            </article>
+        }
+    ).join("");
 
-        `;
 
-    }).join("");
-
+    /* ATUALIZA PROGRESSO GERAL */
 
     document.getElementById(
-        "gradeEtapas"
-    ).innerHTML = html;
-
-
-    /* PROGRESSO GERAL */
-
-    document.getElementById(
-        "contadorEtapas"
+        "stageCount"
     ).textContent =
-        concluidas + " de 6 etapas";
+        etapasConcluidas + " de 6 etapas";
 
 
     const percentual = Math.round(
-        concluidas / ETAPAS.length * 100
+        etapasConcluidas / ETAPAS.length * 100
     );
 
-
     document.getElementById(
-        "preenchimentoGeral"
+        "globalFill"
     ).style.width = percentual + "%";
 
-
     document.getElementById(
-        "barraGeral"
+        "globalBar"
     ).setAttribute(
         "aria-valuenow",
         percentual
     );
 
 
-    /* MATERIAIS */
+    /* ATUALIZA LISTA DE MATERIAIS */
 
-    const idsMateriais = [
+    const ITENS_MATERIAIS = [
 
         "esp32",
         "sensor",
@@ -647,38 +508,40 @@ function atualizarPagina() {
 
     ];
 
-
-    const totalMateriais = idsMateriais.filter(
-        id => materiais[id] === true
-    ).length;
-
+    const materiaisConferidos =
+        ITENS_MATERIAIS.filter(
+            item => materiais[item] === true
+        ).length;
 
     document.getElementById(
-        "contadorMateriais"
+        "materialCount"
     ).textContent =
-        totalMateriais + " de 9";
+        materiaisConferidos + " de 9";
 
 }
 
 
-/* INICIALIZAÇÃO */
+/* =========================================
+   INICIALIZAÇÃO
+   ========================================= */
 
-atualizarPagina();
+montarEtapas();
 
 
-/*
-   Atualiza o progresso quando a participante
-   retorna à página inicial.
-*/
+/* Atualiza ao retornar de outra página. */
 
 window.addEventListener(
     "pageshow",
-    atualizarPagina
+    montarEtapas
 );
+
+
+/* Atualiza quando outra aba modificar
+   os registros de progresso. */
 
 window.addEventListener(
     "storage",
-    atualizarPagina
+    montarEtapas
 );
 
 </script>
