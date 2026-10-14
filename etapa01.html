@@ -4,57 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Etapa 01 | Conhecendo o ESP32-C3</title>
-<style>
-:root{--g:#247c58;--dark:#174b39;--pink:#e86695;--line:#dfeae3}
-*{box-sizing:border-box}
-body{margin:0;background:#f7faf8;color:#2a4238;font:16px/1.7 Arial,sans-serif}
-.wrap{max-width:940px;margin:auto;padding:0 20px}
-header{background:white;border-bottom:1px solid var(--line)}
-nav{min-height:70px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{font-weight:bold;font-size:23px;color:var(--g)}
-.brand span{color:var(--pink)}
-a{color:var(--g)}
-.hero{background:linear-gradient(120deg,#e5f6eb,#fff0f5);text-align:center;padding:40px 10px}
-.hero h1{font-size:clamp(27px,4.5vw,39px);color:var(--dark);margin:10px}
-.tag{color:var(--g);background:white;border-radius:25px;padding:7px 14px;font-size:13px;font-weight:bold}
-.block{background:white;border:1px solid var(--line);border-radius:18px;padding:27px;margin:24px 0}
-.block h2{color:var(--dark);margin-top:0}
-.block h3{color:var(--dark)}
-.pic{max-width:100%;max-height:370px;display:block;margin:20px auto;object-fit:contain}
-.piclink img{width:100%;height:auto;max-width:780px;display:block;margin:18px auto;border:1px solid var(--line);border-radius:12px}
-.caption{text-align:center;font-size:13px;color:#718579}
-.note{background:#e8f6ee;padding:17px;border-radius:11px;margin:18px 0}
-.warn{background:#fff5e8;padding:17px;border-left:5px solid #e9a23b;border-radius:9px;margin:18px 0}
-.danger{background:#fff0f0;padding:18px;border-left:5px solid #de4c4c;border-radius:9px}
-.versions{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.version{padding:17px;text-align:center;border-radius:10px;background:#e4f6e8}
-.version.bad{background:#fee6e6}
-.version img{width:90px;height:90px;object-fit:contain}
-.table{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{border:1px solid var(--line);padding:10px;text-align:left}
-th{background:var(--g);color:white}
-.check{display:flex;gap:13px;align-items:center;background:#e6f6ec;border-radius:10px;padding:14px;margin-top:20px;font-weight:bold;cursor:pointer}
-.check input{width:22px;height:22px;accent-color:var(--g);flex-shrink:0}
-.advanced{border:2px solid #f0aac4;scroll-margin-top:20px}
-.advanced h2{color:#ac3663}
-.advanced .check{background:#fff0f5}
-.code{position:relative;background:#1e293b;border-radius:12px;color:#f1f5f9;padding:18px;margin:18px 0;overflow:auto}
-.code pre{margin:28px 0 0;white-space:pre;font:14px/1.65 Consolas,Monaco,monospace}
-.copy{position:absolute;right:9px;top:9px;background:#def7e8;color:#174b39;border:0;border-radius:7px;padding:6px 11px;cursor:pointer}
-.bar{height:13px;background:#e4eee7;border-radius:20px;overflow:hidden}
-.fill{height:100%;width:0;background:linear-gradient(90deg,#47b582,#ec83ab)}
-.btn{display:inline-block;background:var(--g);color:#fff;text-decoration:none;border:0;border-radius:10px;padding:11px 16px;margin:6px;cursor:pointer;font-weight:bold}
-.btn.alt{background:#e8eeea;color:var(--dark)}
-footer{background:var(--dark);color:white;text-align:center;padding:24px}
-.end{text-align:center;background:#e7f6ed;border-radius:14px;padding:24px;margin:25px 0}
-@media(max-width:620px){
-    .versions{grid-template-columns:1fr}
-    .block{padding:18px}
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="pagina-etapa01">
 
 <header>
 <nav class="wrap">
