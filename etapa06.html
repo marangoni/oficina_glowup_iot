@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Etapa 06 da oficina GlowUp IoT: Ciência Delas - Expressões da Natureza. Personalização da planta com olhos animados RoboEyes."><title>Etapa 06 | Personalizando o GlowUp Plant | GlowUp IoT</title><link rel="stylesheet" href="style.css"></head>
+<body class="pagina-etapa06"><header><div class="container topo"><div class="logo">🌱 Glow<span>Up</span> IoT</div><a class="voltar" href="index.html?v=1.8">← Voltar à oficina</a><span class="versao">Etapa 06 · v1.0</span></div></header>
+<section class="hero"><span class="tag">ETAPA 06 — PERSONALIZAÇÃO</span><h1>✨ Os olhinhos da natureza!</h1><p>GlowUp IoT: Ciência Delas - Expressões da Natureza</p><p>Agora a sua planta vai ganhar olhos que piscam, se movimentam e mostram como ela está se sentindo!</p></section>
+<main class="container">
+<section class="bloco"><h2>🌿 Meu progresso</h2><p>São cinco atividades iniciais e três desafios avançados opcionais. Marque cada atividade após testar na placa.</p><div class="barra" id="barra" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"><div class="preenchimento" id="preenchimento"></div></div><p id="contador">0 de 5 atividades concluídas</p><p id="contadorAvancado">Desafios avançados: opcionais</p></section>
+<section class="bloco"><h2>🎭 O resultado que queremos alcançar</h2><p>Na etapa anterior, desenhamos rostos manualmente. Agora, uma biblioteca cuidará de <strong>piscar, olhar para os lados e mudar a expressão</strong>. Nosso sensor decidirá como a planta se sente.</p><div class="olhos-variantes"><button class="ativo" id="modoBicolor" type="button" onclick="alterarModoOLED('bicolor')">🟡🔵 OLED bicolor</button><button id="modoBranco" type="button" onclick="alterarModoOLED('branco')">⚪ OLED branco</button></div><div class="olhos-painel"><div class="visor"><svg class="olhos" viewBox="0 0 128 64" role="img" aria-label="Representação de olhos animados no OLED"><g class="faixa-principal" id="svgOlhos"><rect x="15" y="19" width="38" height="30" rx="7"/><rect x="75" y="19" width="38" height="30" rx="7"/></g></svg></div></div><div class="olhos-galeria"> <button onclick="mudarRosto(0,this)" class="ativo">Neutro</button><button onclick="mudarRosto(1,this)">Feliz</button><button onclick="mudarRosto(2,this)">Cansado</button><button onclick="mudarRosto(3,this)">Irritado</button><button onclick="mudarRosto(4,this)">Surpreso*</button></div><p class="olhos-legenda">Prévia conceitual das expressões. A biblioteca gera animações próprias na placa; “surpreso” é uma sugestão visual para personalização, não um modo <code>setMood()</code> nativo.</p><div class="aviso"><strong>Importante no OLED bicolor:</strong> a biblioteca desenha quadros completos e pode ocupar tanto a região amarela quanto a azul. Ajustamos a dimensão dos olhos para melhorar o enquadramento, mas as animações não têm garantia de ficar somente na área azul. No OLED branco, todos os pixels acesos são brancos.</div></section>
+<section class="bloco"><h2>🌱 1. Preparando a personalização</h2><p>Vamos trabalhar com o mesmo hardware da Etapa 05, sem acrescentar componentes. Instale a biblioteca <strong>FluxGarage RoboEyes</strong> no Arduino IDE, além de <strong>Adafruit GFX</strong> e <strong>Adafruit SSD1306</strong>.</p><div class="tabela-container"><table><thead><tr><th>Componente</th><th>ESP32-C3 Super Mini</th><th>Função</th></tr></thead><tbody><tr><td>Sensor capacitivo — AOUT</td><td>GPIO1</td><td>Leitura analógica</td></tr><tr><td>OLED — SDA</td><td>GPIO8</td><td>Dados I²C</td></tr><tr><td>OLED — SCL</td><td>GPIO9</td><td>Clock I²C</td></tr><tr><td>Buzzer ativo — sinal</td><td>GPIO4</td><td>Alertas sonoros</td></tr><tr><td>Sensor e OLED</td><td>3V3/GND</td><td>Alimentação, conforme os módulos</td></tr></tbody></table></div><div class="aviso"><strong>Segurança elétrica:</strong> desligue o USB antes de alterar ligações. Só acione o buzzer diretamente pelo GPIO4 se a tensão e a corrente do modelo forem compatíveis; caso contrário, use acionamento por transistor validado no laboratório. Os GPIO8/9 são pinos de <em>strapping</em> do ESP32-C3: confirme a inicialização com o OLED conectado.</div><p>Observe a biblioteca instalada em <strong>Arquivo → Exemplos</strong> e localize os exemplos de RoboEyes. O nome exato do menu pode variar conforme a versão do Arduino IDE.</p><label class="check"><input type="checkbox" data-id="1"><span>Conferi as conexões e instalei as bibliotecas.</span></label></section>
+<section class="bloco"><h2>🌱 2. Dando vida aos olhinhos</h2><p>Antes de integrar o sensor, teste apenas a animação. Os olhos devem piscar e fazer pequenos movimentos automáticos.</p><div class="destaque"><strong>Três instruções-chave:</strong><p><code>roboEyes.begin(128, 64, 60);</code> inicializa o motor gráfico; <code>roboEyes.setMood(HAPPY);</code> escolhe a expressão; <code>roboEyes.update();</code> mantém a animação fluida.</p></div><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigo2',this)">Copiar código</button><pre id="codigo2"><code>// Etapa 06 — Experimento 2: conhecendo os olhos animados.
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+#include &lt;FluxGarage_RoboEyes.h&gt;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+RoboEyes&lt;Adafruit_SSD1306&gt; roboEyes(display);
+
+void setup() {
+  Wire.begin(8, 9);
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while (true) delay(1000);
+  }
+  roboEyes.begin(128, 64, 60);
+  roboEyes.setWidth(38, 38);
+  roboEyes.setHeight(30, 30);
+  roboEyes.setSpacebetween(10);
+  roboEyes.setBorderradius(7, 7);
+  roboEyes.setAutoblinker(ON, 3, 2);
+  roboEyes.setIdleMode(ON, 3, 2);
+  roboEyes.setMood(HAPPY);
+}
+
+void loop() {
+  roboEyes.update(); // Sem delay: anima continuamente.
+}
+</code></pre></div><p><strong>Investigação:</strong> altere a largura de 38 para 30 e a altura de 30 para 24. Os olhos ficam maiores ou menores? Observe também o OLED branco e o bicolor.</p><label class="check"><input type="checkbox" data-id="2"><span>Exibi olhos animados e observei as piscadas.</span></label></section>
+<section class="bloco"><h2>🌱 3. Experimentando expressões</h2><p>Vamos alternar automaticamente entre quatro expressões da RoboEyes: <code>DEFAULT</code>, <code>HAPPY</code>, <code>TIRED</code> e <code>ANGRY</code>. Cada uma permanece por três segundos.</p><p>Observe que <code>millis()</code> permite contar o tempo <strong>sem interromper</strong> <code>roboEyes.update()</code>.</p><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigo3',this)">Copiar código</button><pre id="codigo3"><code>// Etapa 06 — Experimento 3: alternando expressoes.
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+#include &lt;FluxGarage_RoboEyes.h&gt;
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+RoboEyes&lt;Adafruit_SSD1306&gt; roboEyes(display);
+unsigned long ultimaTroca = 0;
+int estado = 0;
+void setup() {
+  Wire.begin(8, 9);
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    while(true) delay(1000);
+  }
+  roboEyes.begin(128, 64, 60);
+  roboEyes.setWidth(38,38);
+  roboEyes.setHeight(30,30);
+  roboEyes.setSpacebetween(10);
+  roboEyes.setAutoblinker(ON,3,2);
+  roboEyes.setMood(DEFAULT);
+}
+void loop() {
+  roboEyes.update();
+  if (millis() - ultimaTroca &gt;= 3000) {
+    ultimaTroca = millis();
+    estado = (estado + 1) % 4;
+    if      (estado == 0) roboEyes.setMood(DEFAULT);
+    else if (estado == 1) roboEyes.setMood(HAPPY);
+    else if (estado == 2) roboEyes.setMood(TIRED);
+    else                  roboEyes.setMood(ANGRY);
+  }
+}
+</code></pre></div><div class="destaque"><strong>Teste orientado:</strong> identifique onde alterar os três segundos; substitua <code>3000</code> por <code>5000</code>. Depois mude <code>setMood(HAPPY)</code> para <code>setMood(TIRED)</code> e observe a diferença.</div><label class="check"><input type="checkbox" data-id="3"><span>Consegui alternar expressões no OLED.</span></label></section>
+<section class="bloco"><h2>🌱 4. Dando emoções aos valores do sensor</h2><p>O projeto original que inspirou esta oficina usa <strong>cinco condições de umidade</strong>. Vamos relacioná-las com as expressões disponíveis e registrar a leitura no Monitor Serial.</p><div class="tabela-container"><table><thead><tr><th>Umidade relativa</th><th>Condição da planta</th><th>Olhinhos</th><th>Alerta</th></tr></thead><tbody><tr><td>0 a 20%</td><td>Crítico seco</td><td>Cansados e para baixo</td><td>2 bipes</td></tr><tr><td>21 a 45%</td><td>Com sede</td><td>Irritados</td><td>2 bipes</td></tr><tr><td>46 a 75%</td><td>Perfeito</td><td>Felizes</td><td>Silêncio</td></tr><tr><td>76 a 90%</td><td>Excesso de água</td><td>Cansados</td><td>Silêncio</td></tr><tr><td>91 a 100%</td><td>Excesso crítico de água</td><td>Irritados</td><td>3 bipes</td></tr></tbody></table></div><div class="destaque"><strong>Observe a calibração:</strong> os valores 3800 (seco) e 1326 (úmido) foram usados nos testes anteriores. O percentual é uma escala <strong>relativa</strong> e os limites são didáticos, não recomendações universais de irrigação.</div><h3>Como classificar cada leitura?</h3><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigo4',this)">Copiar código</button><pre id="codigo4"><code>int leitura = analogRead(PINO_SENSOR);
+int umidade = map(leitura, VALOR_SECO, VALOR_UMIDO, 0, 100);
+umidade = constrain(umidade, 0, 100);
+
+int estado;
+if      (umidade &lt;= 20) estado = 0;  // Critico seco
+else if (umidade &lt;= 45) estado = 1;  // Com sede
+else if (umidade &lt;= 75) estado = 2;  // Perfeito
+else if (umidade &lt;= 90) estado = 3;  // Excesso de agua
+else                    estado = 4;  // Excesso critico
+
+Serial.print(&quot;Umidade: &quot;);
+Serial.print(umidade);
+Serial.print(&quot;% | Estado: &quot;);
+Serial.println(estado);</code></pre></div><p><strong>Atenção:</strong> este trecho mostra a lógica e deve ser incorporado a um programa com <code>setup()</code>, <code>loop()</code> e as constantes declaradas. No Experimento 5, tudo isso já estará integrado.</p><label class="check"><input type="checkbox" data-id="4"><span>Identifiquei os cinco estados e compreendi os limites.</span></label></section>
+<section class="bloco"><h2>🌱 5. Meu GlowUp Plant personalizado — projeto final</h2><p>Agora vamos reunir os olhinhos, a porcentagem de umidade, as expressões e os alertas sonoros.</p><div class="destaque"><strong>Resultado final:</strong> o OLED passa a mostrar os olhos animados; a porcentagem é apresentada no <strong>Monitor Serial</strong>, permitindo que a animação ocupe a tela. O buzzer só alerta em condições que exigem atenção, com intervalo de 30 segundos.</div><p>O programa utiliza funções próprias para leitura, expressão e som. A chamada <code>roboEyes.update()</code> é executada continuamente, sem <code>delay()</code> no <code>loop()</code>.</p><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigo5',this)">Copiar código</button><pre id="codigo5"><code>// GlowUp IoT: Ciencia Delas - Expressoes da Natureza
+// Etapa 06 — RoboEyes + sensor capacitivo + buzzer ativo
+// IFSP - Campus Hortolandia
+// ESP32-C3 Super Mini | OLED SSD1306 128x64 I2C 0x3C
+// Ajuste calibracao e confirme a corrente do buzzer antes de ligar.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+#include &lt;FluxGarage_RoboEyes.h&gt;
+
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+const int PINO_SENSOR = 1;
+const int PINO_BUZZER = 4;
+const int VALOR_SECO = 3800;
+const int VALOR_UMIDO = 1326;
+
+// Faixas didaticas relativas: 0-20, 21-45, 46-75, 76-90, 91-100.
+const unsigned long INTERVALO_LEITURA = 2000;
+const unsigned long INTERVALO_BIPE = 30000;
+const unsigned long DURACAO_BIPE = 90;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+RoboEyes&lt;Adafruit_SSD1306&gt; roboEyes(display);
+
+int leituraADC = 0;
+int umidade = 0;
+int estado = -1;
+unsigned long ultimaLeitura = 0;
+unsigned long ultimoAlerta = 0;
+unsigned long inicioBipe = 0;
+int bipesRestantes = 0;
+bool buzzerLigado = false;
+bool alertaJaEnviado = false;
+
+void iniciarBipes(int quantidade) {
+  bipesRestantes = quantidade;
+  buzzerLigado = false;
+  digitalWrite(PINO_BUZZER, LOW);
+}
+
+void atualizarSom(unsigned long agora) {
+  // Um bipe por vez, sem delay() para nao congelar os olhos.
+  if (buzzerLigado &amp;&amp; agora - inicioBipe &gt;= DURACAO_BIPE) {
+    digitalWrite(PINO_BUZZER, LOW);
+    buzzerLigado = false;
+    inicioBipe = agora;
+    bipesRestantes--;
+  }
+  if (!buzzerLigado &amp;&amp; bipesRestantes &gt; 0 &amp;&amp; agora - inicioBipe &gt;= 160) {
+    digitalWrite(PINO_BUZZER, HIGH);
+    buzzerLigado = true;
+    inicioBipe = agora;
+  }
+}
+
+void aplicarExpressao(int novoEstado) {
+  // Limpa efeitos anteriores antes de aplicar outra expressao.
+  roboEyes.setHFlicker(OFF);
+  roboEyes.setVFlicker(OFF);
+  roboEyes.setSweat(OFF);
+  roboEyes.setCuriosity(OFF);
+  roboEyes.setPosition(DEFAULT);
+
+  switch (novoEstado) {
+    case 0: // Critico seco
+      roboEyes.setMood(TIRED);
+      roboEyes.setPosition(S);
+      break;
+    case 1: // Com sede
+      roboEyes.setMood(ANGRY);
+      break;
+    case 2: // Perfeito
+      roboEyes.setMood(HAPPY);
+      break;
+    case 3: // Excesso de agua
+      roboEyes.setMood(TIRED);
+      roboEyes.setSweat(ON);
+      break;
+    case 4: // Critico de excesso de agua
+      roboEyes.setMood(ANGRY);
+      roboEyes.setSweat(ON);
+      break;
+  }
+}
+
+int identificarEstado(int porcentagem) {
+  if (porcentagem &lt;= 20) return 0;
+  if (porcentagem &lt;= 45) return 1;
+  if (porcentagem &lt;= 75) return 2;
+  if (porcentagem &lt;= 90) return 3;
+  return 4;
+}
+
+void atualizarMedicao(unsigned long agora) {
+  leituraADC = analogRead(PINO_SENSOR);
+  if (VALOR_SECO == VALOR_UMIDO) return;
+  umidade = map(leituraADC, VALOR_SECO, VALOR_UMIDO, 0, 100);
+  umidade = constrain(umidade, 0, 100);
+  int novoEstado = identificarEstado(umidade);
+
+  Serial.print(&quot;ADC: &quot;); Serial.print(leituraADC);
+  Serial.print(&quot; | Umidade relativa: &quot;); Serial.print(umidade);
+  Serial.print(&quot;% | Estado: &quot;); Serial.println(novoEstado);
+
+  if (novoEstado != estado) {
+    estado = novoEstado;
+    aplicarExpressao(estado);
+    if (estado == 0 || estado == 1 || estado == 4) {
+      iniciarBipes(estado == 4 ? 3 : 2);
+      ultimoAlerta = agora;
+      alertaJaEnviado = true;
+    } else {
+      iniciarBipes(0);
+      alertaJaEnviado = false;
+    }
+  } else if ((estado == 0 || estado == 1 || estado == 4) &amp;&amp;
+             (!alertaJaEnviado || agora - ultimoAlerta &gt;= INTERVALO_BIPE)) {
+    iniciarBipes(estado == 4 ? 3 : 2);
+    ultimoAlerta = agora;
+    alertaJaEnviado = true;
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  analogReadResolution(12);
+  pinMode(PINO_BUZZER, OUTPUT);
+  digitalWrite(PINO_BUZZER, LOW);
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println(&quot;OLED nao encontrado!&quot;);
+    while (true) delay(1000);
+  }
+  roboEyes.begin(128, 64, 60);
+  // Olhos compactos: ocupam principalmente a regiao azul no bicolor.
+  // As animacoes (piscar/suor) podem usar outras linhas do visor.
+  roboEyes.setWidth(38, 38);
+  roboEyes.setHeight(30, 30);
+  roboEyes.setBorderradius(7, 7);
+  roboEyes.setSpacebetween(10);
+  roboEyes.setAutoblinker(ON, 3, 2);
+  roboEyes.setIdleMode(ON, 3, 2);
+  roboEyes.setMood(DEFAULT);
+
+  // Primeira medida imediata para escolher a expressao.
+  atualizarMedicao(millis());
+  ultimaLeitura = millis();
+}
+
+void loop() {
+  unsigned long agora = millis();
+  roboEyes.update(); // Atualizar continuamente: sem delay() no loop.
+  atualizarSom(agora);
+  if (agora - ultimaLeitura &gt;= INTERVALO_LEITURA) {
+    ultimaLeitura = agora;
+    atualizarMedicao(agora);
+  }
+}
+</code></pre></div><div class="aviso"><strong>Antes de gravar:</strong> confira novamente os valores de calibração e o tipo de buzzer. O programa não usa Wi-Fi, sensor de distância ou Google Sheets. Essas funções pertencem a possíveis expansões futuras e não são necessárias para esta etapa.</div><h3>Sequência de testes</h3><ol><li>Carregue o programa e confirme que os olhos piscam.</li><li>Abra o Monitor Serial em 115200 baud.</li><li>Teste o sensor em condição mais seca: observe os olhos e o alerta.</li><li>Aumente a umidade e verifique a mudança para uma expressão feliz.</li><li>Observe o comportamento com leituras elevadas, sem mergulhar componentes não impermeáveis.</li><li>Verifique se os alertas sonoros não se repetem continuamente.</li></ol><label class="check"><input type="checkbox" data-id="5"><span>Construí, personalizei e testei o GlowUp Plant com olhinhos animados!</span></label></section>
+<section class="bloco avancado" id="desafio-avancado"><h2>🚀 Desafios avançados — A planta é sua!</h2><p>Complete os trechos abaixo dentro do programa do Experimento 5. As soluções ficam ocultas até você decidir consultá-las.</p><div class="desafio"><h3>🚀 Desafio A — Personalizando os olhos</h3><p>Experimente olhos mais estreitos, arredondados e próximos. Faça a alteração no <code>setup()</code>, depois da chamada de <code>roboEyes.begin()</code>.</p><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigoA',this)">Copiar código</button><pre id="codigoA"><code>// TODO: personalize as dimensoes.
+roboEyes.setWidth(___, ___);     // Exemplo: 30, 30
+roboEyes.setHeight(___, ___);    // Exemplo: 26, 26
+roboEyes.setBorderradius(___, ___); // Exemplo: 8, 8
+roboEyes.setSpacebetween(___);   // Exemplo: 12</code></pre></div><button class="botao botao-solucao" type="button" onclick="mostrarSolucao('solucaoA',this)">💡 Ver solução</button><div id="solucaoA" class="solucao" hidden><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('respostaA',this)">Copiar código</button><pre id="respostaA"><code>// Uma possibilidade de personalizacao:
+roboEyes.setWidth(30, 30);
+roboEyes.setHeight(26, 26);
+roboEyes.setBorderradius(8, 8);
+roboEyes.setSpacebetween(12);
+// Teste tambem valores diferentes!</code></pre></div></div><label class="check"><input type="checkbox" data-id="avancadoA"><span>Concluí o desafio A.</span></label></div><div class="desafio"><h3>🚀 Desafio B — Mudando os alertas</h3><p>Escolha um intervalo de <strong>60 segundos</strong> entre avisos e diminua os bipes para <strong>70 ms</strong>. Identifique as constantes no início do programa.</p><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigoB',this)">Copiar código</button><pre id="codigoB"><code>// TODO: 60 segundos em milissegundos.
+const unsigned long INTERVALO_BIPE = ______;
+
+// TODO: duracao de um bipe: 70 ms.
+const unsigned long DURACAO_BIPE = ______;</code></pre></div><button class="botao botao-solucao" type="button" onclick="mostrarSolucao('solucaoB',this)">💡 Ver solução</button><div id="solucaoB" class="solucao" hidden><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('respostaB',this)">Copiar código</button><pre id="respostaB"><code>const unsigned long INTERVALO_BIPE = 60000;
+const unsigned long DURACAO_BIPE = 70;
+// As demais funcoes continuam iguais.</code></pre></div></div><label class="check"><input type="checkbox" data-id="avancadoB"><span>Concluí o desafio B.</span></label></div><div class="desafio"><h3>🚀 Desafio C — Criando uma reação especial</h3><p>Faça a planta demonstrar alegria quando o estado passar para <strong>Perfeito</strong>. Acrescente <code>roboEyes.anim_laugh()</code> ao bloco adequado dentro da função <code>aplicarExpressao()</code>.</p><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('codigoC',this)">Copiar código</button><pre id="codigoC"><code>// Dentro de aplicarExpressao(), no switch:
+case 2: // Perfeito
+  roboEyes.setMood(HAPPY);
+  // TODO: chame uma animacao de risada.
+  __________________________;
+  break;</code></pre></div><button class="botao botao-solucao" type="button" onclick="mostrarSolucao('solucaoC',this)">💡 Ver solução</button><div id="solucaoC" class="solucao" hidden><div class="codigo"><button class="copiar" type="button" onclick="copiarCodigo('respostaC',this)">Copiar código</button><pre id="respostaC"><code>case 2: // Perfeito
+  roboEyes.setMood(HAPPY);
+  roboEyes.anim_laugh();
+  break;
+// Mantenha roboEyes.update() rodando no loop().</code></pre></div></div><label class="check"><input type="checkbox" data-id="avancadoC"><span>Concluí o desafio C.</span></label></div><div class="destaque"><strong>Parabéns, criadora!</strong><p>Você não apenas montou uma planta eletrônica: experimentou, investigou, programou e definiu suas próprias expressões!</p><p id="progressoDesafios">0 de 3 desafios avançados concluídos.</p></div></section>
+<section class="resultado"><h2 id="tituloFinal">🌱 Continue criando!</h2><p id="mensagemFinal">Conclua os cinco experimentos.</p><a class="botao" href="index.html?v=1.8">← Voltar à oficina</a><button class="botao" id="reiniciar" type="button">Reiniciar esta etapa</button></section>
+</main><footer>GlowUp IoT: Ciência Delas - Expressões da Natureza<br>IFSP - Instituto Federal de Educação, Ciência e Tecnologia - Campus Hortolândia</footer><script>const CHAVE_ETAPA = 'glowup-etapa06-v1';
+const CHAVE_GERAL = 'glowup-oficina-progresso-v1';
+const CHAVE_VISUAL = 'glowup-oled-visual-v1';
+const ATIVIDADES=['1','2','3','4','5'];
+const DESAFIOS=['avancadoA','avancadoB','avancadoC'];
+function ler(chave){try{let x=JSON.parse(localStorage.getItem(chave)||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}}
+let progresso=ler(CHAVE_ETAPA);
+function salvar(){let g=ler(CHAVE_GERAL);g[6]={...(g[6]||{}),inicial:ATIVIDADES.every(id=>progresso[id]===true),avancado:DESAFIOS.every(id=>progresso[id]===true)};try{localStorage.setItem(CHAVE_ETAPA,JSON.stringify(progresso));localStorage.setItem(CHAVE_GERAL,JSON.stringify(g))}catch(e){console.warn('Progresso não foi salvo',e)}}
+function atualizar(){document.querySelectorAll('input[data-id]').forEach(c=>c.checked=progresso[c.dataset.id]===true);let n=ATIVIDADES.filter(id=>progresso[id]===true).length,p=n*20, a=DESAFIOS.filter(id=>progresso[id]===true).length;document.getElementById('preenchimento').style.width=p+'%';document.getElementById('barra').setAttribute('aria-valuenow',p);document.getElementById('contador').textContent=n+' de 5 atividades concluídas ('+p+'%)';document.getElementById('contadorAvancado').textContent='🚀 Desafios avançados: '+a+' de 3 concluídos (opcionais)';document.getElementById('progressoDesafios').textContent=a+' de 3 desafios avançados concluídos.';document.getElementById('tituloFinal').textContent=n===5?'🎉 Etapa 06 concluída!':'🌱 Continue criando!';document.getElementById('mensagemFinal').textContent=n===5?'Você criou sua própria versão do GlowUp Plant com olhinhos animados!':'Você concluiu '+n+' de 5 experimentos.'}
+document.addEventListener('change',e=>{if(e.target.matches('input[data-id]')){progresso[e.target.dataset.id]=e.target.checked;salvar();atualizar()}});
+async function copiarCodigo(id,btn){const v=document.getElementById(id).textContent;try{await navigator.clipboard.writeText(v);let antes=btn.textContent;btn.textContent='Copiado ✓';setTimeout(()=>btn.textContent=antes,2000)}catch(e){alert('Selecione o código e copie manualmente.')}}
+function mostrarSolucao(id,btn){let s=document.getElementById(id);if(!s.hidden){s.hidden=true;btn.textContent='💡 Ver solução';return}if(!confirm('Quer consultar a solução? Tente primeiro resolver por conta própria.'))return;s.hidden=false;btn.textContent='Ocultar solução'}
+function alterarModoOLED(modo){document.body.classList.toggle('oled-branco',modo==='branco');document.getElementById('modoBicolor').classList.toggle('ativo',modo!=='branco');document.getElementById('modoBranco').classList.toggle('ativo',modo==='branco');try{localStorage.setItem(CHAVE_VISUAL,modo)}catch(e){}}
+function mudarRosto(tipo,btn){const svg=document.getElementById('svgOlhos');let olhos;
+switch(tipo){case 1:olhos='<rect x="15" y="25" width="38" height="22" rx="9"/><rect x="75" y="25" width="38" height="22" rx="9"/>';break;
+case 2:olhos='<path d="M15 35 Q34 27 53 35 L53 44 Q34 48 15 44Z"/><path d="M75 35 Q94 27 113 35 L113 44 Q94 48 75 44Z"/>';break;
+case 3:olhos='<path d="M15 23 L53 34 L53 49 L15 49Z"/><path d="M113 23 L75 34 L75 49 L113 49Z"/>';break;
+case 4:olhos='<ellipse cx="34" cy="35" rx="15" ry="21"/><ellipse cx="94" cy="35" rx="15" ry="21"/>';break;
+default:olhos='<rect x="15" y="19" width="38" height="30" rx="7"/><rect x="75" y="19" width="38" height="30" rx="7"/>';break}
+svg.innerHTML=olhos;document.querySelectorAll('.olhos-galeria button').forEach(b=>b.classList.remove('ativo'));btn.classList.add('ativo')}
+document.getElementById('reiniciar').addEventListener('click',()=>{if(!confirm('Reiniciar o progresso da Etapa 06?'))return;progresso={};salvar();atualizar();document.querySelectorAll('.solucao').forEach(x=>x.hidden=true)});
+salvar();atualizar();let modo='bicolor';try{modo=localStorage.getItem(CHAVE_VISUAL)||'bicolor'}catch(e){}alterarModoOLED(modo);
+</script></body></html>

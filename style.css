@@ -2048,3 +2048,58 @@ body.pagina-materiais footer {
 }
 
 
+
+
+/* ===== ESTILOS DA ETAPA 06 v1.0 ===== */
+body.pagina-etapa06 {font:16px/1.7 Arial,Helvetica,sans-serif}
+body.pagina-etapa06 .container{max-width:950px}
+body.pagina-etapa06 .topo{min-height:75px}
+body.pagina-etapa06 .logo{font-size:23px}
+body.pagina-etapa06 .voltar{text-decoration:none;font-size:14px;font-weight:bold}
+body.pagina-etapa06 .versao{font-size:12px;color:#718579}
+body.pagina-etapa06 .hero{text-align:center;padding:45px 15px}
+body.pagina-etapa06 .hero h1{font-size:clamp(28px,5vw,40px);margin:12px 0}
+body.pagina-etapa06 .hero p{margin:auto;max-width:730px}
+body.pagina-etapa06 .bloco{background:white;border:1px solid var(--borda);border-radius:18px;padding:28px;margin:25px 0}
+body.pagina-etapa06 .bloco h2{color:var(--verde-escuro);margin-top:0}
+body.pagina-etapa06 .bloco h3{color:var(--verde-escuro);margin-top:25px}
+body.pagina-etapa06 .destaque{background:var(--verde-claro);border-radius:12px;padding:18px;margin:20px 0}
+body.pagina-etapa06 .aviso{background:#fff5e8;border-left:5px solid #e9a23b;border-radius:9px;padding:18px;margin:20px 0}
+body.pagina-etapa06 .tabela-container{overflow-x:auto}
+body.pagina-etapa06 table{border-collapse:collapse;width:100%;font-size:14px;margin:18px 0}
+body.pagina-etapa06 th,body.pagina-etapa06 td{padding:12px;border:1px solid var(--borda);text-align:left}
+body.pagina-etapa06 th{background:var(--verde);color:white}
+body.pagina-etapa06 tr:nth-child(even){background:#f5faf6}
+body.pagina-etapa06 .codigo{position:relative;background:#1e293b;color:#f1f5f9;padding:18px;border-radius:12px;margin:18px 0;overflow-x:auto}
+body.pagina-etapa06 .codigo pre{margin:36px 0 0;white-space:pre;font:13px/1.55 Consolas,Monaco,monospace}
+body.pagina-etapa06 .codigo code{background:none;color:inherit;padding:0}
+body.pagina-etapa06 .copiar{position:absolute;top:10px;right:10px;border:0;border-radius:8px;background:#dff4e6;color:#174b39;padding:7px 13px;font-weight:bold;cursor:pointer}
+body.pagina-etapa06 code:not(pre code){background:#edf3ee;padding:2px 5px;border-radius:4px}
+body.pagina-etapa06 .barra{height:14px;background:#e4eee7;border-radius:20px;overflow:hidden}
+body.pagina-etapa06 .preenchimento{width:0;height:100%;background:linear-gradient(90deg,#47b582,#ec83ab)}
+body.pagina-etapa06 .check{display:flex;gap:12px;align-items:center;background:var(--verde-claro);padding:15px;border-radius:10px;margin-top:20px;font-weight:bold;cursor:pointer}
+body.pagina-etapa06 .check input{width:23px;height:23px;accent-color:var(--verde);flex-shrink:0}
+body.pagina-etapa06 .avancado{border:2px solid #efb5c8;scroll-margin-top:20px}
+body.pagina-etapa06 .avancado>h2,body.pagina-etapa06 .desafio h3{color:#ac3663}
+body.pagina-etapa06 .desafio{border-bottom:2px dashed #e8c0cf;padding-bottom:25px;margin-bottom:25px}
+body.pagina-etapa06 .desafio .check{background:var(--rosa-claro)}
+body.pagina-etapa06 .solucao{border:2px solid #57b785}
+body.pagina-etapa06 [hidden]{display:none!important}
+body.pagina-etapa06 .botao{display:inline-block;background:var(--verde);color:white;border:0;border-radius:10px;padding:11px 19px;margin:6px;text-decoration:none;font-weight:bold;cursor:pointer}
+body.pagina-etapa06 .botao-solucao{background:var(--rosa-claro);color:#ac3663;border:1px solid #efb5c8}
+body.pagina-etapa06 .resultado{background:var(--verde-claro);text-align:center;padding:25px;border-radius:18px;margin:25px 0}
+body.pagina-etapa06 .olhos-painel{background:#f1f6f3;padding:25px 12px;border-radius:14px;display:flex;justify-content:center;margin:18px 0}
+body.pagina-etapa06 .visor{position:relative;max-width:420px;width:100%;aspect-ratio:2/1;background:#010916;border:12px solid #243849;box-shadow:0 5px 15px #0002;border-radius:18px;overflow:hidden}
+body.pagina-etapa06 .olhos{width:100%;height:100%;display:block}
+body.pagina-etapa06 .faixa-superior{fill:#ffdd52}
+body.pagina-etapa06 .faixa-principal{fill:#64c5ff}
+body.pagina-etapa06.oled-branco .faixa-superior,body.pagina-etapa06.oled-branco .faixa-principal{fill:#ecf7ff}
+body.pagina-etapa06 .olhos-variantes{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+body.pagina-etapa06 .olhos-variantes button{cursor:pointer;padding:8px 14px;border:1px solid #bdd8c8;border-radius:9px;background:white;color:#174b39;font-weight:bold}
+body.pagina-etapa06 .olhos-variantes button.ativo{background:var(--verde);color:white}
+body.pagina-etapa06 .olhos-legenda{text-align:center;font-size:13px;color:#637c6e}
+body.pagina-etapa06 .olhos-galeria{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}
+body.pagina-etapa06 .olhos-galeria button{border:1px solid #bad3c3;background:#f5faf6;padding:10px 4px;border-radius:10px;cursor:pointer;font-size:12px;font-weight:bold;color:#17513b}
+body.pagina-etapa06 .olhos-galeria button.ativo{background:#e3f4eb;border-color:var(--verde)}
+body.pagina-etapa06 .ponto{background:#fff0f5;border-radius:12px;padding:18px;margin:16px 0}
+@media(max-width:680px){body.pagina-etapa06 .bloco{padding:18px}body.pagina-etapa06 .olhos-galeria{grid-template-columns:repeat(3,1fr)}body.pagina-etapa06 .codigo pre{font-size:12px}}

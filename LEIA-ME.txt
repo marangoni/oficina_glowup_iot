@@ -1,16 +1,1 @@
-GlowUp IoT — centralização do CSS
-
-Arquivos incluídos: 6 páginas HTML atualizadas e style.css compartilhado.
-Não contém index.html nem imagens. Nenhum JavaScript foi alterado.
-
-INSTALAÇÃO SEGURA
-1. Antes de substituir arquivos, faça um commit ou cópia de segurança do repositório.
-2. Copie os 7 arquivos .html e .css para a raiz de GlowUp-IoT-Oficina/.
-3. O style.css incluído contém os estilos da página inicial v1.7 e os estilos originais
-   de cada página anexada, isolados por classes no elemento body.
-4. Não substitua imagens nem outros arquivos do projeto.
-5. Abra as páginas e confira imagens, botões e progresso.
-
-Observação: o arquivo style.css da sua máquina não foi anexado.
-A seção da página inicial foi baseada no CSS v1.7 da conversa, podendo diferir
-de alterações locais feitas depois. Inspecione com git diff antes de salvar.
+Correção pontual: somente etapa06.html. Os dois links Voltar à oficina foram alterados de index.html para index.html?v=1.8, para evitar que o navegador reutilize uma versão antiga do index. Não substituir style.css nem qualquer outra etapa. Faça backup de etapa06.html antes da troca.

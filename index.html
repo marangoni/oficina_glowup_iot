@@ -10,18 +10,12 @@
 
     <title>GlowUp IoT: Ciência Delas - Expressões da Natureza</title>
 
-    <!-- Estilos da página inicial -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- =========================================
-     CABEÇALHO
-     ========================================= -->
-
 <header>
-
     <div class="container topo">
 
         <div class="logo">
@@ -29,30 +23,18 @@
         </div>
 
         <div class="topo-direita">
-
             <div class="instituicao-topo">
                 IFSP — Campus Hortolândia
             </div>
 
-            <div class="versao">
-                v1.7
-            </div>
-
+            <div class="versao">v1.8</div>
         </div>
 
     </div>
-
 </header>
 
-
-<!-- =========================================
-     APRESENTAÇÃO DA OFICINA
-     ========================================= -->
-
 <section class="hero">
-
     <div class="container">
-
         <div class="hero-conteudo">
 
             <span class="tag">
@@ -66,135 +48,86 @@
             </h1>
 
             <p>
-                <strong>
-                    Uma plantinha, muitas descobertas! 🌿
-                </strong>
+                <strong>Uma plantinha, muitas descobertas! 🌿</strong>
             </p>
 
             <p>
-                Explore componentes eletrônicos,
-                programe o ESP32-C3 e construa
-                um dispositivo inteligente
-                para acompanhar sua planta.
+                Explore componentes eletrônicos, programe o ESP32-C3
+                e construa um dispositivo inteligente para acompanhar
+                sua planta.
             </p>
 
             <p>
-                Aprenda no seu ritmo, realize
-                experimentos, resolva desafios
-                e descubra como a tecnologia
-                pode ajudar a compreender
-                a natureza.
+                Aprenda no seu ritmo, realize experimentos, resolva
+                desafios e descubra como a tecnologia pode ajudar
+                a compreender a natureza.
             </p>
 
             <div class="botoes-hero">
-
-                <a
-                    class="botao"
-                    href="materiais.html">
+                <a class="botao" href="materiais.html">
                     🧰 Conferir materiais
                 </a>
 
-                <a
-                    class="botao botao-secundario"
-                    href="#etapas">
+                <a class="botao botao-secundario" href="#etapas">
                     🌱 Ver etapas
                 </a>
-
             </div>
 
         </div>
-
     </div>
-
 </section>
-
 
 <main class="container">
 
-<!-- =========================================
-     INDICADORES DE PROGRESSO
-     ========================================= -->
+    <section class="indicadores">
 
-<section class="indicadores">
+        <div class="indicador">
+            <h3>Materiais conferidos</h3>
 
-    <div class="indicador">
+            <strong id="materialCount">0 de 9</strong>
 
-        <h3>
-            Materiais conferidos
-        </h3>
-
-        <strong id="materialCount">
-            0 de 9
-        </strong>
-
-        <a href="materiais.html">
-            Abrir lista de materiais →
-        </a>
-
-    </div>
-
-    <div class="indicador">
-
-        <h3>
-            Atividades iniciais concluídas
-        </h3>
-
-        <strong id="stageCount">
-            0 de 6 etapas
-        </strong>
-
-        <div
-            class="barra-progresso"
-            id="globalBar"
-            role="progressbar"
-            aria-label="Progresso geral da oficina"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0">
-
-            <div
-                class="preenchimento"
-                id="globalFill">
-            </div>
-
+            <a href="materiais.html">
+                Abrir lista de materiais →
+            </a>
         </div>
 
-    </div>
+        <div class="indicador">
+            <h3>Atividades iniciais concluídas</h3>
 
-</section>
+            <strong id="stageCount">0 de 6 etapas</strong>
 
+            <div class="barra-progresso"
+                 id="globalBar"
+                 role="progressbar"
+                 aria-label="Progresso geral da oficina"
+                 aria-valuemin="0"
+                 aria-valuemax="100"
+                 aria-valuenow="0">
 
-<!-- =========================================
-     ETAPAS DA OFICINA
-     ========================================= -->
+                <div class="preenchimento" id="globalFill"></div>
 
-<section id="etapas">
+            </div>
+        </div>
 
-    <h2 class="titulo-secao">
-        🚀 Etapas da oficina
-    </h2>
+    </section>
 
-    <p class="introducao-etapas">
+    <section id="etapas">
 
-        Comece pelo nível inicial de cada etapa.
-        Os desafios avançados são opcionais
-        e podem ser realizados depois.
+        <h2 class="titulo-secao">
+            🚀 Etapas da oficina
+        </h2>
 
-    </p>
+        <p class="introducao-etapas">
+            Comece pelo nível inicial de cada etapa.
+            Os desafios avançados são opcionais
+            e podem ser realizados depois.
+        </p>
 
-    <div
-        class="grade-etapas"
-        id="cards">
-    </div>
+        <div class="grade-etapas" id="cards"></div>
 
-</section>
+    </section>
 
 </main>
-
-
-<!-- =========================================
-     RODAPÉ INSTITUCIONAL
-     ========================================= -->
 
 <footer>
 
@@ -214,27 +147,19 @@
 
 </footer>
 
-
 <script>
 
-/* =========================================
-   GLOWUP IOT — PÁGINA INICIAL
-   Versão 1.7
+// =========================================
+// GLOWUP IOT — INDEX v1.8
+// =========================================
 
-   Preserva as chaves de armazenamento
-   utilizadas nas etapas anteriores.
-   ========================================= */
+// Mantem as chaves utilizadas nas etapas.
+const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+const CHAVE_MATERIAIS = "glowup-materiais-v1";
 
-const CHAVE_GERAL =
-    "glowup-oficina-progresso-v1";
-
-const CHAVE_MATERIAIS =
-    "glowup-materiais-v1";
-
-
-/* =========================================
-   DEFINIÇÃO DAS ETAPAS
-   ========================================= */
+// =========================================
+// ETAPAS DA OFICINA
+// =========================================
 
 const ETAPAS = [
 
@@ -254,9 +179,9 @@ const ETAPAS = [
         icone: "💡",
         titulo: "Experimentando o ESP32-C3",
         descricao:
-            "Monte a placa na protoboard " +
-            "e experimente programas com LEDs " +
-            "e alertas sonoros utilizando o buzzer.",
+            "Monte a placa na protoboard e experimente " +
+            "programas com LEDs e alertas sonoros " +
+            "utilizando o buzzer.",
         arquivo: "etapa02.html"
     },
 
@@ -298,97 +223,94 @@ const ETAPAS = [
         icone: "✨",
         titulo: "Personalizando o GlowUP Plant",
         descricao:
-            "Personalize as expressões da sua planta " +
-            "e descubra novas possibilidades " +
-            "para o projeto.",
-        arquivo: null
+            "Dê personalidade à sua planta! " +
+            "Crie olhos animados com a biblioteca RoboEyes, " +
+            "experimente expressões e personalize " +
+            "os alertas sonoros.",
+        arquivo: "etapa06.html"
     }
 
 ];
 
-
-/* =========================================
-   LEITURA SEGURA DO LOCALSTORAGE
-   ========================================= */
+// =========================================
+// LEITURA DO PROGRESSO
+// =========================================
 
 function lerDados(chave) {
 
     try {
+        const dados = JSON.parse(
+            localStorage.getItem(chave) || "{}"
+        );
 
-        const texto =
-            localStorage.getItem(chave);
-
-        if (!texto) {
-            return {};
-        }
-
-        const dados = JSON.parse(texto);
-
-        if (
+        return (
             dados &&
             typeof dados === "object" &&
             !Array.isArray(dados)
-        ) {
-            return dados;
-        }
-
-        return {};
+        ) ? dados : {};
 
     } catch (erro) {
-
-        console.warn(
-            "Não foi possível ler os dados:",
-            erro
-        );
-
+        console.warn("Erro ao ler dados:", erro);
         return {};
     }
-
 }
 
-
-/* =========================================
-   MONTAGEM DOS CARTÕES
-   ========================================= */
+// =========================================
+// MONTAGEM DAS ETAPAS
+// =========================================
 
 function montarEtapas() {
 
-    const progresso =
-        lerDados(CHAVE_GERAL);
-
-    const materiais =
-        lerDados(CHAVE_MATERIAIS);
-
-    const elementoCards =
-        document.getElementById("cards");
+    const progresso = lerDados(CHAVE_GERAL);
+    const materiais = lerDados(CHAVE_MATERIAIS);
 
     let etapasConcluidas = 0;
 
-    elementoCards.innerHTML = ETAPAS.map(
-        etapa => {
+    const cards = document.getElementById("cards");
 
-            const estado =
-                progresso[etapa.numero] || {};
+    cards.innerHTML = ETAPAS.map(etapa => {
 
-            if (estado.inicial === true) {
-                etapasConcluidas++;
-            }
+        const estado = progresso[etapa.numero] || {};
 
-            const statusInicial =
-                estado.inicial === true
-                    ? "Concluído ✓"
-                    : "Pendente";
+        if (estado.inicial === true) {
+            etapasConcluidas++;
+        }
 
-            const statusAvancado =
-                estado.avancado === true
-                    ? "Concluído ✓"
-                    : "Opcional";
+        const statusInicial = estado.inicial
+            ? "Concluído ✓"
+            : "Pendente";
 
-            let botoes = "";
+        const statusAvancado = estado.avancado
+            ? "Concluído ✓"
+            : "Opcional";
 
-            if (etapa.arquivo) {
+        return `
 
-                botoes = `
+            <article class="cartao">
+
+                <div class="cartao-conteudo">
+
+                    <span class="numero-etapa">
+                        ETAPA ${String(etapa.numero).padStart(2, "0")}
+                    </span>
+
+                    <div class="icone-etapa">
+                        ${etapa.icone}
+                    </div>
+
+                    <h3>${etapa.titulo}</h3>
+
+                    <p>${etapa.descricao}</p>
+
+                    <div class="estado-etapa">
+                        🌱 Inicial: ${statusInicial}<br>
+                        🚀 Avançado: ${statusAvancado}
+                    </div>
+
+                </div>
+
+                <div class="acoes-etapa">
+
                     <a href="${etapa.arquivo}">
                         🌱 Inicial
                     </a>
@@ -396,106 +318,35 @@ function montarEtapas() {
                     <a href="${etapa.arquivo}#desafio-avancado">
                         🚀 Avançado
                     </a>
-                `;
 
-            } else {
+                </div>
 
-                botoes = `
-                    <a
-                        class="desabilitado"
-                        aria-disabled="true">
-                        Em breve
-                    </a>
+            </article>
 
-                    <a
-                        class="desabilitado"
-                        aria-disabled="true">
-                        Em breve
-                    </a>
-                `;
+        `;
 
-            }
+    }).join("");
 
-            return `
+    // Atualiza o progresso geral.
 
-                <article class="cartao">
-
-                    <div class="cartao-conteudo">
-
-                        <span class="numero-etapa">
-
-                            ETAPA ${
-                                String(etapa.numero).padStart(2, "0")
-                            }
-
-                        </span>
-
-                        <div class="icone-etapa">
-                            ${etapa.icone}
-                        </div>
-
-                        <h3>
-                            ${etapa.titulo}
-                        </h3>
-
-                        <p>
-                            ${etapa.descricao}
-                        </p>
-
-                        <div class="estado-etapa">
-
-                            🌱 Inicial:
-                            ${statusInicial}
-
-                            <br>
-
-                            🚀 Avançado:
-                            ${statusAvancado}
-
-                        </div>
-
-                    </div>
-
-                    <div class="acoes-etapa">
-                        ${botoes}
-                    </div>
-
-                </article>
-
-            `;
-
-        }
-    ).join("");
-
-
-    /* ATUALIZA PROGRESSO GERAL */
-
-    document.getElementById(
-        "stageCount"
-    ).textContent =
-        etapasConcluidas + " de 6 etapas";
-
+    document.getElementById("stageCount").textContent =
+        `${etapasConcluidas} de ${ETAPAS.length} etapas`;
 
     const percentual = Math.round(
         etapasConcluidas / ETAPAS.length * 100
     );
 
-    document.getElementById(
-        "globalFill"
-    ).style.width = percentual + "%";
+    document.getElementById("globalFill").style.width =
+        percentual + "%";
 
-    document.getElementById(
-        "globalBar"
-    ).setAttribute(
+    document.getElementById("globalBar").setAttribute(
         "aria-valuenow",
         percentual
     );
 
+    // Atualiza a conferencia dos materiais.
 
-    /* ATUALIZA LISTA DE MATERIAIS */
-
-    const ITENS_MATERIAIS = [
-
+    const itens = [
         "esp32",
         "sensor",
         "oled",
@@ -505,44 +356,28 @@ function montarEtapas() {
         "jumpers",
         "usb",
         "planta"
-
     ];
 
-    const materiaisConferidos =
-        ITENS_MATERIAIS.filter(
-            item => materiais[item] === true
-        ).length;
+    const conferidos = itens.filter(
+        item => materiais[item] === true
+    ).length;
 
-    document.getElementById(
-        "materialCount"
-    ).textContent =
-        materiaisConferidos + " de 9";
+    document.getElementById("materialCount").textContent =
+        `${conferidos} de ${itens.length}`;
 
 }
 
-
-/* =========================================
-   INICIALIZAÇÃO
-   ========================================= */
+// =========================================
+// INICIALIZACAO
+// =========================================
 
 montarEtapas();
 
+// Atualiza ao retornar das atividades.
+window.addEventListener("pageshow", montarEtapas);
 
-/* Atualiza ao retornar de outra página. */
-
-window.addEventListener(
-    "pageshow",
-    montarEtapas
-);
-
-
-/* Atualiza quando outra aba modificar
-   os registros de progresso. */
-
-window.addEventListener(
-    "storage",
-    montarEtapas
-);
+// Atualiza quando outra aba altera o progresso.
+window.addEventListener("storage", montarEtapas);
 
 </script>
 
