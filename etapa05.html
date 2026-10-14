@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 05 — Construindo o GlowUP Plant</title>
+
+<style>
+/* GlowUP Plant — Etapa 05 — v1.0 */
+
+:root {
+  --verde:#247c58;
+  --verde-escuro:#174b39;
+  --verde-claro:#e6f6ec;
+  --rosa:#e86695;
+  --rosa-claro:#fff0f5;
+  --texto:#2a4238;
+  --fundo:#f7faf8;
+  --borda:#dfeae3;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--fundo);color:var(--texto);
+  font:16px/1.7 Arial,Helvetica,sans-serif
+}
+.container{width:92%;max-width:950px;margin:auto}
+a{color:var(--verde)}
+header{background:white;border-bottom:1px solid var(--borda)}
+.topo{
+  min-height:75px;display:flex;align-items:center;
+  justify-content:space-between;gap:15px;flex-wrap:wrap
+}
+.logo{font-size:23px;font-weight:bold;color:var(--verde)}
+.logo span{color:var(--rosa)}
+.voltar{text-decoration:none;font-size:14px;font-weight:bold}
+.versao{font-size:12px;color:#718579}
+.hero{
+  text-align:center;padding:45px 15px;
+  background:linear-gradient(135deg,#e5f6eb,#fff0f5)
+}
+.hero h1{
+  font-size:clamp(28px,5vw,40px);color:var(--verde-escuro);
+  margin:12px 0
+}
+.hero p{max-width:730px;margin:auto}
+.tag{
+  display:inline-block;background:white;color:var(--verde);
+  padding:6px 15px;border-radius:25px;font-size:13px;font-weight:bold
+}
+.bloco{
+  background:white;border:1px solid var(--borda);
+  border-radius:18px;padding:28px;margin:25px 0
+}
+.bloco h2{color:var(--verde-escuro);margin-top:0}
+.bloco h3{color:var(--verde-escuro);margin-top:26px}
+.destaque{
+  background:var(--verde-claro);border-radius:12px;
+  padding:18px;margin:20px 0
+}
+.aviso{
+  background:#fff5e8;border-left:5px solid #e9a23b;
+  border-radius:9px;padding:18px;margin:20px 0
+}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:20px 0}
+th,td{border:1px solid var(--borda);padding:12px;text-align:left}
+th{background:var(--verde);color:white}
+tr:nth-child(even){background:#f5faf6}
+.tabela-container{overflow-x:auto}
+.codigo{
+  position:relative;background:#1e293b;color:#f1f5f9;
+  border-radius:12px;padding:20px;margin:20px 0;overflow-x:auto
+}
+.codigo pre{
+  margin:38px 0 0;font:14px/1.65 Consolas,Monaco,monospace;
+  white-space:pre;tab-size:2
+}
+.copiar{
+  position:absolute;right:12px;top:12px;border:0;
+  border-radius:8px;background:#dff4e6;color:var(--verde-escuro);
+  padding:7px 13px;font-weight:bold;cursor:pointer
+}
+code{
+  background:#edf3ee;border-radius:4px;
+  padding:2px 5px
+}
+.barra{
+  height:14px;background:#e4eee7;
+  border-radius:20px;overflow:hidden
+}
+.preenchimento{
+  width:0;height:100%;
+  background:linear-gradient(90deg,#47b582,#ec83ab);
+  transition:width .3s
+}
+#contador{font-weight:bold;color:var(--verde)}
+.check{
+  display:flex;align-items:center;gap:12px;background:var(--verde-claro);
+  padding:15px;border-radius:10px;margin-top:22px;
+  cursor:pointer;font-weight:bold
+}
+.check input{
+  width:23px;height:23px;flex-shrink:0;accent-color:var(--verde)
+}
+
+/* Visor OLED representado em SVG 128 x 64 */
+
+.oled-controles{
+  display:flex;justify-content:center;align-items:center;
+  gap:10px;flex-wrap:wrap;margin:20px 0
+}
+.oled-controles button{
+  border:1px solid #b8d3c2;border-radius:9px;
+  padding:9px 15px;cursor:pointer;background:white;
+  color:var(--verde-escuro);font-weight:bold
+}
+.oled-controles button.ativo{
+  background:var(--verde);color:white
+}
+.oled-area{
+  display:flex;justify-content:center;
+  background:#f1f6f3;border-radius:14px;
+  padding:25px 12px;margin:20px 0
+}
+.oled-moldura{
+  width:100%;max-width:430px;padding:14px;
+  background:#111b25;border:9px solid #253849;
+  border-radius:17px;box-shadow:0 5px 15px #0002
+}
+.oled-svg{
+  display:block;width:100%;height:auto;aspect-ratio:2/1;
+  background:#010916;border-radius:4px
+}
+.oled-svg .topo-pixels{color:#ffd53b;fill:#ffd53b}
+.oled-svg .baixo-pixels{color:#67c5ff;fill:#67c5ff}
+body.oled-branco .oled-svg .topo-pixels,
+body.oled-branco .oled-svg .baixo-pixels{
+  color:#eff8ff;fill:#eff8ff
+}
+.oled-svg text{font-family:monospace;font-size:7.5px}
+.oled-svg .grande{font-size:15px;font-weight:bold}
+.oled-svg .traço{fill:none;stroke:currentColor;stroke-width:1.3}
+
+.legenda{font-size:13px;color:#718579;text-align:center}
+.avancado{border:2px solid #f0aac4;scroll-margin-top:20px}
+.avancado>h2,.desafio h3{color:#ac3663}
+.desafio{
+  border-bottom:2px dashed #e8c0cf;
+  margin-bottom:30px;padding-bottom:30px
+}
+.desafio .check{background:var(--rosa-claro)}
+.solucao{border:2px solid #57b785}
+[hidden]{display:none!important}
+.botao{
+  display:inline-block;background:var(--verde);color:white;
+  border:0;border-radius:10px;padding:11px 19px;
+  margin:6px 6px 6px 0;text-decoration:none;
+  font-size:14px;font-weight:bold;cursor:pointer
+}
+.botao-secundario{background:#e8eeea;color:var(--verde-escuro)}
+.botao-solucao{
+  background:var(--rosa-claro);color:#ac3663;
+  border:1px solid #efb5c8
+}
+.resultado{
+  background:var(--verde-claro);text-align:center;
+  border-radius:18px;padding:25px;margin:30px 0
+}
+.resultado h2{color:var(--verde-escuro)}
+footer{
+  background:var(--verde-escuro);color:white;
+  padding:25px;text-align:center;font-size:14px
+}
+@media(max-width:600px){
+  .bloco{padding:19px}
+  .hero{padding:35px 15px}
+  .codigo{padding:15px}
+  .codigo pre{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="container topo">
+    <div class="logo">🌱 Glow<span>UP</span> Plant</div>
+    <a class="voltar" href="index.html">← Voltar à oficina</a>
+    <span class="versao">Etapa 05 • v1.0</span>
+  </div>
+</header>
+
+<section class="hero">
+  <span class="tag">ETAPA 05</span>
+  <h1>🪴 Construindo o GlowUP Plant!</h1>
+  <p>
+    Vamos reunir sensor, display OLED e buzzer
+    para criar uma plantinha inteligente que
+    mostra como está se sentindo e avisa
+    quando precisa de água!
+  </p>
+</section>
+
+<main class="container">
+
+<!-- PROGRESSO -->
+
+<section class="bloco">
+  <h2>🌿 Meu progresso</h2>
+  <p>
+    Complete os experimentos e marque
+    cada atividade realizada.
+  </p>
+  <div class="barra" id="barra"
+       role="progressbar" aria-label="Progresso da etapa"
+       aria-valuemin="0" aria-valuemax="100"
+       aria-valuenow="0">
+    <div class="preenchimento" id="preenchimento"></div>
+  </div>
+  <p id="contador">0 de 5 atividades concluídas</p>
+  <p id="contadorAvancado">🚀 Desafios avançados: opcionais</p>
+</section>
+
+<!-- PRÉVIAS -->
+
+<section class="bloco">
+  <h2>🎨 Nosso OLED: branco ou bicolor</h2>
+  <p>
+    As prévias desta etapa representam
+    um OLED SSD1306 de 128 × 64 pixels.
+    Utilize os botões para alternar entre
+    as versões branca e bicolor.
+  </p>
+
+  <div class="oled-controles">
+    <button id="modoBicolor" type="button"
+            onclick="alterarModoOLED('bicolor')">
+      🟡🔵 Bicolor
+    </button>
+    <button id="modoBranco" type="button"
+            onclick="alterarModoOLED('branco')">
+      ⚪ Branco
+    </button>
+  </div>
+
+  <div class="destaque">
+    <strong>💡 Uma montagem, duas apresentações</strong>
+    <p>
+      Nos códigos, o título permanece nas
+      linhas superiores e as informações
+      principais aparecem abaixo da linha 16.
+      Assim, o layout funciona nos dois modelos.
+    </p>
+  </div>
+</section>
+
+<!-- EXPERIMENTO 1 -->
+
+<section class="bloco">
+  <h2>🌱 1. Conferindo o sistema completo</h2>
+
+  <p>
+    Nosso GlowUP Plant utilizará três
+    dispositivos conectados ao ESP32-C3:
+    sensor de umidade, display OLED e buzzer ativo.
+  </p>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Componente</th>
+          <th>Conexão</th>
+          <th>Função</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sensor — AOUT</td>
+          <td>GPIO1</td>
+          <td>Medição analógica</td>
+        </tr>
+        <tr>
+          <td>Sensor — VCC/GND</td>
+          <td>3V3/GND</td>
+          <td>Alimentação</td>
+        </tr>
+        <tr>
+          <td>OLED — SDA</td>
+          <td>GPIO8</td>
+          <td>Dados I²C</td>
+        </tr>
+        <tr>
+          <td>OLED — SCL/SCK</td>
+          <td>GPIO9</td>
+          <td>Clock I²C</td>
+        </tr>
+        <tr>
+          <td>OLED — VCC/GND</td>
+          <td>3V3/GND</td>
+          <td>Alimentação</td>
+        </tr>
+        <tr>
+          <td>Buzzer ativo — sinal</td>
+          <td>GPIO4</td>
+          <td>Alerta sonoro</td>
+        </tr>
+        <tr>
+          <td>Buzzer ativo — GND</td>
+          <td>GND</td>
+          <td>Referência elétrica</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Procedimento de montagem</h3>
+
+  <ol>
+    <li>Desconecte o cabo USB-C.</li>
+    <li>Confira as conexões do sensor.</li>
+    <li>Confira SDA e SCL do OLED.</li>
+    <li>Confira a polaridade do buzzer.</li>
+    <li>Peça à monitora para verificar o circuito.</li>
+    <li>Conecte o cabo USB-C após a conferência.</li>
+  </ol>
+
+  <div class="aviso">
+    <strong>⚠️ Cuidados importantes</strong>
+    <p>
+      Os GPIOs do ESP32-C3 operam com
+      níveis lógicos de 3,3 V.
+    </p>
+    <p>
+      O acionamento direto pelo GPIO4
+      somente é adequado se o buzzer ativo
+      for compatível com 3,3 V e consumir
+      corrente dentro do limite seguro do pino.
+      Caso contrário, utilize um circuito acionador
+      apropriado, conferido pela equipe do laboratório.
+    </p>
+    <p>
+      Os GPIOs 8 e 9 também participam das
+      condições de inicialização do ESP32-C3.
+      Confirme que o circuito inicia corretamente
+      com o OLED conectado.
+    </p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="1">
+    <span>
+      Conferi todos os componentes
+      e suas conexões.
+    </span>
+  </label>
+</section>
+
+<!-- EXPERIMENTO 2 -->
+
+<section class="bloco">
+  <h2>🌱 2. Integrando sensor e OLED</h2>
+
+  <p>
+    Vamos começar apresentando a porcentagem
+    de umidade no display.
+  </p>
+
+  <p>
+    Esta atividade retoma os conhecimentos
+    das Etapas 03 e 04.
+  </p>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED mostrando umidade de 65 por cento">
+        <g class="topo-pixels">
+          <text x="28" y="9">GlowUP Plant</text>
+        </g>
+        <g class="baixo-pixels">
+          <text x="19" y="26">Umidade do solo</text>
+          <text x="40" y="47" class="grande">65%</text>
+          <text x="16" y="61">Solo adequado</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="codigo">
+    <button class="copiar"
+            onclick="copiarCodigo('codigo2',this)">
+      Copiar código
+    </button>
+<pre id="codigo2">// GlowUP Plant — Etapa 05
+// Experimento 2: sensor e OLED integrados.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SENSOR = 1;
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+// Referencias dos nossos testes.
+// Substitua se o sensor for diferente.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+void setup() {
+
+  Serial.begin(115200);
+
+  // Configura o conversor analogico.
+  analogReadResolution(12);
+
+  // Inicializa a comunicacao I2C.
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  // Inicializa o display.
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("OLED nao encontrado!");
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  // Le o valor do sensor.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Verifica a calibracao.
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  // Calcula a porcentagem relativa.
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  // Mantem o valor entre 0 e 100%.
+  umidade = constrain(umidade, 0, 100);
+
+  // Limpa a imagem anterior.
+  display.clearDisplay();
+
+  // Titulo superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Identificacao da leitura.
+  display.setCursor(19, 20);
+  display.println("Umidade do solo");
+
+  // Porcentagem em destaque.
+  display.setTextSize(2);
+  display.setCursor(40, 32);
+  display.print(umidade);
+  display.print("%");
+
+  // Mostra a condicao do solo.
+  display.setTextSize(1);
+  display.setCursor(16, 55);
+
+  if (umidade &lt; 30) {
+    display.println("Solo seco!");
+  }
+  else if (umidade &lt; 70) {
+    display.println("Solo adequado");
+  }
+  else {
+    display.setCursor(2, 55);
+    display.println("Solo muito umido");
+  }
+
+  // Atualiza a tela.
+  display.display();
+
+  // Tambem envia a leitura ao computador.
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  delay(1000);
+}</pre>
+  </div>
+
+  <div class="destaque">
+    <strong>🔍 Experimente!</strong>
+    <p>
+      Observe o comportamento do OLED
+      quando o sensor é colocado
+      em solo seco e depois em solo úmido.
+    </p>
+    <p>
+      A porcentagem acompanha as mudanças
+      detectadas pelo sensor?
+    </p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="2">
+    <span>
+      Integrei o sensor de umidade
+      com o display OLED.
+    </span>
+  </label>
+</section>
+
+<!-- EXPERIMENTO 3 -->
+
+<section class="bloco">
+  <h2>🌱 3. Criando um alerta sonoro</h2>
+
+  <p>
+    Quando a planta precisar de água,
+    o GlowUP Plant poderá emitir um aviso sonoro.
+  </p>
+
+  <p>
+    O buzzer deverá produzir
+    <strong>dois bipes curtos</strong>
+    quando a umidade estiver abaixo de 30%.
+  </p>
+
+  <h3>Funcionamento desejado</h3>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Umidade</th>
+          <th>Buzzer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Abaixo de 30%</td>
+          <td>Dois bipes curtos</td>
+        </tr>
+        <tr>
+          <td>30% ou mais</td>
+          <td>Permanece desligado</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="codigo">
+    <button class="copiar"
+            onclick="copiarCodigo('codigo3',this)">
+      Copiar código
+    </button>
+<pre id="codigo3">// GlowUP Plant — Experimento 3
+// Objetivo: produzir um alerta quando
+// a umidade do solo estiver baixa.
+
+const int PINO_SENSOR = 1;
+const int PINO_BUZZER = 4;
+
+// Valores de calibracao.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+// Limite didatico para solo seco.
+const int LIMITE_SECO = 30;
+
+// Funcao que produz dois bipes curtos.
+void emitirAlerta() {
+
+  // Repete duas vezes.
+  for (int i = 0; i &lt; 2; i++) {
+
+    // Liga o buzzer.
+    digitalWrite(PINO_BUZZER, HIGH);
+
+    // Mantem ligado por 150 ms.
+    delay(150);
+
+    // Desliga o buzzer.
+    digitalWrite(PINO_BUZZER, LOW);
+
+    // Pausa entre os bipes.
+    delay(200);
+  }
+}
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  // Configura o buzzer como saida.
+  pinMode(PINO_BUZZER, OUTPUT);
+
+  // Inicia desligado.
+  digitalWrite(PINO_BUZZER, LOW);
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // Verifica se o solo esta seco.
+  if (umidade &lt; LIMITE_SECO) {
+
+    Serial.println("Preciso de agua!");
+
+    // Executa o alerta sonoro.
+    emitirAlerta();
+  }
+  else {
+
+    Serial.println("Umidade adequada.");
+  }
+
+  // Aguarda cinco segundos.
+  delay(5000);
+}</pre>
+  </div>
+
+  <div class="aviso">
+    <strong>🔊 Atenção ao som!</strong>
+    <p>
+      O programa repetirá o alerta enquanto
+      a umidade continuar abaixo do limite.
+    </p>
+    <p>
+      Para evitar alarmes repetitivos
+      no projeto final, criaremos
+      um intervalo maior entre os avisos.
+    </p>
+    <p>
+      Utilize apenas um buzzer ativo
+      compatível com o circuito de acionamento.
+    </p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="3">
+    <span>
+      Consegui produzir o alerta sonoro
+      quando a umidade ficou baixa.
+    </span>
+  </label>
+</section>
+
+<!-- EXPERIMENTO 4 -->
+
+<section class="bloco">
+  <h2>🌱 4. Integrando sons e expressões</h2>
+
+  <p>
+    Vamos dar emoções à nossa planta!
+    O rosto apresentado no OLED mudará
+    conforme a leitura do sensor.
+  </p>
+
+  <p>
+    O buzzer será acionado
+    apenas quando o solo estiver seco.
+  </p>
+
+  <h3>As expressões do GlowUP Plant</h3>
+
+  <div class="tabela-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Condição</th>
+          <th>Expressão</th>
+          <th>Som</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Solo seco</td>
+          <td>😟 Triste</td>
+          <td>Dois bipes</td>
+        </tr>
+        <tr>
+          <td>Umidade intermediária</td>
+          <td>🙂 Feliz</td>
+          <td>Sem alerta</td>
+        </tr>
+        <tr>
+          <td>Umidade elevada</td>
+          <td>😮 Surpresa</td>
+          <td>Sem alerta</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Resultado esperado</h3>
+
+  <div class="oled-area">
+    <div class="oled-moldura">
+      <svg class="oled-svg" viewBox="0 0 128 64"
+           aria-label="OLED apresentando rosto feliz">
+        <g class="topo-pixels">
+          <text x="28" y="9">GlowUP Plant</text>
+        </g>
+        <g class="baixo-pixels">
+          <circle cx="64" cy="40" r="20"
+                  class="traço"/>
+          <circle cx="56" cy="34" r="2"/>
+          <circle cx="72" cy="34" r="2"/>
+          <polyline points="53,45 59,50 69,50 75,45"
+                    class="traço"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <p>
+    O próximo programa combina
+    os desenhos desenvolvidos
+    na Etapa 04 com o acionamento
+    sonoro da Etapa 05.
+  </p>
+
+  <div class="codigo">
+    <button class="copiar"
+            onclick="copiarCodigo('codigo4',this)">
+      Copiar código
+    </button>
+<pre id="codigo4">// GlowUP Plant — Experimento 4
+// Objetivo: integrar sons e expressoes.
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+const int PINO_SENSOR = 1;
+const int PINO_BUZZER = 4;
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+// Desenha o contorno do rosto e os olhos.
+void desenharRosto() {
+  display.drawCircle(64, 40, 20, SSD1306_WHITE);
+  display.fillCircle(56, 34, 2, SSD1306_WHITE);
+  display.fillCircle(72, 34, 2, SSD1306_WHITE);
+}
+
+// Expressao feliz.
+void rostoFeliz() {
+  desenharRosto();
+  display.drawLine(53, 45, 59, 50, SSD1306_WHITE);
+  display.drawLine(59, 50, 69, 50, SSD1306_WHITE);
+  display.drawLine(69, 50, 75, 45, SSD1306_WHITE);
+}
+
+// Expressao triste.
+void rostoTriste() {
+  desenharRosto();
+  display.drawLine(53, 51, 59, 46, SSD1306_WHITE);
+  display.drawLine(59, 46, 69, 46, SSD1306_WHITE);
+  display.drawLine(69, 46, 75, 51, SSD1306_WHITE);
+}
+
+// Expressao surpresa.
+void rostoSurpreso() {
+  desenharRosto();
+  display.drawCircle(64, 49, 5, SSD1306_WHITE);
+}
+
+// Produz dois bipes curtos.
+void emitirAlerta() {
+  for (int i = 0; i &lt; 2; i++) {
+    digitalWrite(PINO_BUZZER, HIGH);
+    delay(150);
+    digitalWrite(PINO_BUZZER, LOW);
+    delay(200);
+  }
+}
+
+void setup() {
+
+  Serial.begin(115200);
+  analogReadResolution(12);
+
+  pinMode(PINO_BUZZER, OUTPUT);
+  digitalWrite(PINO_BUZZER, LOW);
+
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+    Serial.println("Erro no OLED!");
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+}
+
+void loop() {
+
+  int leitura = analogRead(PINO_SENSOR);
+
+  if (valorSeco == valorUmido) {
+    Serial.println("Erro de calibracao!");
+    delay(1000);
+    return;
+  }
+
+  int umidade = map(
+    leitura, valorSeco, valorUmido, 0, 100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  display.clearDisplay();
+
+  // Titulo superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Escolhe a expressao.
+  if (umidade &lt; 30) {
+
+    rostoTriste();
+    emitirAlerta();
+
+  }
+  else if (umidade &lt; 70) {
+
+    rostoFeliz();
+
+  }
+  else {
+
+    rostoSurpreso();
+
+  }
+
+  display.display();
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // Pausa entre as verificacoes.
+  delay(5000);
+}</pre>
+  </div>
+
+  <div class="destaque">
+    <strong>🔍 Vamos investigar!</strong>
+    <p>
+      Observe qual rosto aparece
+      quando o solo está seco.
+    </p>
+    <p>
+      O buzzer é acionado
+      nas condições esperadas?
+    </p>
+    <p>
+      O que acontece quando
+      a umidade aumenta?
+    </p>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="4">
+    <span>
+      Integrei as expressões do OLED
+      com os alertas sonoros.
+    </span>
+  </label>
+</section>
+
+<!-- EXPERIMENTO 5 -->
+
+<section class="bloco">
+  <h2>🌱 5. Construindo nosso GlowUP Plant!</h2>
+
+  <p>
+    Chegamos ao programa principal!
+    Vamos reunir os recursos
+    desenvolvidos anteriormente.
+  </p>
+
+  <p>
+    O GlowUP Plant apresentará:
+  </p>
+
+  <ul>
+    <li>Porcentagem de umidade.</li>
+    <li>Expressão facial correspondente.</li>
+    <li>Alerta sonoro para solo seco.</li>
+    <li>Intervalo mínimo entre alertas.</li>
+  </ul>
+
+  <div class="destaque">
+    <strong>💡 Uma melhoria importante</strong>
+    <p>
+      O buzzer não deve tocar
+      continuamente enquanto
+      o solo permanecer seco.
+    </p>
+    <p>
+      Utilizaremos a função
+      <code>millis()</code> para
+      controlar o tempo entre alertas.
+    </p>
+    <p>
+      Neste exemplo, o sistema repetirá
+      o aviso, no máximo,
+      uma vez a cada 30 segundos.
+    </p>
+  </div>
+
+  <h3>Programa principal</h3>
+
+  <div class="codigo">
+    <button class="copiar"
+            onclick="copiarCodigo('codigo5',this)">
+      Copiar código
+    </button>
+<pre id="codigo5">// ==========================================
+// GlowUP Plant — Etapa 05
+// Experimento 5: sistema integrado
+// Versao didatica 1.0
+// ==========================================
+
+#include &lt;Wire.h&gt;
+#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_SSD1306.h&gt;
+
+// Pinos utilizados.
+const int PINO_SENSOR = 1;
+const int PINO_BUZZER = 4;
+const int PINO_SDA = 8;
+const int PINO_SCL = 9;
+
+// Referencias de calibracao.
+int valorSeco = 3800;
+int valorUmido = 1326;
+
+// Limites didaticos de umidade.
+const int LIMITE_SECO = 30;
+const int LIMITE_UMIDO = 70;
+
+// Intervalo minimo entre alertas.
+// 30000 milissegundos = 30 segundos.
+const unsigned long INTERVALO_ALERTA = 30000;
+
+// Guarda o instante do ultimo alerta.
+unsigned long ultimoAlerta = 0;
+
+// Indica se ja houve um alerta
+// durante a condicao atual de solo seco.
+bool alertaEnviado = false;
+
+// Objeto do display.
+Adafruit_SSD1306 display(128, 64, &amp;Wire, -1);
+
+
+// ==========================================
+// FUNCOES DE DESENHO
+// ==========================================
+
+void desenharRosto() {
+  display.drawCircle(64, 40, 20, SSD1306_WHITE);
+  display.fillCircle(56, 34, 2, SSD1306_WHITE);
+  display.fillCircle(72, 34, 2, SSD1306_WHITE);
+}
+
+void rostoFeliz() {
+  desenharRosto();
+  display.drawLine(53,45,59,50,SSD1306_WHITE);
+  display.drawLine(59,50,69,50,SSD1306_WHITE);
+  display.drawLine(69,50,75,45,SSD1306_WHITE);
+}
+
+void rostoTriste() {
+  desenharRosto();
+  display.drawLine(53,51,59,46,SSD1306_WHITE);
+  display.drawLine(59,46,69,46,SSD1306_WHITE);
+  display.drawLine(69,46,75,51,SSD1306_WHITE);
+}
+
+void rostoSurpreso() {
+  desenharRosto();
+  display.drawCircle(64,49,5,SSD1306_WHITE);
+}
+
+
+// ==========================================
+// FUNCAO DE ALERTA SONORO
+// ==========================================
+
+void emitirAlerta() {
+
+  // Produz dois bipes curtos.
+  for (int i = 0; i &lt; 2; i++) {
+
+    digitalWrite(PINO_BUZZER, HIGH);
+    delay(150);
+
+    digitalWrite(PINO_BUZZER, LOW);
+    delay(200);
+  }
+}
+
+
+// ==========================================
+// MOSTRAR UMIDADE NO OLED
+// ==========================================
+
+void mostrarUmidade(int umidade) {
+
+  display.clearDisplay();
+
+  // Titulo na faixa superior.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Identificacao.
+  display.setCursor(19, 20);
+  display.println("Umidade do solo");
+
+  // Porcentagem em destaque.
+  display.setTextSize(2);
+  display.setCursor(40, 32);
+  display.print(umidade);
+  display.print("%");
+
+  // Estado do solo.
+  display.setTextSize(1);
+  display.setCursor(2, 55);
+
+  if (umidade &lt; LIMITE_SECO) {
+    display.println("Solo seco!");
+  }
+  else if (umidade &lt; LIMITE_UMIDO) {
+    display.println("Solo adequado");
+  }
+  else {
+    display.println("Solo muito umido");
+  }
+
+  display.display();
+}
+
+
+// ==========================================
+// MOSTRAR EXPRESSAO FACIAL
+// ==========================================
+
+void mostrarExpressao(int umidade) {
+
+  display.clearDisplay();
+
+  // Titulo.
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Seleciona o rosto.
+  if (umidade &lt; LIMITE_SECO) {
+    rostoTriste();
+  }
+  else if (umidade &lt; LIMITE_UMIDO) {
+    rostoFeliz();
+  }
+  else {
+    rostoSurpreso();
+  }
+
+  display.display();
+}
+
+
+// ==========================================
+// CONFIGURACAO INICIAL
+// ==========================================
+
+void setup() {
+
+  Serial.begin(115200);
+  delay(1500);
+
+  // ADC de 12 bits.
+  analogReadResolution(12);
+
+  // Configura o buzzer.
+  pinMode(PINO_BUZZER, OUTPUT);
+  digitalWrite(PINO_BUZZER, LOW);
+
+  // Inicializa o I2C.
+  Wire.begin(PINO_SDA, PINO_SCL);
+
+  // Inicializa o display.
+  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
+
+    Serial.println("OLED nao encontrado!");
+
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  display.setTextColor(SSD1306_WHITE);
+
+  Serial.println("GlowUP Plant iniciado!");
+}
+
+
+// ==========================================
+// PROGRAMA PRINCIPAL
+// ==========================================
+
+void loop() {
+
+  // 1. Leitura do sensor.
+  int leitura = analogRead(PINO_SENSOR);
+
+  // Verifica as referencias.
+  if (valorSeco == valorUmido) {
+
+    Serial.println("Erro de calibracao!");
+
+    digitalWrite(PINO_BUZZER, LOW);
+
+    delay(1000);
+    return;
+  }
+
+  // 2. Calculo da umidade percentual.
+  int umidade = map(
+    leitura,
+    valorSeco,
+    valorUmido,
+    0,
+    100
+  );
+
+  umidade = constrain(umidade, 0, 100);
+
+  // 3. Mostra os valores no Monitor Serial.
+  Serial.print("Leitura ADC: ");
+  Serial.println(leitura);
+
+  Serial.print("Umidade: ");
+  Serial.print(umidade);
+  Serial.println("%");
+
+  // 4. Mostra a porcentagem no OLED.
+  mostrarUmidade(umidade);
+
+  // Mantem a tela por dois segundos.
+  delay(2000);
+
+  // 5. Mostra a expressao da planta.
+  mostrarExpressao(umidade);
+
+  // 6. Verifica a necessidade de alerta.
+  if (umidade &lt; LIMITE_SECO) {
+
+    // Consulta o tempo atual.
+    unsigned long agora = millis();
+
+    // Emite alerta imediatamente na
+    // primeira deteccao de solo seco.
+    // Depois respeita o intervalo definido.
+    if (
+      !alertaEnviado ||
+      agora - ultimoAlerta &gt;= INTERVALO_ALERTA
+    ) {
+
+      emitirAlerta();
+
+      // Registra o instante do alerta.
+      ultimoAlerta = millis();
+
+      // Marca que o alerta ja ocorreu.
+      alertaEnviado = true;
+    }
+  }
+  else {
+
+    // Se o solo deixou de estar seco,
+    // libera um novo alerta imediato
+    // em uma futura condicao de solo seco.
+    alertaEnviado = false;
+
+    // Garante buzzer desligado.
+    digitalWrite(PINO_BUZZER, LOW);
+  }
+
+  // Mantem o rosto visivel por dois segundos.
+  delay(2000);
+}</pre>
+  </div>
+
+  <div class="aviso">
+    <strong>⚠️ Antes do teste final</strong>
+    <p>
+      As referências de calibração devem ser
+      verificadas experimentalmente.
+      Os limites percentuais são didáticos.
+    </p>
+    <p>
+      O programa alterna a tela de porcentagem
+      com a tela de expressão facial.
+      Durante os bipes, a execução fica
+      brevemente bloqueada pelo uso de
+      <code>delay()</code>.
+    </p>
+    <p>
+      Esse comportamento é adequado
+      ao protótipo didático inicial.
+    </p>
+  </div>
+
+  <h3>Sequência de testes</h3>
+
+  <div class="destaque">
+    <strong>🧪 Validação do GlowUP Plant</strong>
+    <ol>
+      <li>Conecte o circuito ao USB.</li>
+      <li>Observe a porcentagem de umidade.</li>
+      <li>Observe a expressão facial.</li>
+      <li>Teste uma condição de solo seco.</li>
+      <li>Verifique se o buzzer emite dois bipes.</li>
+      <li>Observe se o alerta respeita o intervalo.</li>
+      <li>Teste uma condição de solo úmido.</li>
+      <li>Confira se o buzzer permanece desligado.</li>
+    </ol>
+  </div>
+
+  <label class="check">
+    <input type="checkbox" data-id="5">
+    <span>
+      Construí e testei meu GlowUP Plant!
+    </span>
+  </label>
+</section>
+
+<!-- DESAFIOS AVANÇADOS -->
+
+<section class="bloco avancado" id="desafio-avancado">
+
+  <h2>🚀 Desafios avançados — Personalizando o GlowUP Plant</h2>
+
+  <p>
+    Agora que o sistema funciona,
+    vamos torná-lo ainda mais inteligente!
+  </p>
+
+  <p>
+    Os próximos desafios apresentam
+    pequenos trechos de código incompletos.
+    Eles devem ser inseridos nas funções
+    correspondentes do programa
+    do Experimento 5.
+  </p>
+
+  <div class="destaque">
+    <strong>💡 Como resolver?</strong>
+    <p>
+      Leia o objetivo, identifique a função
+      que deverá ser modificada e complete
+      os comandos indicados por TODO.
+    </p>
+    <p>
+      Como são modificações do programa principal,
+      os trechos não são programas independentes.
+    </p>
+    <p>
+      Utilize o botão de solução
+      somente depois de tentar.
+    </p>
+  </div>
+
+  <!-- DESAFIO A -->
+
+  <div class="desafio" id="desafio-a">
+
+    <h3>🚀 Desafio A — Criando diferentes alertas sonoros</h3>
+
+    <p>
+      Vamos modificar os sons
+      apresentados pelo GlowUP Plant.
+    </p>
+
+    <p>
+      Quando o solo estiver seco,
+      o sistema deverá emitir
+      <strong>três bipes curtos</strong>.
+    </p>
+
+    <p>
+      Substitua a função
+      <code>emitirAlerta()</code>
+      do programa principal.
+    </p>
+
+    <div class="codigo">
+      <button class="copiar"
+              onclick="copiarCodigo('codigoA',this)">
+        Copiar código
+      </button>
+<pre id="codigoA">// Desafio A — Complete a funcao emitirAlerta().
+
+void emitirAlerta() {
+
+  // TODO 1:
+  // Complete o numero de repeticoes.
+  for (int i = 0; i &lt; _____; i++) {
+
+    // TODO 2:
+    // Ligue o buzzer.
+
+
+    // Mantem o som por 120 ms.
+    delay(120);
+
+    // TODO 3:
+    // Desligue o buzzer.
+
+
+    // Aguarda antes do proximo bipe.
+    delay(180);
+  }
+}</pre>
+    </div>
+
+    <button class="botao botao-solucao"
+            onclick="mostrarSolucao('solucaoA',this)">
+      💡 Ver solução do desafio A
+    </button>
+
+    <div class="codigo solucao" id="solucaoA" hidden>
+      <button class="copiar"
+              onclick="copiarCodigo('respostaA',this)">
+        Copiar solução
+      </button>
+<pre id="respostaA">// Solucao A — Tres bipes curtos.
+
+void emitirAlerta() {
+
+  // Repete tres vezes.
+  for (int i = 0; i &lt; 3; i++) {
+
+    // Liga o buzzer.
+    digitalWrite(PINO_BUZZER, HIGH);
+
+    delay(120);
+
+    // Desliga o buzzer.
+    digitalWrite(PINO_BUZZER, LOW);
+
+    delay(180);
+  }
+}</pre>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoA">
+      <span>Concluí o desafio A!</span>
+    </label>
+  </div>
+
+  <!-- DESAFIO B -->
+
+  <div class="desafio" id="desafio-b">
+
+    <h3>🚀 Desafio B — Controlando o intervalo entre alarmes</h3>
+
+    <p>
+      O sistema principal utiliza
+      um intervalo de 30 segundos
+      entre os alertas sonoros.
+    </p>
+
+    <p>
+      Sua tarefa será modificar
+      o programa para permitir
+      um alerta a cada
+      <strong>60 segundos</strong>.
+    </p>
+
+    <p>
+      Identifique a constante
+      <code>INTERVALO_ALERTA</code>
+      e complete a instrução.
+    </p>
+
+    <div class="codigo">
+      <button class="copiar"
+              onclick="copiarCodigo('codigoB',this)">
+        Copiar código
+      </button>
+<pre id="codigoB">// Desafio B — Intervalo entre alertas.
+
+// TODO 1:
+// Complete o tempo correspondente
+// a 60 segundos, em milissegundos.
+const unsigned long INTERVALO_ALERTA = _____;
+
+// Trecho do loop() que controla o alerta:
+//
+// unsigned long agora = millis();
+//
+// TODO 2:
+// Complete a condicao que verifica
+// se ja passou o intervalo:
+// agora - ultimoAlerta &gt;= __________
+//
+// A comparacao deve utilizar
+// a constante definida acima.</pre>
+    </div>
+
+    <button class="botao botao-solucao"
+            onclick="mostrarSolucao('solucaoB',this)">
+      💡 Ver solução do desafio B
+    </button>
+
+    <div class="codigo solucao" id="solucaoB" hidden>
+      <button class="copiar"
+              onclick="copiarCodigo('respostaB',this)">
+        Copiar solução
+      </button>
+<pre id="respostaB">// Solucao B — Intervalo de 60 segundos.
+
+// Substitua a constante original por:
+const unsigned long INTERVALO_ALERTA = 60000;
+
+// No loop(), a verificacao fica:
+//
+// unsigned long agora = millis();
+//
+// if (
+//   !alertaEnviado ||
+//   agora - ultimoAlerta &gt;= INTERVALO_ALERTA
+// ) {
+//   emitirAlerta();
+//   ultimoAlerta = millis();
+//   alertaEnviado = true;
+// }
+//
+// Mantenha a logica existente que
+// redefine alertaEnviado quando
+// o solo deixa de estar seco.</pre>
+    </div>
+
+    <div class="destaque">
+      <strong>🔍 Para pensar</strong>
+      <p>
+        Por que é melhor emitir
+        alertas periódicos em vez
+        de manter o buzzer ligado?
+      </p>
+      <p>
+        Que intervalo seria adequado
+        para um dispositivo utilizado
+        em uma residência?
+      </p>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoB">
+      <span>Concluí o desafio B!</span>
+    </label>
+  </div>
+
+  <!-- DESAFIO C -->
+
+  <div class="desafio" id="desafio-c">
+
+    <h3>🚀 Desafio C — Animação de inicialização</h3>
+
+    <p>
+      Vamos criar uma pequena
+      animação apresentada
+      quando o GlowUP Plant for ligado!
+    </p>
+
+    <p>
+      O display deverá mostrar
+      o nome do projeto,
+      seguido por um coração.
+    </p>
+
+    <h4>Resultado esperado</h4>
+
+    <div class="oled-area">
+      <div class="oled-moldura">
+        <svg class="oled-svg" viewBox="0 0 128 64"
+             aria-label="OLED com coração">
+          <g class="topo-pixels">
+            <text x="28" y="9">GlowUP Plant</text>
+          </g>
+          <g class="baixo-pixels">
+            <circle cx="55" cy="34" r="10"/>
+            <circle cx="73" cy="34" r="10"/>
+            <polygon points="45,35 83,35 64,58"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <p>
+      Crie uma nova função chamada
+      <code>animacaoInicial()</code>.
+      Depois, chame essa função
+      ao final do <code>setup()</code>,
+      após a inicialização do OLED.
+    </p>
+
+    <div class="codigo">
+      <button class="copiar"
+              onclick="copiarCodigo('codigoC',this)">
+        Copiar código
+      </button>
+<pre id="codigoC">// Desafio C — Animacao de inicializacao.
+
+// Crie esta funcao antes do setup().
+void animacaoInicial() {
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // TODO 1:
+  // Desenhe o primeiro circulo:
+  // centro (55,34), raio 10.
+
+
+  // TODO 2:
+  // Desenhe o segundo circulo:
+  // centro (73,34), raio 10.
+
+
+  // TODO 3:
+  // Desenhe o triangulo preenchido:
+  // (45,35), (83,35), (64,58).
+
+
+  // TODO 4:
+  // Atualize o display.
+
+
+  // Mantem o desenho por dois segundos.
+  delay(2000);
+}
+
+// No final de setup(), depois de
+// configurar o OLED, acrescente:
+//
+// animacaoInicial();</pre>
+    </div>
+
+    <button class="botao botao-solucao"
+            onclick="mostrarSolucao('solucaoC',this)">
+      💡 Ver solução do desafio C
+    </button>
+
+    <div class="codigo solucao" id="solucaoC" hidden>
+      <button class="copiar"
+              onclick="copiarCodigo('respostaC',this)">
+        Copiar solução
+      </button>
+<pre id="respostaC">// Solucao C — Animacao de inicializacao.
+
+// Adicione esta funcao antes do setup().
+void animacaoInicial() {
+
+  display.clearDisplay();
+
+  display.setTextSize(1);
+  display.setCursor(28, 2);
+  display.println("GlowUP Plant");
+
+  // Parte superior esquerda do coracao.
+  display.fillCircle(
+    55, 34, 10, SSD1306_WHITE
+  );
+
+  // Parte superior direita do coracao.
+  display.fillCircle(
+    73, 34, 10, SSD1306_WHITE
+  );
+
+  // Parte inferior do coracao.
+  display.fillTriangle(
+    45, 35, 83, 35, 64, 58,
+    SSD1306_WHITE
+  );
+
+  // Apresenta o desenho.
+  display.display();
+
+  // Mantem a imagem por dois segundos.
+  delay(2000);
+}
+
+// Acrescente no FINAL do setup(),
+// apos a inicializacao do OLED:
+//
+// animacaoInicial();</pre>
+    </div>
+
+    <label class="check">
+      <input type="checkbox" data-id="avancadoC">
+      <span>Concluí o desafio C!</span>
+    </label>
+  </div>
+
+  <div class="destaque">
+    <strong>🌱 Parabéns, inventora!</strong>
+    <p>
+      Você construiu um sistema
+      capaz de monitorar uma planta,
+      interpretar medições e apresentar
+      informações por meio de imagens e sons.
+    </p>
+    <p id="progressoDesafios">
+      0 de 3 desafios avançados concluídos.
+    </p>
+  </div>
+
+</section>
+
+<!-- FINALIZAÇÃO -->
+
+<section class="resultado">
+  <h2 id="tituloFinal">🌱 Sua jornada continua!</h2>
+  <p id="mensagemFinal">
+    Complete os cinco experimentos iniciais.
+  </p>
+
+  <a class="botao" href="index.html">
+    ← Voltar à oficina
+  </a>
+
+  <button class="botao botao-secundario"
+          type="button" id="reiniciar">
+    Reiniciar esta etapa
+  </button>
+</section>
+
+</main>
+
+<footer>
+  GlowUP Plant • NuRIA — Instituto Federal de São Paulo
+</footer>
+
+<script>
+/* GlowUP Plant — Etapa 05 — v1.0 */
+
+const CHAVE_ETAPA = "glowup-etapa05-v1";
+const CHAVE_GERAL = "glowup-oficina-progresso-v1";
+const CHAVE_VISUAL = "glowup-oled-visual-v1";
+
+const ATIVIDADES = ["1","2","3","4","5"];
+const DESAFIOS = ["avancadoA","avancadoB","avancadoC"];
+
+function lerJSON(chave) {
+  try {
+    const dados = JSON.parse(localStorage.getItem(chave) || "{}");
+    return dados && typeof dados === "object" &&
+           !Array.isArray(dados) ? dados : {};
+  } catch (erro) {
+    return {};
+  }
+}
+
+let progresso = lerJSON(CHAVE_ETAPA);
+
+function salvarProgresso() {
+  const geral = lerJSON(CHAVE_GERAL);
+
+  geral[5] = {
+    ...(geral[5] || {}),
+    inicial: ATIVIDADES.every(id => progresso[id] === true),
+    avancado: DESAFIOS.every(id => progresso[id] === true)
+  };
+
+  try {
+    localStorage.setItem(CHAVE_ETAPA, JSON.stringify(progresso));
+    localStorage.setItem(CHAVE_GERAL, JSON.stringify(geral));
+  } catch (erro) {
+    console.warn("Erro ao salvar progresso:", erro);
+  }
+}
+
+function atualizar() {
+  document.querySelectorAll("input[type='checkbox'][data-id]")
+    .forEach(caixa => {
+      caixa.checked = progresso[caixa.dataset.id] === true;
+    });
+
+  const concluidas = ATIVIDADES.filter(
+    id => progresso[id] === true
+  ).length;
+
+  const percentual = Math.round(concluidas / 5 * 100);
+
+  document.getElementById("preenchimento").style.width =
+    percentual + "%";
+
+  document.getElementById("barra").setAttribute(
+    "aria-valuenow", percentual
+  );
+
+  document.getElementById("contador").textContent =
+    concluidas + " de 5 atividades concluídas (" +
+    percentual + "%)";
+
+  const avancados = DESAFIOS.filter(
+    id => progresso[id] === true
+  ).length;
+
+  document.getElementById("contadorAvancado").textContent =
+    avancados === 3
+      ? "🚀 Desafios avançados: concluídos ✓"
+      : "🚀 Desafios avançados: " +
+        avancados + " de 3 concluídos (opcionais)";
+
+  document.getElementById("progressoDesafios").textContent =
+    avancados + " de 3 desafios avançados concluídos.";
+
+  document.getElementById("tituloFinal").textContent =
+    concluidas === 5
+      ? "🎉 Parabéns! Seu GlowUP Plant está pronto!"
+      : "🌱 Sua jornada continua!";
+
+  document.getElementById("mensagemFinal").textContent =
+    concluidas === 5
+      ? "Você construiu um sistema inteligente que utiliza " +
+        "sensores, display OLED e alertas sonoros!"
+      : "Você concluiu " + concluidas +
+        " de 5 experimentos iniciais.";
+}
+
+document.addEventListener("change", evento => {
+  const caixa = evento.target;
+
+  if (!caixa.matches("input[type='checkbox'][data-id]")) return;
+
+  progresso[caixa.dataset.id] = caixa.checked;
+  salvarProgresso();
+  atualizar();
+});
+
+async function copiarCodigo(id, botao) {
+  const elemento = document.getElementById(id);
+  if (!elemento) return;
+
+  const anterior = botao.textContent;
+
+  try {
+    await navigator.clipboard.writeText(elemento.textContent);
+    botao.textContent = "Copiado! ✓";
+    setTimeout(() => botao.textContent = anterior, 2000);
+  } catch (erro) {
+    alert("Selecione o código e copie manualmente.");
+  }
+}
+
+function mostrarSolucao(id, botao) {
+  const bloco = document.getElementById(id);
+  if (!bloco) return;
+
+  if (!bloco.hidden) {
+    bloco.hidden = true;
+    botao.textContent = "💡 Ver solução";
+    return;
+  }
+
+  const confirmar = confirm(
+    "💡 Você quer mesmo saber a resposta?\n\n" +
+    "Que tal tentar mais um pouco antes de consultar a solução?\n\n" +
+    "Clique em OK para ver a resposta.\n" +
+    "Clique em Cancelar para continuar tentando."
+  );
+
+  if (!confirmar) return;
+
+  bloco.hidden = false;
+  botao.textContent = "🙈 Ocultar solução";
+  bloco.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+
+function alterarModoOLED(modo) {
+  const branco = modo === "branco";
+
+  document.body.classList.toggle("oled-branco", branco);
+
+  document.getElementById("modoBranco")
+    .classList.toggle("ativo", branco);
+
+  document.getElementById("modoBicolor")
+    .classList.toggle("ativo", !branco);
+
+  try {
+    localStorage.setItem(CHAVE_VISUAL, modo);
+  } catch (erro) {
+    console.warn("Preferência visual não salva.");
+  }
+}
+
+document.getElementById("reiniciar").addEventListener("click", () => {
+  if (!confirm("Deseja reiniciar o progresso da Etapa 05?")) return;
+
+  progresso = {};
+  salvarProgresso();
+  atualizar();
+
+  document.querySelectorAll(".solucao").forEach(bloco => {
+    bloco.hidden = true;
+  });
+
+  document.querySelectorAll(".botao-solucao").forEach(botao => {
+    botao.textContent = "💡 Ver solução";
+  });
+});
+
+salvarProgresso();
+atualizar();
+
+let modoInicial = "bicolor";
+
+try {
+  modoInicial = localStorage.getItem(CHAVE_VISUAL) || "bicolor";
+} catch (erro) {
+  modoInicial = "bicolor";
+}
+
+alterarModoOLED(modoInicial);
+
+</script>
+</body>
+</html>
