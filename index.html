@@ -1,385 +1,157 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description"
-          content="GlowUp IoT: Ciência Delas - Expressões da Natureza. Oficina de eletrônica, programação e IoT do IFSP Campus Hortolândia.">
-
+    <meta name="description" content="GlowUp IoT: Ciência Delas - Expressões da Natureza. Oficina de eletrônica, programação e IoT do IFSP Campus Hortolândia.">
     <title>GlowUp IoT: Ciência Delas - Expressões da Natureza</title>
-
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Apenas o cartão de avaliação; as demais regras continuam no style.css. */
+        .avaliacao-oficina { margin: 0 0 55px; }
+        .avaliacao-cartao {
+            padding: 30px;
+            border: 1px solid var(--borda, #dfeae3);
+            border-radius: 18px;
+            background: linear-gradient(135deg, #e6f6ec, #fff0f5);
+        }
+        .avaliacao-cartao h3 { margin: 12px 0; color: var(--verde-escuro, #174b39); font-size: 24px; }
+        .avaliacao-cartao p { max-width: 760px; line-height: 1.7; }
+        .avaliacao-cartao .botao { display: inline-block; margin-top: 12px; }
+        .avaliacao-observacao { margin-top: 12px; font-size: 13px; opacity: .8; }
+    </style>
 </head>
-
 <body>
-
 <header>
     <div class="container topo">
-
-        <div class="logo">
-            🌱 Glow<span>Up</span> IoT
-        </div>
-
+        <div class="logo">🌱 Glow<span>Up</span> IoT</div>
         <div class="topo-direita">
-            <div class="instituicao-topo">
-                IFSP — Campus Hortolândia
-            </div>
-
-            <div class="versao">v1.8</div>
+            <div class="instituicao-topo">IFSP — Campus Hortolândia</div>
+            <div class="versao">v1.9</div>
         </div>
-
     </div>
 </header>
 
 <section class="hero">
     <div class="container">
         <div class="hero-conteudo">
-
-            <span class="tag">
-                Ciência Delas • Oficina Maker
-            </span>
-
-            <h1>
-                GlowUp IoT:<br>
-                <span>Ciência Delas</span> —
-                Expressões da Natureza
-            </h1>
-
-            <p>
-                <strong>Uma plantinha, muitas descobertas! 🌿</strong>
-            </p>
-
-            <p>
-                Explore componentes eletrônicos, programe o ESP32-C3
-                e construa um dispositivo inteligente para acompanhar
-                sua planta.
-            </p>
-
-            <p>
-                Aprenda no seu ritmo, realize experimentos, resolva
-                desafios e descubra como a tecnologia pode ajudar
-                a compreender a natureza.
-            </p>
-
+            <span class="tag">Ciência Delas • Oficina Maker</span>
+            <h1>GlowUp IoT:<br><span>Ciência Delas</span> — Expressões da Natureza</h1>
+            <p><strong>Uma plantinha, muitas descobertas! 🌿</strong></p>
+            <p>Explore componentes eletrônicos, programe o ESP32-C3 e construa um dispositivo inteligente para acompanhar sua planta.</p>
+            <p>Aprenda no seu ritmo, realize experimentos, resolva desafios e descubra como a tecnologia pode ajudar a compreender a natureza.</p>
             <div class="botoes-hero">
-                <a class="botao" href="materiais.html">
-                    🧰 Conferir materiais
-                </a>
-
-                <a class="botao botao-secundario" href="#etapas">
-                    🌱 Ver etapas
-                </a>
+                <a class="botao" href="materiais.html">🧰 Conferir materiais</a>
+                <a class="botao botao-secundario" href="#etapas">🌱 Ver etapas</a>
             </div>
-
         </div>
     </div>
 </section>
 
 <main class="container">
-
     <section class="indicadores">
-
         <div class="indicador">
             <h3>Materiais conferidos</h3>
-
             <strong id="materialCount">0 de 9</strong>
-
-            <a href="materiais.html">
-                Abrir lista de materiais →
-            </a>
+            <a href="materiais.html">Abrir lista de materiais →</a>
         </div>
-
         <div class="indicador">
             <h3>Atividades iniciais concluídas</h3>
-
             <strong id="stageCount">0 de 6 etapas</strong>
-
-            <div class="barra-progresso"
-                 id="globalBar"
-                 role="progressbar"
-                 aria-label="Progresso geral da oficina"
-                 aria-valuemin="0"
-                 aria-valuemax="100"
-                 aria-valuenow="0">
-
+            <div class="barra-progresso" id="globalBar" role="progressbar" aria-label="Progresso geral da oficina" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
                 <div class="preenchimento" id="globalFill"></div>
-
             </div>
         </div>
-
     </section>
 
     <section id="etapas">
-
-        <h2 class="titulo-secao">
-            🚀 Etapas da oficina
-        </h2>
-
-        <p class="introducao-etapas">
-            Comece pelo nível inicial de cada etapa.
-            Os desafios avançados são opcionais
-            e podem ser realizados depois.
-        </p>
-
+        <h2 class="titulo-secao">🚀 Etapas da oficina</h2>
+        <p class="introducao-etapas">Comece pelo nível inicial de cada etapa. Os desafios avançados são opcionais e podem ser realizados depois.</p>
         <div class="grade-etapas" id="cards"></div>
-
     </section>
 
+    <section class="avaliacao-oficina" id="avaliacao" aria-labelledby="titulo-avaliacao">
+        <h2 class="titulo-secao">🎓 Encerramento da oficina</h2>
+        <div class="avaliacao-cartao">
+            <span class="tag">Último passo • Sua opinião importa</span>
+            <h3 id="titulo-avaliacao">📝 Avaliação da Oficina</h3>
+            <p>Parabéns por chegar até aqui! 🌱 Esperamos que você tenha gostado de explorar a eletrônica, a programação e as possibilidades da tecnologia com o GlowUp Plant.</p>
+            <p>Antes de encerrar, conte como foi sua experiência. Sua avaliação é importante para aprimorarmos as próximas oficinas.</p>
+            <a class="botao" href="https://app.youform.com/forms/ed9gl2oe" target="_blank" rel="noopener noreferrer" aria-label="Responder à avaliação da oficina (abre em nova aba)">📝 Responder à avaliação ↗</a>
+            <p class="avaliacao-observacao">O formulário será aberto em uma nova aba.</p>
+        </div>
+    </section>
 </main>
 
 <footer>
-
-    <div class="nome-oficina">
-        GlowUp IoT: Ciência Delas -
-        Expressões da Natureza
-    </div>
-
-    <div class="nome-instituto">
-        IFSP - Instituto Federal de Educação,
-        Ciência e Tecnologia - Campus Hortolândia
-    </div>
-
-    <div class="nuria">
-        NuRIA • Núcleo de Robótica e Inteligência Artificial
-    </div>
-
+    <div class="nome-oficina">GlowUp IoT: Ciência Delas - Expressões da Natureza</div>
+    <div class="nome-instituto">IFSP - Instituto Federal de Educação, Ciência e Tecnologia - Campus Hortolândia</div>
+    <div class="nuria">NuRIA • Núcleo de Robótica e Inteligência Artificial</div>
 </footer>
 
 <script>
-
-// =========================================
-// GLOWUP IOT — INDEX v1.8
-// =========================================
-
-// Mantem as chaves utilizadas nas etapas.
+// GlowUp IoT — index v1.9. Chaves de progresso mantidas.
 const CHAVE_GERAL = "glowup-oficina-progresso-v1";
 const CHAVE_MATERIAIS = "glowup-materiais-v1";
 
-// =========================================
-// ETAPAS DA OFICINA
-// =========================================
-
 const ETAPAS = [
-
-    {
-        numero: 1,
-        icone: "🔌",
-        titulo: "Conhecendo o ESP32-C3",
-        descricao:
-            "Conheça a placa, explore sua pinagem, " +
-            "configure o Arduino IDE e execute " +
-            "seu primeiro programa.",
-        arquivo: "etapa01.html"
-    },
-
-    {
-        numero: 2,
-        icone: "💡",
-        titulo: "Experimentando o ESP32-C3",
-        descricao:
-            "Monte a placa na protoboard e experimente " +
-            "programas com LEDs e alertas sonoros " +
-            "utilizando o buzzer.",
-        arquivo: "etapa02.html"
-    },
-
-    {
-        numero: 3,
-        icone: "🌡️",
-        titulo: "Conectando os sensores",
-        descricao:
-            "Aprenda a utilizar o sensor capacitivo " +
-            "para medir a umidade do solo " +
-            "e interpretar suas leituras.",
-        arquivo: "etapa03.html"
-    },
-
-    {
-        numero: 4,
-        icone: "🖥️",
-        titulo: "Dando vida à nossa planta!",
-        descricao:
-            "Aprenda a apresentar medições no OLED " +
-            "e criar desenhos, corações " +
-            "e expressões faciais.",
-        arquivo: "etapa04.html"
-    },
-
-    {
-        numero: 5,
-        icone: "🪴",
-        titulo: "Construindo o GlowUP Plant",
-        descricao:
-            "Integre sensor, display OLED e buzzer " +
-            "para criar um sistema inteligente " +
-            "com indicações visuais e sonoras.",
-        arquivo: "etapa05.html"
-    },
-
-    {
-        numero: 6,
-        icone: "✨",
-        titulo: "Personalizando o GlowUP Plant",
-        descricao:
-            "Dê personalidade à sua planta! " +
-            "Crie olhos animados com a biblioteca RoboEyes, " +
-            "experimente expressões e personalize " +
-            "os alertas sonoros.",
-        arquivo: "etapa06.html"
-    }
-
+    {numero:1, icone:"🔌", titulo:"Conhecendo o ESP32-C3", descricao:"Conheça a placa, explore sua pinagem, configure o Arduino IDE e execute seu primeiro programa.", arquivo:"etapa01.html"},
+    {numero:2, icone:"💡", titulo:"Experimentando o ESP32-C3", descricao:"Monte a placa na protoboard e experimente programas com LEDs e alertas sonoros utilizando o buzzer.", arquivo:"etapa02.html"},
+    {numero:3, icone:"🌡️", titulo:"Conectando os sensores", descricao:"Aprenda a utilizar o sensor capacitivo para medir a umidade do solo e interpretar suas leituras.", arquivo:"etapa03.html"},
+    {numero:4, icone:"🖥️", titulo:"Dando vida à nossa planta!", descricao:"Aprenda a apresentar medições no OLED e criar desenhos, corações e expressões faciais.", arquivo:"etapa04.html"},
+    {numero:5, icone:"🪴", titulo:"Construindo o GlowUP Plant", descricao:"Integre sensor, display OLED e buzzer para criar um sistema inteligente com indicações visuais e sonoras.", arquivo:"etapa05.html"},
+    {numero:6, icone:"✨", titulo:"Personalizando o GlowUP Plant", descricao:"Dê personalidade à sua planta! Crie olhos animados com a biblioteca RoboEyes, experimente expressões e personalize os alertas sonoros.", arquivo:"etapa06.html"}
 ];
 
-// =========================================
-// LEITURA DO PROGRESSO
-// =========================================
-
 function lerDados(chave) {
-
     try {
-        const dados = JSON.parse(
-            localStorage.getItem(chave) || "{}"
-        );
-
-        return (
-            dados &&
-            typeof dados === "object" &&
-            !Array.isArray(dados)
-        ) ? dados : {};
-
+        const dados = JSON.parse(localStorage.getItem(chave) || "{}");
+        return dados && typeof dados === "object" && !Array.isArray(dados) ? dados : {};
     } catch (erro) {
         console.warn("Erro ao ler dados:", erro);
         return {};
     }
 }
 
-// =========================================
-// MONTAGEM DAS ETAPAS
-// =========================================
-
 function montarEtapas() {
-
     const progresso = lerDados(CHAVE_GERAL);
     const materiais = lerDados(CHAVE_MATERIAIS);
-
     let etapasConcluidas = 0;
-
     const cards = document.getElementById("cards");
 
     cards.innerHTML = ETAPAS.map(etapa => {
-
         const estado = progresso[etapa.numero] || {};
-
-        if (estado.inicial === true) {
-            etapasConcluidas++;
-        }
-
-        const statusInicial = estado.inicial
-            ? "Concluído ✓"
-            : "Pendente";
-
-        const statusAvancado = estado.avancado
-            ? "Concluído ✓"
-            : "Opcional";
-
+        if (estado.inicial === true) etapasConcluidas++;
+        const statusInicial = estado.inicial ? "Concluído ✓" : "Pendente";
+        const statusAvancado = estado.avancado ? "Concluído ✓" : "Opcional";
         return `
-
             <article class="cartao">
-
                 <div class="cartao-conteudo">
-
-                    <span class="numero-etapa">
-                        ETAPA ${String(etapa.numero).padStart(2, "0")}
-                    </span>
-
-                    <div class="icone-etapa">
-                        ${etapa.icone}
-                    </div>
-
+                    <span class="numero-etapa">ETAPA ${String(etapa.numero).padStart(2, "0")}</span>
+                    <div class="icone-etapa">${etapa.icone}</div>
                     <h3>${etapa.titulo}</h3>
-
                     <p>${etapa.descricao}</p>
-
-                    <div class="estado-etapa">
-                        🌱 Inicial: ${statusInicial}<br>
-                        🚀 Avançado: ${statusAvancado}
-                    </div>
-
+                    <div class="estado-etapa">🌱 Inicial: ${statusInicial}<br>🚀 Avançado: ${statusAvancado}</div>
                 </div>
-
                 <div class="acoes-etapa">
-
-                    <a href="${etapa.arquivo}">
-                        🌱 Inicial
-                    </a>
-
-                    <a href="${etapa.arquivo}#desafio-avancado">
-                        🚀 Avançado
-                    </a>
-
+                    <a href="${etapa.arquivo}">🌱 Inicial</a>
+                    <a href="${etapa.arquivo}#desafio-avancado">🚀 Avançado</a>
                 </div>
-
-            </article>
-
-        `;
-
+            </article>`;
     }).join("");
 
-    // Atualiza o progresso geral.
+    document.getElementById("stageCount").textContent = `${etapasConcluidas} de ${ETAPAS.length} etapas`;
+    const percentual = Math.round(etapasConcluidas / ETAPAS.length * 100);
+    document.getElementById("globalFill").style.width = percentual + "%";
+    document.getElementById("globalBar").setAttribute("aria-valuenow", percentual);
 
-    document.getElementById("stageCount").textContent =
-        `${etapasConcluidas} de ${ETAPAS.length} etapas`;
-
-    const percentual = Math.round(
-        etapasConcluidas / ETAPAS.length * 100
-    );
-
-    document.getElementById("globalFill").style.width =
-        percentual + "%";
-
-    document.getElementById("globalBar").setAttribute(
-        "aria-valuenow",
-        percentual
-    );
-
-    // Atualiza a conferencia dos materiais.
-
-    const itens = [
-        "esp32",
-        "sensor",
-        "oled",
-        "buzzer",
-        "pilhas",
-        "protoboard",
-        "jumpers",
-        "usb",
-        "planta"
-    ];
-
-    const conferidos = itens.filter(
-        item => materiais[item] === true
-    ).length;
-
-    document.getElementById("materialCount").textContent =
-        `${conferidos} de ${itens.length}`;
-
+    const itens = ["esp32", "sensor", "oled", "buzzer", "pilhas", "protoboard", "jumpers", "usb", "planta"];
+    const conferidos = itens.filter(item => materiais[item] === true).length;
+    document.getElementById("materialCount").textContent = `${conferidos} de ${itens.length}`;
 }
-
-// =========================================
-// INICIALIZACAO
-// =========================================
-
 montarEtapas();
-
-// Atualiza ao retornar das atividades.
 window.addEventListener("pageshow", montarEtapas);
-
-// Atualiza quando outra aba altera o progresso.
 window.addEventListener("storage", montarEtapas);
-
 </script>
-
 </body>
 </html>
